@@ -1,6 +1,19 @@
 {
+	"$schema": "config.schema.json",
 	"market": "US",
 	"fetchConsole": true,
 	"fetchPC": true,
-	"fetchEAPlay": true
+	"fetchEAPlay": true,
+	"cleanedProperties": {
+		"productTitle": true,
+		"developerName": true,
+		"publisherName": true,
+		"productDescription": {
+			"enabled": true,
+			"preferShort": true
+		},
+		"images": {
+			"enabled": true
+		}
+	}
 }
