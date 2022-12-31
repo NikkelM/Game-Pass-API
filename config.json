@@ -4,7 +4,7 @@
 	"fetchConsole": true,
 	"fetchPC": true,
 	"fetchEAPlay": true,
-	"cleanedProperties": {
+	"includedProperties": {
 		"productTitle": true,
 		"developerName": true,
 		"publisherName": true,
@@ -13,8 +13,20 @@
 			"preferShort": true,
 			"extra": 1
 		},
-		"images": {
+		"images":{
 			"enabled": true,
+			"maxImages": 10,
+			"imageTypes": ["Poster"],
+			"extra": 1
+		},
+		"releaseDate": {
+			"enabled": true,
+			"format": "date",
+			"extra": 1
+		},
+		"userRating": {
+			"enabled": true,
+			"format": "decimal",
 			"extra": 1
 		},
 		"extra": 1

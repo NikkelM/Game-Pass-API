@@ -274,7 +274,7 @@
 			"type": "boolean",
 			"default": true
 		},
-		"cleanedProperties": {
+		"includedProperties": {
 			"description": "The properties that should be contained in the cleaned version of the API response.",
 			"type": "object",
 			"properties": {
@@ -303,11 +303,13 @@
 					"properties": {
 						"enabled": {
 							"description": "Whether or not to include the description of the game.",
-							"type": "boolean"
+							"type": "boolean",
+							"default": true
 						},
 						"preferShort": {
 							"description": "Whether or not to prefer the short description of the game, if one exists.",
-							"type": "boolean"
+							"type": "boolean",
+							"default": false
 						}
 					},
 					"required": [
@@ -319,7 +321,19 @@
 					"description": "Whether or not to include image URL's for the game.",
 					"type": "object",
 					"default": {
-						"TODO": 1
+						"enabled": true,
+						"maxImages": 0,
+						"imageTypes": [
+							"TitledHeroArt",
+							"SuperHeroArt",
+							"Logo",
+							"Poster",
+							"Screenshot",
+							"BoxArt",
+							"Hero",
+							"BrandedKeyArt",
+							"FeaturePromotionalSquareArt"
+						]
 					},
 					"properties": {
 						"enabled": {
@@ -334,21 +348,122 @@
 							"minimum": 0
 						},
 						"imageTypes": {
-							"description": "What kinds of images should be considered.",
+							"description": "What kinds of images should be considered. The order of types in the array defines which images are used first if \"maxImages\" is set to a value other than 0.",
 							"type": "array",
-							"enum": [
-								"a",
-								"b"
-							]
+							"default": [
+								"TitledHeroArt",
+								"SuperHeroArt",
+								"Logo",
+								"Poster",
+								"Screenshot",
+								"BoxArt",
+								"Hero",
+								"BrandedKeyArt",
+								"FeaturePromotionalSquareArt"
+							],
+							"items": {
+								"type": "string",
+								"anyOf": [
+									{
+										"const": "Screenshot",
+										"title": "In-game screenshots. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4677.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.4344f692-1744-4c18-8024-270fd320f63c"
+									},
+									{
+										"const": "TitledHeroArt",
+										"title": "Banner featuring the game's name. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.12688.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.ef4d4f2f-1865-4fa7-8ec7-8b914cd4dcc0"
+									},
+									{
+										"const": "Poster",
+										"title": "Banner featuring the game's name in portrait mode, such as for smartphones. 2:3 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.64810.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.fdefe49f-270c-44e5-b660-6d7764b37f0f"
+									},
+									{
+										"const": "SuperHeroArt",
+										"title": "Artwork without text. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.62159.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.1405eb3a-6314-4e44-a822-7660d70a6ec5"
+									},
+									{
+										"const": "Hero",
+										"title": "Artwork without text. 2:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.28129.13672427983916579.274b1ffd-9cde-4bef-9a3e-6f37073d5ed0.5eb8b4f3-3575-4d13-b0a4-b60d6c64f392"
+									},
+									{
+										"const": "BoxArt",
+										"title": "Banner featuring the game's logo and name in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4794.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.b156af1e-9796-48af-8d11-3461727280ea"
+									},
+									{
+										"const": "BrandedKeyArt",
+										"title": "Banner featuring the game's name with a \"XBOX\" logo on top. 73:100 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6"
+									},
+									{
+										"const": "FeaturePromotionalSquareArt",
+										"title": "Banner featuring the game's logo (without name) in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.29819.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.322d4aa6-0a23-4565-a64f-743f0620a96e"
+									},
+									{
+										"const": "Logo",
+										"title": "Small, square game logo, to be used e.g. as a game library icon. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.65119.13664397958929388.0e87ac81-8aa3-41f0-82dc-61a295fc5fe3.44bf032a-b113-4179-aa1b-f557dbcd3b19"
+									}
+								]
+							},
+							"minItems": 1
 						}
 					},
 					"required": [
-						"enabled"
+						"enabled",
+						"imageTypes"
 					],
+					"additionalProperties": false
+				},
+				"releaseDate": {
+					"description": "Whether or not to include the game's release date.",
+					"type": "object",
+					"default": {
+						"enabled": true,
+						"format": "dateTime"
+					},
+					"properties": {
+						"enabled": {
+							"description": "Whether or not to include the game's release date.",
+							"type": "boolean",
+							"default": true
+						},
+						"format": {
+							"description": "How to format the date string. Either the full dateTime (YYYY-MM-DDTHH:mm:ss.sssssssZ) or just the date (YYYY-MM-DD).",
+							"type": "string",
+							"default": "dateTime",
+							"enum": [
+								"dateTime",
+								"date"
+							]
+						}
+					},
+					"additionalProperties": false
+				},
+				"userRating": {
+					"description": "Whether or not to include the game's user rating.",
+					"type": "object",
+					"default": {
+						"enabled": true,
+						"format": "decimal"
+					},
+					"properties": {
+						"enabled": {
+							"description": "Whether or not to include the game's user rating.",
+							"type": "boolean",
+							"default": true
+						},
+						"format": {
+							"description": "How to format the rating. Either as a decimal (0.0 - 5.0) or as a percentage (0% - 100%).",
+							"type": "string",
+							"default": "decimal",
+							"enum": [
+								"decimal",
+								"percentage"
+							]
+						}
+					},
 					"additionalProperties": false
 				},
 				"additionalProperties": false
 			},
+			"minProperties": 1,
 			"additionalProperties": false
 		},
 		"outputIndexing": {
@@ -394,7 +509,7 @@
 	],
 	"required": [
 		"market",
-		"cleanedProperties",
+		"includedProperties",
 		"outputIndexing"
 	],
 	"additionalProperties": false
