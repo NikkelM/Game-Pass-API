@@ -6,6 +6,7 @@
 	"fetchEAPlay": true,
 	"includedProperties": {
 		"productTitle": true,
+		"productId": true,
 		"developerName": true,
 		"publisherName": true,
 		"productDescription": {

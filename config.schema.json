@@ -283,6 +283,11 @@
 					"type": "boolean",
 					"default": true
 				},
+				"productId": {
+					"description": "Whether or not to include the product Id of the game.",
+					"type": "boolean",
+					"default": true
+				},
 				"developerName": {
 					"description": "Whether or not to include the name of the developer of the game.",
 					"type": "boolean",
