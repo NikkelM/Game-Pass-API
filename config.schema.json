@@ -1,5 +1,5 @@
 {
-	"$schema": "https://json-schema.org/draft-07/schema",
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"title": "Game Pass API configuration schema",
 	"description": "Validates configuration input for the Game Pass API script.",
 	"type": "object",
@@ -312,12 +312,15 @@
 					},
 					"required": [
 						"enabled"
-					]
+					],
+					"additionalProperties": false
 				},
 				"images": {
 					"description": "Whether or not to include image URL's for the game.",
 					"type": "object",
-					"default": {"TODO":1},
+					"default": {
+						"TODO": 1
+					},
 					"properties": {
 						"enabled": {
 							"description": "Whether or not to include any the images in the result.",
@@ -333,15 +336,43 @@
 						"imageTypes": {
 							"description": "What kinds of images should be considered.",
 							"type": "array",
-							"enum": ["a", "b"]
+							"enum": [
+								"a",
+								"b"
+							]
 						}
 					},
 					"required": [
 						"enabled"
-					]
+					],
+					"additionalProperties": false
 				},
 				"additionalProperties": false
-			}
+			},
+			"additionalProperties": false
+		},
+		"outputIndexing": {
+			"description": "What kind of indexing the resulting JSON should use for the cleaned game properties.",
+			"type": "string",
+			"default": "productTitle",
+			"oneOf": [
+				{
+					"const": "productTitle",
+					"title": "The game's title is used as the index."
+				},
+				{
+					"const": "productId",
+					"title": "The game's product Id is used as the index."
+				},
+				{
+					"const": "0-indexed",
+					"title": "Standard integer indexing is used, starting at 0."
+				},
+				{
+					"const": "1-indexed",
+					"title": "Standard integer indexing is used, starting at 1."
+				}
+			]
 		}
 	},
 	"anyOf": [
@@ -363,7 +394,8 @@
 	],
 	"required": [
 		"market",
-		"cleanedProperties"
+		"cleanedProperties",
+		"outputIndexing"
 	],
 	"additionalProperties": false
 }

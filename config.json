@@ -10,10 +10,15 @@
 		"publisherName": true,
 		"productDescription": {
 			"enabled": true,
-			"preferShort": true
+			"preferShort": true,
+			"extra": 1
 		},
 		"images": {
-			"enabled": true
-		}
-	}
+			"enabled": true,
+			"extra": 1
+		},
+		"extra": 1
+	},
+	"outputIndexing": "productTitle",
+	"extra": 1
 }
