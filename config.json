@@ -13,10 +13,20 @@
 			"preferShort": true,
 			"extra": 1
 		},
-		"images":{
+		"images": {
 			"enabled": true,
 			"maxImages": 10,
-			"imageTypes": ["Poster"],
+			"imageTypes": [
+				"TitledHeroArt",
+				"SuperHeroArt",
+				"Logo",
+				"Poster",
+				"Screenshot",
+				"BoxArt",
+				"Hero",
+				"BrandedKeyArt",
+				"FeaturePromotionalSquareArt"
+			],
 			"extra": 1
 		},
 		"releaseDate": {
@@ -26,8 +36,8 @@
 		},
 		"userRating": {
 			"enabled": true,
-			"format": "decimal",
-			"extra": 1
+			"aggregationInterval": "AllTime",
+			"format": "percentage"
 		},
 		"extra": 1
 	},

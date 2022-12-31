@@ -434,6 +434,10 @@
 							]
 						}
 					},
+					"required": [
+						"enabled",
+						"format"
+					],
 					"additionalProperties": false
 				},
 				"userRating": {
@@ -441,7 +445,8 @@
 					"type": "object",
 					"default": {
 						"enabled": true,
-						"format": "decimal"
+						"aggregationInterval": "AllTime",
+						"format": "percentage"
 					},
 					"properties": {
 						"enabled": {
@@ -449,16 +454,31 @@
 							"type": "boolean",
 							"default": true
 						},
+						"aggregationInterval": {
+							"description": "Which kind of interval to consider for rating aggregation.",
+							"type": "string",
+							"default": "AllTime",
+							"enum": [
+								"AllTime",
+								"30Days",
+								"7Days"
+							]
+						},
 						"format": {
 							"description": "How to format the rating. Either as a decimal (0.0 - 5.0) or as a percentage (0% - 100%).",
 							"type": "string",
-							"default": "decimal",
+							"default": "percentage",
 							"enum": [
-								"decimal",
-								"percentage"
+								"percentage",
+								"decimal"
 							]
 						}
 					},
+					"required": [
+						"enabled",
+						"aggregationInterval",
+						"format"
+					],
 					"additionalProperties": false
 				},
 				"additionalProperties": false
