@@ -1,0 +1,6 @@
+{
+	"market": "US",
+	"fetchConsole": true,
+	"fetchPC": true,
+	"fetchEAPlay": true
+}

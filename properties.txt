@@ -1,0 +1,15 @@
+LocalizedProperties[0].DeveloperName
+LocalizedProperties[0].PublisherName
+LocalizedProperties[0].Images --- "TitledHeroArt" is best. "BoxArt" Fallback
+LocalizedProperties[0].ProductDescription
+LocalizedProperties[0].ShortDescription  --- Might not always be available
+LocalizedProperties[0].ProductTitle
+LocalizedProperties[0].SearchTitles ---- Tags???
+MarketProperties[0].OriginalReleaseDate --- "2016-10-28T00:00:00.0000000Z" --- split at T, take [0]
+MarketProperties[0].UsageData[2].AverageRating (out of 5 -> convert to percentage)
+Properties.Categories / Properties.Category
+Properties.IsDemo --- create a Tag for this?
+Properties.ProductKind ---- "Game" / Properties.ProductFamily ---- "Games"
+
+DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price.CurrencyCode
+DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price.ListPrice / MSRP
