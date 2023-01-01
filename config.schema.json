@@ -595,7 +595,7 @@
 		}
 	],
 	"required": [
-		"market",
+		"markets",
 		"includedProperties",
 		"outputIndexing"
 	],

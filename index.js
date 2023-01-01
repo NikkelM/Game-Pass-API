@@ -36,33 +36,35 @@ if (!fs.existsSync('./output')) {
 
 // ---------- Main ----------
 main();
-
+console.log(CONFIG)
 async function main() {
 	// Fetch Game Pass game ID's and properties for each pass type
 	// We do not await execution of these functions, as they are independent of each other
-	if (CONFIG.fetchConsole) {
-		runScriptForPassType("console");
-	}
-	if (CONFIG.fetchPC) {
-		runScriptForPassType("pc");
-	}
-	if (CONFIG.fetchEAPlay) {
-		runScriptForPassType("eaPlay");
+	for (const market of CONFIG.markets) {
+		if (CONFIG.fetchConsole) {
+			runScriptForPassAndMarket("console", market);
+		}
+		if (CONFIG.fetchPC) {
+			runScriptForPassAndMarket("pc", market);
+		}
+		if (CONFIG.fetchEAPlay) {
+			runScriptForPassAndMarket("eaPlay", market);
+		}
 	}
 }
 
-async function runScriptForPassType(passType) {
+async function runScriptForPassAndMarket(passType, market) {
 	// Fetch Game Pass game ID's
-	const gameIds = await fetchGameIDs(passType);
+	const gameIds = await fetchGameIDs(passType, market);
 
 	// Fetch Game Pass game properties
-	await fetchGameProperties(gameIds, passType);
+	await fetchGameProperties(gameIds, passType, market);
 
 	// Format the data
 }
 
 // ---------- Fetch Game Pass game ID's ----------
-async function fetchGameIDs(passType) {
+async function fetchGameIDs(passType, market) {
 	// Get all Game Pass Game ID's for this market
 
 	const APIIds = {
@@ -71,20 +73,20 @@ async function fetchGameIDs(passType) {
 		"eaPlay": "b8900d09-a491-44cc-916e-32b5acae621b"
 	}
 
-	console.log("Fetching " + passType + " Game Pass game ID's for market \"" + CONFIG.market + "\".");
-	let gameIds = await fetch(`https://catalog.gamepass.com/sigls/v2?id=${APIIds[passType]}&language=en-us&market=${CONFIG.market}`)
+	console.log("Fetching " + passType + " Game Pass game ID's for market \"" + market + "\".");
+	let gameIds = await fetch(`https://catalog.gamepass.com/sigls/v2?id=${APIIds[passType]}&language=en-us&market=${market}`)
 		.then((response) => response.json())
 		.then((data) => data.filter((entry) => entry.id).map((entry) => entry.id));
 
 	return gameIds;
 }
 
-async function fetchGameProperties(gameIds, passType) {
+async function fetchGameProperties(gameIds, passType, market) {
 	console.log("Fetching game properties for " + gameIds.length + " " + passType + " games...");
-	await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${CONFIG.market}&languages=en-us&MS-CV=DGU1mcuYo0WMMp`)
+	await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us&MS-CV=DGU1mcuYo0WMMp`)
 		.then((response) => response.json())
 		.then((data) => {
 			// Write the data to a file
-			fs.writeFileSync(`./output/completeGameProperties_${passType}_${CONFIG.market}.json`, JSON.stringify(data, null, 2));
+			fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(data, null, 2));
 		});
 }
