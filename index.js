@@ -36,7 +36,6 @@ if (!fs.existsSync('./output')) {
 
 // ---------- Main ----------
 main();
-console.log(CONFIG)
 async function main() {
 	// Fetch Game Pass game ID's and properties for each pass type
 	// We do not await execution of these functions, as they are independent of each other
@@ -58,9 +57,10 @@ async function runScriptForPassAndMarket(passType, market) {
 	const gameIds = await fetchGameIDs(passType, market);
 
 	// Fetch Game Pass game properties
-	await fetchGameProperties(gameIds, passType, market);
+	const gameProperties = await fetchGameProperties(gameIds, passType, market);
 
-	// Format the data
+	// Format the data according to the configuration
+	const formattedData = formatData(gameProperties, passType, market);
 }
 
 // ---------- Fetch Game Pass game ID's ----------
@@ -82,11 +82,49 @@ async function fetchGameIDs(passType, market) {
 }
 
 async function fetchGameProperties(gameIds, passType, market) {
-	console.log("Fetching game properties for " + gameIds.length + " " + passType + " games...");
-	await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us&MS-CV=DGU1mcuYo0WMMp`)
+	console.log("Fetching game properties for " + gameIds.length + " " + passType + " games for market \"" + market + "\".");
+	return await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us&MS-CV=DGU1mcuYo0WMMp`)
 		.then((response) => response.json())
 		.then((data) => {
 			// Write the data to a file
 			fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(data, null, 2));
+			return data;
 		});
+}
+
+function formatData(gameProperties, passType, market) {
+	// Format the data according to the configuration
+
+	// Create a new object to store the formatted data
+	const formattedData = {};
+
+	// Loop through each game
+	for (const game of gameProperties.Products) {
+		// Create a new object for this game
+		switch (CONFIG.outputIndexing) {
+			case "productId":
+				formattedData[game.ProductId] = {};
+				break;
+			case "productTitle":
+				formattedData[game.LocalizedProperties[0].ProductTitle] = {};
+				break;
+			case "0-indexed":
+				formattedData[Object.keys(formattedData).length] = {};
+				break;
+		}
+
+		// // Loop through each property
+		// for (const property of CONFIG.properties) {
+		// 	// Get the value of the property
+		// 	const value = getPropertyValue(game, property);
+
+		// 	// Add the property to the object
+		// 	formattedData[game.id][property] = value;
+		// }
+	}
+
+	// Write the data to a file
+	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
+
+	return formattedData;
 }
