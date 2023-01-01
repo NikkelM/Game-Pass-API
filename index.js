@@ -29,7 +29,7 @@ try {
 }
 
 // If the user wants empty strings to be treated as null or not
-const emptyValuePlaceholder = CONFIG.treatEmptyStringAsNull ? null : "";
+const emptyValuePlaceholder = CONFIG.treatEmptyStringsAsNull ? null : "";
 
 // Validate the config file against the schema
 console.log("Validating configuration file...\n");
@@ -54,21 +54,28 @@ main();
 async function main() {
 	// Fetch Game Pass game ID's and properties for each pass type
 	// We do not await execution of these functions, as they are independent of each other
+	let formattedProperties = {};
 	for (const market of CONFIG.markets) {
 		if (CONFIG.fetchConsole) {
-			const consoleFormattedProperties = runScriptForPassAndMarket("console", market);
+			formattedProperties["console"] = new Promise((resolve) => runScriptForPassAndMarket(resolve, "console", market));
 		}
 		if (CONFIG.fetchPC) {
-			const pcFormattedProperties = runScriptForPassAndMarket("pc", market);
+			formattedProperties["pc"] = new Promise((resolve) => runScriptForPassAndMarket(resolve, "pc", market));
 		}
 		if (CONFIG.fetchEAPlay) {
-			const eaPlayFormattedProperties = runScriptForPassAndMarket("eaPlay", market);
+			formattedProperties["eaPlay"] = new Promise((resolve) => runScriptForPassAndMarket(resolve, "eaPlay", market));
+		}
+		// TODO: Await completion of all three functions, then check if the user wants to have the objects merged (need to create a config property for this first)
+		await Promise.all(Object.values(formattedProperties));
+
+		// Write the data to a file
+		for (const [passType, formattedData] in formattedProperties) {
+			fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
 		}
 	}
-	// TODO: Await completion of all three functions, then check if the user wants to have the objects merged (need to create a config property for this first)
 }
 
-async function runScriptForPassAndMarket(passType, market) {
+async function runScriptForPassAndMarket(resolve, passType, market) {
 	// Fetch Game Pass game ID's
 	const gameIds = await fetchGameIDs(passType, market);
 
@@ -78,10 +85,7 @@ async function runScriptForPassAndMarket(passType, market) {
 	// Format the data according to the configuration
 	const formattedData = formatData(gameProperties, passType, market);
 
-	// Write the data to a file
-	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
-
-	return formattedData;
+	resolve(formattedData);
 }
 
 // ---------- Fetch Game Pass game ID's ----------

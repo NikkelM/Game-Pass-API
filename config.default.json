@@ -7,7 +7,7 @@
 	"fetchPC": true,
 	"fetchEAPlay": true,
 	"outputIndexing": "0-indexed",
-	"treatEmptyStringAsNull": true,
+	"treatEmptyStringsAsNull": true,
 	"includedProperties": {
 		"productTitle": true,
 		"productId": true,

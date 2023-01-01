@@ -301,7 +301,7 @@
 				}
 			]
 		},
-		"treatEmptyStringAsNull": {
+		"treatEmptyStringsAsNull": {
 			"description": "Whether or not to treat empty strings as null values.",
 			"type": "boolean",
 			"default": true
