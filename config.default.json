@@ -6,7 +6,7 @@
 	"fetchConsole": true,
 	"fetchPC": true,
 	"fetchEAPlay": true,
-	"outputIndexing": "productTitle",
+	"outputIndexing": "0-indexed",
 	"treatEmptyStringAsNull": true,
 	"includedProperties": {
 		"productTitle": true,
