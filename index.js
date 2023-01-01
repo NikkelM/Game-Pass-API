@@ -55,15 +55,16 @@ async function main() {
 	// We do not await execution of these functions, as they are independent of each other
 	for (const market of CONFIG.markets) {
 		if (CONFIG.fetchConsole) {
-			runScriptForPassAndMarket("console", market);
+			const consoleFormattedProperties = runScriptForPassAndMarket("console", market);
 		}
 		if (CONFIG.fetchPC) {
-			runScriptForPassAndMarket("pc", market);
+			const pcFormattedProperties = runScriptForPassAndMarket("pc", market);
 		}
 		if (CONFIG.fetchEAPlay) {
-			runScriptForPassAndMarket("eaPlay", market);
+			const eaPlayFormattedProperties = runScriptForPassAndMarket("eaPlay", market);
 		}
 	}
+	// TODO: Await completion of all three functions, then check if the user wants to have the objects merged (need to create a config property for this first)
 }
 
 async function runScriptForPassAndMarket(passType, market) {
@@ -75,6 +76,11 @@ async function runScriptForPassAndMarket(passType, market) {
 
 	// Format the data according to the configuration
 	const formattedData = formatData(gameProperties, passType, market);
+
+	// Write the data to a file
+	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
+
+	return formattedData;
 }
 
 // ---------- Fetch Game Pass game ID's ----------
@@ -141,9 +147,6 @@ function formatData(gameProperties, passType, market) {
 			}
 		}
 	}
-
-	// Write the data to a file
-	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
 
 	return formattedData;
 }
