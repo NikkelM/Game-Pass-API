@@ -51,9 +51,9 @@ if (!fs.existsSync('./output')) {
 // ---------- Main ----------
 
 main();
+
 async function main() {
-	// Fetch Game Pass game ID's and properties for each pass type
-	// We do not await execution of these functions, as they are independent of each other
+	// Fetch Game Pass game ID's and properties for each pass type and market specified in the configuration
 	let formattedProperties = {};
 	for (const market of CONFIG.markets) {
 		if (CONFIG.fetchConsole) {
@@ -65,13 +65,15 @@ async function main() {
 		if (CONFIG.fetchEAPlay) {
 			formattedProperties["eaPlay"] = new Promise((resolve) => runScriptForPassAndMarket(resolve, "eaPlay", market));
 		}
-		// TODO: Await completion of all three functions, then check if the user wants to have the objects merged (need to create a config property for this first)
+		
 		await Promise.all(Object.values(formattedProperties));
 
 		// Write the data to a file
 		for (const [passType, formattedData] in formattedProperties) {
 			fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
 		}
+
+		console.log(`Finished fetching and formatting data for market "${market}".\n`);
 	}
 }
 
@@ -88,7 +90,8 @@ async function runScriptForPassAndMarket(resolve, passType, market) {
 	resolve(formattedData);
 }
 
-// ---------- Fetch Game Pass game ID's ----------
+// ---------- Fetch game ID's & properties ----------
+
 async function fetchGameIDs(passType, market) {
 	// Get all Game Pass Game ID's for this market
 
