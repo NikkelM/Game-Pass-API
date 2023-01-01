@@ -253,6 +253,7 @@ function getPropertyValue(game, property, propertyValue) {
 			value["currencyCode"] = game.DisplaySkuAvailabilities[0]?.Availabilities[0]?.OrderManagementData?.Price?.CurrencyCode;
 
 			for (const priceType of propertyValue.priceTypes) {
+				// Small workaround to not exclude 0-values
 				value[priceType] = typeof game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType] === 'number'
 					? game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType]
 					: missingPricePlaceholder;
