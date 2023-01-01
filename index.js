@@ -203,6 +203,28 @@ function getPropertyValue(game, property, propertyValue) {
 		case "images":
 			if (!propertyValue.enabled) { return undefined; }
 
+			value = {};
+			let numImagesByType = {
+				"TitledHeroArt": 0,
+				"SuperHeroArt": 0,
+				"Logo": 0,
+				"Poster": 0,
+				"Screenshot": 0,
+				"BoxArt": 0,
+				"Hero": 0,
+				"BrandedKeyArt": 0,
+				"FeaturePromotionalSquareArt": 0
+			};
+			for (const image of game.LocalizedProperties[0].Images) {
+				if (propertyValue.imageTypes[image.ImagePurpose] && (propertyValue.imageTypes[image.ImagePurpose] === -1 || numImagesByType[image.ImagePurpose] < propertyValue.imageTypes[image.ImagePurpose])) {
+					if (!value[image.ImagePurpose]) {
+						value[image.ImagePurpose] = [];
+					}
+					value[image.ImagePurpose].push(image.Uri);
+					numImagesByType[image.ImagePurpose] = numImagesByType[image.ImagePurpose] ? numImagesByType[image.ImagePurpose] + 1 : 1;
+				}
+			}
+
 			break;
 		case "releaseDate":
 			if (!propertyValue.enabled) { return undefined; }
