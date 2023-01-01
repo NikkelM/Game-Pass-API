@@ -116,12 +116,12 @@ function formatData(gameProperties, passType, market) {
 		formattedData[index] = {};
 
 		// Loop through each property
-		for(const [key, value] of Object.entries(CONFIG.includedProperties)) {
+		for (const [property, propertyValue] of Object.entries(CONFIG.includedProperties)) {
 			// Get the value of the property
-			const result = getPropertyValue(game, key, value);
+			const result = getPropertyValue(game, property, propertyValue);
 
 			// Add the property to the object
-			formattedData[index][key] = result;
+			formattedData[index][property] = result;
 		}
 		break;
 	}
@@ -132,19 +132,37 @@ function formatData(gameProperties, passType, market) {
 	return formattedData;
 }
 
-function getPropertyValue(game, key, value) {
-	console.log(key);
-	console.log(value);
-	// Get the value of a given property
+function getPropertyValue(game, property, propertyValue) {
+	console.log(property);
+	console.log(propertyValue);
+	// Get the value of the property for the given game according to the specification in propertyValue
 
-	// // Split the property into its parts
-	// const propertyParts = property.split(".");
-
-	// // Get the value of the property
-	// let value = game;
-	// for (const part of propertyParts) {
-	// 	value = value[part];
-	// }
+	let value;
+	switch (property) {
+		case "productTitle":
+			break;
+		case "productId":
+			break;
+		case "developerName":
+			break;
+		case "publisherName":
+			break;
+		case "productDescription":
+			break;
+		case "images":
+			break;
+		case "releaseDate":
+			break;
+		case "userRating":
+			break;
+		case "pricing":
+			break;
+		case "categories":
+			break;
+		default:
+			console.log("Invalid property: " + property);
+			return null;
+	}
 
 	return value;
 }
