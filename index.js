@@ -100,31 +100,51 @@ function formatData(gameProperties, passType, market) {
 
 	// Loop through each game
 	for (const game of gameProperties.Products) {
+		let index;
 		// Create a new object for this game
 		switch (CONFIG.outputIndexing) {
 			case "productId":
-				formattedData[game.ProductId] = {};
+				index = game.ProductId;
 				break;
 			case "productTitle":
-				formattedData[game.LocalizedProperties[0].ProductTitle] = {};
+				index = game.LocalizedProperties[0].ProductTitle;
 				break;
 			case "0-indexed":
-				formattedData[Object.keys(formattedData).length] = {};
+				index = Object.keys(formattedData).length;
 				break;
 		}
+		formattedData[index] = {};
 
-		// // Loop through each property
-		// for (const property of CONFIG.properties) {
-		// 	// Get the value of the property
-		// 	const value = getPropertyValue(game, property);
+		// Loop through each property
+		for(const [key, value] of Object.entries(CONFIG.includedProperties)) {
+			// Get the value of the property
+			const result = getPropertyValue(game, key, value);
 
-		// 	// Add the property to the object
-		// 	formattedData[game.id][property] = value;
-		// }
+			// Add the property to the object
+			formattedData[index][key] = result;
+		}
+		break;
 	}
 
 	// Write the data to a file
 	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
 
 	return formattedData;
+}
+
+function getPropertyValue(game, key, value) {
+	console.log(key);
+	console.log(value);
+	// Get the value of a given property
+
+	// // Split the property into its parts
+	// const propertyParts = property.split(".");
+
+	// // Get the value of the property
+	// let value = game;
+	// for (const part of propertyParts) {
+	// 	value = value[part];
+	// }
+
+	return value;
 }
