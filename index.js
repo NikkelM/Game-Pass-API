@@ -153,22 +153,27 @@ function getPropertyValue(game, property, propertyValue) {
 	switch (property) {
 		case "productTitle":
 			if (!propertyValue) { return undefined; }
+
 			value = game.LocalizedProperties[0].ProductTitle?.length > 0 ? game.LocalizedProperties[0].ProductTitle : null;
 			break;
 		case "productId":
 			if (!propertyValue) { return undefined; }
+
 			value = game.ProductId.length > 0 ? game.ProductId : null;
 			break;
 		case "developerName":
 			if (!propertyValue) { return undefined; }
+
 			value = game.LocalizedProperties[0].DeveloperName.length > 0 ? game.LocalizedProperties[0].DeveloperName : null;
 			break;
 		case "publisherName":
 			if (!propertyValue) { return undefined; }
+
 			value = game.LocalizedProperties[0].PublisherName.length > 0 ? game.LocalizedProperties[0].PublisherName : null;
 			break;
 		case "productDescription":
 			if (!propertyValue.enabled) { return undefined; }
+
 			if (propertyValue.preferShort && game.LocalizedProperties[0].ShortDescription?.length > 0) {
 				value = game.LocalizedProperties[0].ShortDescription;
 			} else {
@@ -177,9 +182,11 @@ function getPropertyValue(game, property, propertyValue) {
 			break;
 		case "images":
 			if (!propertyValue.enabled) { return undefined; }
+
 			break;
 		case "releaseDate":
 			if (!propertyValue.enabled) { return undefined; }
+
 			if (propertyValue.format === "date") {
 				value = game.MarketProperties[0].OriginalReleaseDate?.split("T")[0];
 			} else if (propertyValue.format === "date-time") {
@@ -188,13 +195,16 @@ function getPropertyValue(game, property, propertyValue) {
 			break;
 		case "userRating":
 			if (!propertyValue.enabled) { return undefined; }
+
 			const intervalMapping = {
 				"7Days": 0,
 				"30Days": 1,
 				"AllTime": 2
 			}
+
 			// Get the x-out-of-5 stars rating
 			value = game.MarketProperties[0].UsageData[intervalMapping[propertyValue.aggregationInterval]].AverageRating;
+
 			// Convert to a percentage if requested
 			if (propertyValue.format === "percentage") {
 				value = parseFloat((value / 5).toFixed(2));
@@ -202,6 +212,13 @@ function getPropertyValue(game, property, propertyValue) {
 			break;
 		case "pricing":
 			if (!propertyValue.enabled) { return undefined; }
+
+			value = {};
+			value["currencyCode"] = game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price.CurrencyCode;
+
+			for (const priceType of propertyValue.priceTypes) {
+				value[priceType] = game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType];
+			}
 			break;
 		case "categories":
 			if (!propertyValue) { return undefined; }
