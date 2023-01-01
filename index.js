@@ -19,7 +19,7 @@ const __dirname = dirname(__filename);
 
 // ----- Config -----
 
-console.log("Loading configuration file...\n");
+console.log("Loading configuration file...");
 try {
 	const configFileName = fs.existsSync(__dirname + '/config.json') ? 'config.json' : 'config.default.json';
 	var CONFIG = JSON.parse(fs.readFileSync(__dirname + '/' + configFileName));
@@ -94,7 +94,7 @@ async function fetchGameIDs(passType, market) {
 		"eaPlay": "b8900d09-a491-44cc-916e-32b5acae621b"
 	}
 
-	console.log("Fetching " + passType + " Game Pass game ID's for market \"" + market + "\".");
+	console.log(`Fetching ${passType} Game Pass game ID's for market "${market}"...`);
 	let gameIds = await fetch(`https://catalog.gamepass.com/sigls/v2?id=${APIIds[passType]}&language=en-us&market=${market}`)
 		.then((response) => response.json())
 		.then((data) => data.filter((entry) => entry.id).map((entry) => entry.id));
@@ -103,7 +103,7 @@ async function fetchGameIDs(passType, market) {
 }
 
 async function fetchGameProperties(gameIds, passType, market) {
-	console.log("Fetching game properties for " + gameIds.length + " " + passType + " games for market \"" + market + "\".");
+	console.log(`Fetching game properties for ${gameIds.length} ${passType} games for market "${market}"...`);
 	return await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us&MS-CV=DGU1mcuYo0WMMp`)
 		.then((response) => response.json())
 		.then((data) => {
@@ -189,7 +189,7 @@ function getPropertyValue(game, property, propertyValue) {
 			break;
 		default:
 			// Due to our config validation, this should never happen, but just in case...
-			console.log("Invalid property: " + property);
+			console.log(`Invalid property: ${property}`);
 			return undefined;
 	}
 
@@ -283,7 +283,7 @@ function getReleaseDate(game, releaseDateProperty) {
 			: emptyValuePlaceholder;
 	} else {
 		// Due to our config validation, this should never happen, but just in case...
-		console.log("Invalid release date format: " + releaseDateProperty.format);
+		console.log(`Invalid release date format: ${releaseDateProperty.format}`);
 		return undefined;
 	}
 }
@@ -324,7 +324,7 @@ function getPricing(game, pricingProperty) {
 			break;
 		default:
 			// Due to our config validation, this should never happen, but just in case...
-			console.log("Invalid missing price policy: " + pricingProperty.missingPricePolicy);
+			console.log(`Invalid missing price policy: ${pricingProperty.missingPricePolicy}`);
 			return undefined;
 	}
 
