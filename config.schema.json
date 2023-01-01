@@ -346,68 +346,69 @@
 							"type": "boolean",
 							"default": true
 						},
-						"maxImages": {
-							"description": "The maximum number of images to include. 0 or omission of this property means no limit is set and all matching images are returned.",
-							"type": "integer",
-							"default": 0,
-							"minimum": 0
-						},
 						"imageTypes": {
-							"description": "What kinds of images should be considered. The order of types in the array defines which images are used first if \"maxImages\" is set to a value other than 0.",
-							"type": "array",
-							"default": [
-								"TitledHeroArt",
-								"SuperHeroArt",
-								"Logo",
-								"Poster",
-								"Screenshot",
-								"BoxArt",
-								"Hero",
-								"BrandedKeyArt",
-								"FeaturePromotionalSquareArt"
-							],
-							"items": {
-								"type": "string",
-								"anyOf": [
-									{
-										"const": "Screenshot",
-										"title": "In-game screenshots. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4677.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.4344f692-1744-4c18-8024-270fd320f63c"
-									},
-									{
-										"const": "TitledHeroArt",
-										"title": "Banner featuring the game's name. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.12688.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.ef4d4f2f-1865-4fa7-8ec7-8b914cd4dcc0"
-									},
-									{
-										"const": "Poster",
-										"title": "Banner featuring the game's name in portrait mode, such as for smartphones. 2:3 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.64810.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.fdefe49f-270c-44e5-b660-6d7764b37f0f"
-									},
-									{
-										"const": "SuperHeroArt",
-										"title": "Artwork without text. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.62159.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.1405eb3a-6314-4e44-a822-7660d70a6ec5"
-									},
-									{
-										"const": "Hero",
-										"title": "Artwork without text. 2:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.28129.13672427983916579.274b1ffd-9cde-4bef-9a3e-6f37073d5ed0.5eb8b4f3-3575-4d13-b0a4-b60d6c64f392"
-									},
-									{
-										"const": "BoxArt",
-										"title": "Banner featuring the game's logo and name in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4794.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.b156af1e-9796-48af-8d11-3461727280ea"
-									},
-									{
-										"const": "BrandedKeyArt",
-										"title": "Banner featuring the game's name with a \"XBOX\" logo on top. 73:100 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6"
-									},
-									{
-										"const": "FeaturePromotionalSquareArt",
-										"title": "Banner featuring the game's logo (without name) in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.29819.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.322d4aa6-0a23-4565-a64f-743f0620a96e"
-									},
-									{
-										"const": "Logo",
-										"title": "Small, square game logo, to be used e.g. as a game library icon. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.65119.13664397958929388.0e87ac81-8aa3-41f0-82dc-61a295fc5fe3.44bf032a-b113-4179-aa1b-f557dbcd3b19"
-									}
-								]
+							"description": "What kinds of images should be considered, and a maximum of many of each type should be chosen. A value of -1 indicates no limit",
+							"type": "object",
+							"default": {
+								"TitledHeroArt": -1,
+								"SuperHeroArt": -1,
+								"Logo": -1,
+								"Poster": -1,
+								"Screenshot": -1,
+								"BoxArt": -1,
+								"Hero": -1,
+								"BrandedKeyArt": -1,
+								"FeaturePromotionalSquareArt": -1
 							},
-							"minItems": 1
+							"properties": {
+								"Screenshot": {
+									"description": "In-game screenshots. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4677.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.4344f692-1744-4c18-8024-270fd320f63c",
+									"type": "integer",
+									"default": -1
+								},
+								"TitledHeroArt": {
+									"description": "Banner featuring the game's name. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.12688.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.ef4d4f2f-1865-4fa7-8ec7-8b914cd4dcc0",
+									"type": "integer",
+									"default": -1
+								},
+								"Poster": {
+									"description": "Banner featuring the game's name in portrait mode, such as for smartphones. 2:3 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.64810.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.fdefe49f-270c-44e5-b660-6d7764b37f0f",
+									"type": "integer",
+									"default": -1
+								},
+								"SuperHeroArt": {
+									"description": "Artwork without text. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.62159.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.1405eb3a-6314-4e44-a822-7660d70a6ec5",
+									"type": "integer",
+									"default": -1
+								},
+								"Hero": {
+									"description": "Artwork without text. 2:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.28129.13672427983916579.274b1ffd-9cde-4bef-9a3e-6f37073d5ed0.5eb8b4f3-3575-4d13-b0a4-b60d6c64f392",
+									"type": "integer",
+									"default": -1
+								},
+								"BoxArt": {
+									"description": "Banner featuring the game's logo and name in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4794.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.b156af1e-9796-48af-8d11-3461727280ea",
+									"type": "integer",
+									"default": -1
+								},
+								"BrandedKeyArt": {
+									"description": "Banner featuring the game's name with a \"XBOX\" logo on top. 73:100 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6",
+									"type": "integer",
+									"default": -1
+								},
+								"FeaturePromotionalSquareArt": {
+									"description": "Banner featuring the game's logo (without name) in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.29819.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.322d4aa6-0a23-4565-a64f-743f0620a96e",
+									"type": "integer",
+									"default": -1
+								},
+								"Logo": {
+									"description": "Small, square game logo, to be used e.g. as a game library icon. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.65119.13664397958929388.0e87ac81-8aa3-41f0-82dc-61a295fc5fe3.44bf032a-b113-4179-aa1b-f557dbcd3b19",
+									"type": "integer",
+									"default": -1
+								}
+							},
+							"additionalProperties": false,
+							"minProperties": 1
 						}
 					},
 					"required": [
@@ -486,9 +487,60 @@
 					],
 					"additionalProperties": false
 				},
-				"additionalProperties": false
+				"pricing": {
+					"description": "Whether or not to include the game's price information. The currency that is used is dependent on the chosen \"market\".",
+					"type": "object",
+					"default": {
+						"enabled": true,
+						"priceTypes": [
+							"ListPrice",
+							"MSRP",
+							"WholesalePrice"
+						]
+					},
+					"properties": {
+						"enabled": {
+							"description": "Whether or not to include the game's price information. The currency that is used is dependent on the chosen \"market\".",
+							"type": "boolean",
+							"default": true
+						},
+						"priceTypes": {
+							"description": "Which kinds of prices to include. Choose from ListPrice, MSRP and WholesalePrice (i.e. applied sales).",
+							"type": "array",
+							"default": [
+								"ListPrice",
+								"MSRP",
+								"WholesalePrice"
+							],
+							"items": {
+								"anyOf": [
+									{
+										"const": "ListPrice",
+										"title": "The current listing price in the store."
+									},
+									{
+										"const": "MSRP",
+										"title": "The manufacturer's suggested retail price."
+									},
+									{
+										"const": "WholesalePrice",
+										"title": "The wholesale price, i.e. the ListPrice after sales have been applied."
+									}
+								]
+							},
+							"minItems": 1,
+							"additionalProperties": false,
+							"uniqueItems": true
+						}
+					},
+					"additionalProperties": false
+				},
+				"categories": {
+					"description": "Whether or not to include the game's categories. This can be used as tags.",
+					"type": "boolean",
+					"default": true
+				}
 			},
-			"minProperties": 1,
 			"additionalProperties": false
 		},
 		"outputIndexing": {

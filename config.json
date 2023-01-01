@@ -16,18 +16,18 @@
 		},
 		"images": {
 			"enabled": true,
-			"maxImages": 10,
-			"imageTypes": [
-				"TitledHeroArt",
-				"SuperHeroArt",
-				"Logo",
-				"Poster",
-				"Screenshot",
-				"BoxArt",
-				"Hero",
-				"BrandedKeyArt",
-				"FeaturePromotionalSquareArt"
-			],
+			"imageTypes": {
+				"TitledHeroArt": 1,
+				"extra": 1,
+				"SuperHeroArt": 1,
+				"Logo": 1,
+				"Poster": 1,
+				"Screenshot": 1,
+				"BoxArt": 1,
+				"Hero": 1,
+				"BrandedKeyArt": 1,
+				"FeaturePromotionalSquareArt": 1
+			},
 			"extra": 1
 		},
 		"releaseDate": {
@@ -38,8 +38,21 @@
 		"userRating": {
 			"enabled": true,
 			"aggregationInterval": "AllTime",
-			"format": "percentage"
+			"format": "percentage",
+			"extra": 1
 		},
+		"pricing":{
+			"enabled": true,
+			"priceTypes": [
+				"ListPrice",
+				"MSRP",
+				"WholesalePrice",
+				"extra",
+				"MSRP"
+			],
+			"extra": 1
+		},
+		"categories": true,
 		"extra": 1
 	},
 	"outputIndexing": "productTitle",
