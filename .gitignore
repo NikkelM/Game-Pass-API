@@ -2,7 +2,8 @@
 
 output
 
-config.dev.json
+## The user's custom configuration file
+config.json
 
 # Logs
 logs

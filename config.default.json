@@ -11,50 +11,40 @@
 		"publisherName": true,
 		"productDescription": {
 			"enabled": true,
-			"preferShort": true,
-			"extra": 1
+			"preferShort": false
 		},
 		"images": {
 			"enabled": true,
 			"imageTypes": {
-				"TitledHeroArt": 1,
-				"extra": 1,
-				"SuperHeroArt": 1,
-				"Logo": 1,
-				"Poster": 1,
-				"Screenshot": 1,
-				"BoxArt": 1,
-				"Hero": 1,
-				"BrandedKeyArt": 1,
-				"FeaturePromotionalSquareArt": 1
-			},
-			"extra": 1
+				"TitledHeroArt": -1,
+				"SuperHeroArt": -1,
+				"Logo": -1,
+				"Poster": -1,
+				"Screenshot": -1,
+				"BoxArt": -1,
+				"Hero": -1,
+				"BrandedKeyArt": -1,
+				"FeaturePromotionalSquareArt": -1
+			}
 		},
 		"releaseDate": {
 			"enabled": true,
-			"format": "date",
-			"extra": 1
+			"format": "date"
 		},
 		"userRating": {
 			"enabled": true,
 			"aggregationInterval": "AllTime",
-			"format": "percentage",
-			"extra": 1
+			"format": "percentage"
 		},
-		"pricing":{
+		"pricing": {
 			"enabled": true,
 			"priceTypes": [
 				"ListPrice",
 				"MSRP",
-				"WholesalePrice",
-				"extra",
-				"MSRP"
-			],
-			"extra": 1
+				"WholesalePrice"
+			]
 		},
-		"categories": true,
-		"extra": 1
+		"categories": true
 	},
-	"outputIndexing": "productTitle",
-	"extra": 1
+	"outputIndexing": "productTitle"
 }

@@ -3,6 +3,7 @@
 	"title": "Game Pass API configuration schema",
 	"description": "Validates configuration input for the Game Pass API script.",
 	"type": "object",
+	"default": "./config.default.json",
 	"properties": {
 		"$schema": {
 			"description": "The JSON schema to use for the configuration file",
@@ -541,7 +542,8 @@
 					"default": true
 				}
 			},
-			"additionalProperties": false
+			"additionalProperties": false,
+			"minProperties": 1
 		},
 		"outputIndexing": {
 			"description": "What kind of indexing the resulting JSON should use for the cleaned game properties.",
