@@ -222,6 +222,15 @@ function getPropertyValue(game, property, propertyValue) {
 			break;
 		case "categories":
 			if (!propertyValue) { return undefined; }
+
+			value = [];
+			if (game.Properties.Categories) {
+				value = game.Properties.Categories;
+			}
+			if (!(game.Properties.Category in value)) {
+				value.push(game.Properties.Category);
+			}
+
 			break;
 		default:
 			// Due to our config validation, this should never happen, but just in case...
