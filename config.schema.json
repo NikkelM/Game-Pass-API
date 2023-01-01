@@ -568,11 +568,7 @@
 				},
 				{
 					"const": "0-indexed",
-					"title": "Standard integer indexing is used, starting at 0."
-				},
-				{
-					"const": "1-indexed",
-					"title": "Standard integer indexing is used, starting at 1."
+					"title": "Standard integer indexing is used."
 				}
 			]
 		}
