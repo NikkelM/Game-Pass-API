@@ -285,7 +285,7 @@
 		"outputIndexing": {
 			"description": "What kind of indexing the resulting JSON should use for the cleaned game properties.",
 			"type": "string",
-			"default": "productTitle",
+			"default": "0-indexed",
 			"oneOf": [
 				{
 					"const": "productTitle",
