@@ -115,7 +115,7 @@ async function fetchGameProperties(gameIds, passType, market) {
 
 // Format the data according to the configuration
 function formatData(gameProperties, passType, market) {
-	console.log(`Formatting game properties for ${gameProperties.Products.length} ${passType} games for market "${market}"...`);
+	console.log(`Formatting game properties for ${gameProperties.Products.length} ${passType} games...`);
 
 	// Create a new object to store the formatted data
 	const formattedData = {};
