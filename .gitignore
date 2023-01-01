@@ -2,6 +2,7 @@
 
 output
 /dev
+**.xcf
 
 ## The user's custom configuration file
 config.json
