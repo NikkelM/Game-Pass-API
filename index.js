@@ -168,6 +168,14 @@ function getPropertyValue(game, property, propertyValue) {
 			break;
 		case "releaseDate":
 			if (!propertyValue.enabled) { return undefined; }
+			if (propertyValue.format === "date") {
+				value = game.MarketProperties[0].OriginalReleaseDate?.split("T")[0];
+			} else if (propertyValue.format === "date-time") {
+				value = game.MarketProperties[0].OriginalReleaseDate;
+			} else {
+				console.log("Invalid \"format\" property for property \"releaseDate\": " + propertyValue.format);
+				return null;
+			}
 			break;
 		case "userRating":
 			if (!propertyValue.enabled) { return undefined; }
