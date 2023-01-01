@@ -528,7 +528,8 @@
 							"ListPrice",
 							"MSRP",
 							"WholesalePrice"
-						]
+						],
+						"missingPricePolicy": "useZero"
 					},
 					"properties": {
 						"enabled": {
@@ -564,8 +565,23 @@
 							"minItems": 1,
 							"additionalProperties": false,
 							"uniqueItems": true
+						},
+						"missingPricePolicy": {
+							"description": "What to do if a price is missing. Either \"useZero\", \"useNull\" or \"useEmptyString\".",
+							"type": "string",
+							"default": "useZero",
+							"enum": [
+								"useZero",
+								"useNull",
+								"useEmptyString"
+							]
 						}
 					},
+					"required": [
+						"enabled",
+						"priceTypes",
+						"missingPricePolicy"
+					],
 					"additionalProperties": false
 				},
 				"categories": {

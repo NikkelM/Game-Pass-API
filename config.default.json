@@ -46,7 +46,8 @@
 				"ListPrice",
 				"MSRP",
 				"WholesalePrice"
-			]
+			],
+			"missingPricePolicy": "useZero"
 		},
 		"categories": true
 	}
