@@ -1,5 +1,9 @@
 # Game Pass API
 
-This script fetches all games that are currently available on the Xbox Game Pass for a given platform (you can choose any combination of `Console`, `PC`, `EAPlay`) and market (e.g. `US` or `DE`) and writes their complete properties as provided by the Microsoft API to a file called `gameProperties_{platform}_{market}.json`.
+![Game Pass API banner](images/GamePassApiBanner.png)
 
-The data is then cleaned up to only contain information that is useful/required by the user.
+Utility to quickly and easily get a list of all games available on Xbox Game Pass on a given platform (Console, PC & through EA Play) in a given region.
+
+Using the configuration file, the types and format of a large number of properties can be customized, from simply getting the game's names all the way to the store prices at the moment of the request.
+
+Take a look at the section below to see how to use the configuration file, or take the `config.default.json` file as an example and work from there.
