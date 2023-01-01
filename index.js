@@ -5,6 +5,7 @@
 // Suppresses the warning about the fetch API being unstable
 process.removeAllListeners('warning');
 
+// Utility libraries
 import fs from 'fs';
 import jsonschema from 'jsonschema';
 
@@ -112,8 +113,9 @@ async function fetchGameProperties(gameIds, passType, market) {
 		});
 }
 
+// Format the data according to the configuration
 function formatData(gameProperties, passType, market) {
-	// Format the data according to the configuration
+	console.log(`Formatting game properties for ${gameProperties.Products.length} ${passType} games for market "${market}"...`);
 
 	// Create a new object to store the formatted data
 	const formattedData = {};
@@ -151,151 +153,39 @@ function formatData(gameProperties, passType, market) {
 	return formattedData;
 }
 
+// Get the value of the property for the given game according to the specification in propertyValue
 function getPropertyValue(game, property, propertyValue) {
-	// Get the value of the property for the given game according to the specification in propertyValue
 	let result;
 	switch (property) {
 		case "productTitle":
-			if (!propertyValue) { return undefined; }
-
-			result = game.LocalizedProperties[0].ProductTitle?.length > 0
-				? game.LocalizedProperties[0].ProductTitle
-				: emptyValuePlaceholder;
-
+			result = getProductTitle(game, propertyValue);
 			break;
 		case "productId":
-			if (!propertyValue) { return undefined; }
-
-			result = game.ProductId.length > 0
-				? game.ProductId
-				: emptyValuePlaceholder;
-
+			result = getProductId(game, propertyValue);
 			break;
 		case "developerName":
-			if (!propertyValue) { return undefined; }
-
-			result = game.LocalizedProperties[0].DeveloperName.length > 0
-				? game.LocalizedProperties[0].DeveloperName
-				: emptyValuePlaceholder;
-
+			result = getDeveloperName(game, propertyValue);
 			break;
 		case "publisherName":
-			if (!propertyValue) { return undefined; }
-
-			result = game.LocalizedProperties[0].PublisherName.length > 0
-				? game.LocalizedProperties[0].PublisherName
-				: emptyValuePlaceholder;
-
+			result = getPublisherName(game, propertyValue);
 			break;
 		case "productDescription":
-			if (!propertyValue.enabled) { return undefined; }
-
-			if (propertyValue.preferShort && game.LocalizedProperties[0].ShortDescription?.length > 0) {
-				result = game.LocalizedProperties[0].ShortDescription;
-			} else {
-				result = game.LocalizedProperties[0].ProductDescription?.length > 0
-					? game.LocalizedProperties[0].ProductDescription
-					: emptyValuePlaceholder;
-			}
-
+			result = getProductDescription(game, propertyValue);
 			break;
 		case "images":
-			if (!propertyValue.enabled) { return undefined; }
-
-			result = {};
-			let numImagesByType = {
-				"TitledHeroArt": 0,
-				"SuperHeroArt": 0,
-				"Logo": 0,
-				"Poster": 0,
-				"Screenshot": 0,
-				"BoxArt": 0,
-				"Hero": 0,
-				"BrandedKeyArt": 0,
-				"FeaturePromotionalSquareArt": 0
-			};
-			for (const image of game.LocalizedProperties[0].Images) {
-				if (propertyValue.imageTypes[image.ImagePurpose] && (propertyValue.imageTypes[image.ImagePurpose] === -1 || numImagesByType[image.ImagePurpose] < propertyValue.imageTypes[image.ImagePurpose])) {
-					if (!value[image.ImagePurpose]) {
-						value[image.ImagePurpose] = [];
-					}
-					result[image.ImagePurpose].push(image.Uri.startsWith('https:') ? image.Uri : `https:${image.Uri}`);
-					numImagesByType[image.ImagePurpose] = numImagesByType[image.ImagePurpose] ? numImagesByType[image.ImagePurpose] + 1 : 1;
-				}
-			}
-
+			result = getImages(game, propertyValue);
 			break;
 		case "releaseDate":
-			if (!propertyValue.enabled) { return undefined; }
-
-			if (propertyValue.format === "date") {
-				result = game.MarketProperties[0].OriginalReleaseDate.length > 0
-					? game.MarketProperties[0].OriginalReleaseDate?.split("T")[0]
-					: emptyValuePlaceholder;
-			} else if (propertyValue.format === "date-time") {
-				result = game.MarketProperties[0].OriginalReleaseDate.length > 0
-					? game.MarketProperties[0].OriginalReleaseDate
-					: emptyValuePlaceholder;
-			}
-
+			result = getReleaseDate(game, propertyValue);
 			break;
 		case "userRating":
-			if (!propertyValue.enabled) { return undefined; }
-
-			const intervalMapping = {
-				"7Days": 0,
-				"30Days": 1,
-				"AllTime": 2
-			}
-
-			// Get the x-out-of-5 stars rating
-			result = game.MarketProperties[0].UsageData[intervalMapping[propertyValue.aggregationInterval]]?.AverageRating;
-
-			// Convert to a percentage if requested
-			if (propertyValue.format === "percentage") {
-				result = parseFloat((result / 5).toFixed(2));
-			}
-
+			result = getUserRating(game, propertyValue);
 			break;
 		case "pricing":
-			if (!propertyValue.enabled) { return undefined; }
-
-			let missingPricePlaceholder;
-			switch (propertyValue.missingPricePolicy) {
-				case "useZero":
-					missingPricePlaceholder = 0;
-					break;
-				case "useNull":
-					missingPricePlaceholder = null;
-					break;
-				case "useEmptyString":
-					missingPricePlaceholder = "";
-					break;
-			}
-
-			result = {};
-			result["currencyCode"] = game.DisplaySkuAvailabilities[0]?.Availabilities[0]?.OrderManagementData?.Price?.CurrencyCode;
-
-			for (const priceType of propertyValue.priceTypes) {
-				// Small workaround to not exclude 0-values
-				result[priceType] = typeof game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType] === 'number'
-					? game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType]
-					: missingPricePlaceholder;
-			}
-
+			result = getPricing(game, propertyValue);
 			break;
 		case "categories":
-			if (!propertyValue) { return undefined; }
-
-			result = [];
-			if (game.Properties.Categories) {
-				result = game.Properties.Categories;
-			}
-			// Each game also has a "main" category, which may or may not be included in the list of categories
-			if (!(game.Properties.Category in result)) {
-				result.push(game.Properties.Category);
-			}
-
+			result = getCategories(game, propertyValue);
 			break;
 		default:
 			// Due to our config validation, this should never happen, but just in case...
@@ -304,4 +194,162 @@ function getPropertyValue(game, property, propertyValue) {
 	}
 
 	return result;
+}
+
+// ---------- Utility functions for the various property types ----------
+
+function getProductTitle(game, productTitleProperty) {
+	if (!productTitleProperty) { return undefined; }
+
+	return game.LocalizedProperties[0].ProductTitle.length > 0
+		? game.LocalizedProperties[0].ProductTitle
+		: emptyValuePlaceholder;
+}
+
+function getProductId(game, productIdProperty) {
+	if (!productIdProperty) { return undefined; }
+
+	return game.ProductId.length > 0
+		? game.ProductId
+		: emptyValuePlaceholder;
+}
+
+function getDeveloperName(game, developerNameProperty) {
+	if (!developerNameProperty) { return undefined; }
+
+	return game.LocalizedProperties[0].DeveloperName.length > 0
+		? game.LocalizedProperties[0].DeveloperName
+		: emptyValuePlaceholder;
+}
+
+function getPublisherName(game, publisherNameProperty) {
+	if (!publisherNameProperty) { return undefined; }
+
+	return game.LocalizedProperties[0].PublisherName.length > 0
+		? game.LocalizedProperties[0].PublisherName
+		: emptyValuePlaceholder;
+}
+
+function getProductDescription(game, productDescriptionProperty) {
+	if (!productDescriptionProperty.enabled) { return undefined; }
+
+	if (productDescriptionProperty.preferShort && game.LocalizedProperties[0].ShortDescription?.length > 0) {
+		return game.LocalizedProperties[0].ShortDescription;
+	} else {
+		return game.LocalizedProperties[0].ProductDescription?.length > 0
+			? game.LocalizedProperties[0].ProductDescription
+			: emptyValuePlaceholder;
+	}
+}
+
+function getImages(game, imageProperty) {
+	if (!imageProperty.enabled) { return undefined; }
+
+	let images = {};
+	const numImagesByType = {
+		"TitledHeroArt": 0,
+		"SuperHeroArt": 0,
+		"Logo": 0,
+		"Poster": 0,
+		"Screenshot": 0,
+		"BoxArt": 0,
+		"Hero": 0,
+		"BrandedKeyArt": 0,
+		"FeaturePromotionalSquareArt": 0
+	};
+
+	for (const image of game.LocalizedProperties[0].Images) {
+		if (imageProperty.imageTypes[image.ImagePurpose] && (imageProperty.imageTypes[image.ImagePurpose] === -1 || numImagesByType[image.ImagePurpose] < imageProperty.imageTypes[image.ImagePurpose])) {
+			if (!images[image.ImagePurpose]) {
+				images[image.ImagePurpose] = [];
+			}
+			images[image.ImagePurpose].push(image.Uri.startsWith('https:') ? image.Uri : `https:${image.Uri}`);
+			numImagesByType[image.ImagePurpose] = numImagesByType[image.ImagePurpose] ? numImagesByType[image.ImagePurpose] + 1 : 1;
+		}
+	}
+	return images;
+}
+
+function getReleaseDate(game, releaseDateProperty) {
+	if (!releaseDateProperty.enabled) { return undefined; }
+
+	if (releaseDateProperty.format === "date") {
+		return game.MarketProperties[0].OriginalReleaseDate.length > 0
+			? game.MarketProperties[0].OriginalReleaseDate?.split("T")[0]
+			: emptyValuePlaceholder;
+	} else if (releaseDateProperty.format === "date-time") {
+		return game.MarketProperties[0].OriginalReleaseDate.length > 0
+			? game.MarketProperties[0].OriginalReleaseDate
+			: emptyValuePlaceholder;
+	} else {
+		// Due to our config validation, this should never happen, but just in case...
+		console.log("Invalid release date format: " + releaseDateProperty.format);
+		return undefined;
+	}
+}
+
+function getUserRating(game, userRatingProperty) {
+	if (!userRatingProperty.enabled) { return undefined; }
+
+	const intervalMapping = {
+		"7Days": 0,
+		"30Days": 1,
+		"AllTime": 2
+	}
+
+	// Get the x-out-of-5 stars rating
+	let userRating = game.MarketProperties[0].UsageData[intervalMapping[userRatingProperty.aggregationInterval]]?.AverageRating;
+
+	// Convert to a percentage if requested
+	if (userRatingProperty.format === "percentage") {
+		userRating = parseFloat((userRating / 5).toFixed(2));
+	}
+
+	return userRating;
+}
+
+function getPricing(game, pricingProperty) {
+	if (!pricingProperty.enabled) { return undefined; }
+
+	let missingPricePlaceholder;
+	switch (pricingProperty.missingPricePolicy) {
+		case "useZero":
+			missingPricePlaceholder = 0;
+			break;
+		case "useNull":
+			missingPricePlaceholder = null;
+			break;
+		case "useEmptyString":
+			missingPricePlaceholder = "";
+			break;
+		default:
+			// Due to our config validation, this should never happen, but just in case...
+			console.log("Invalid missing price policy: " + pricingProperty.missingPricePolicy);
+			return undefined;
+	}
+
+	let prices = {};
+	prices["currencyCode"] = game.DisplaySkuAvailabilities[0]?.Availabilities[0]?.OrderManagementData?.Price?.CurrencyCode;
+
+	for (const priceType of pricingProperty.priceTypes) {
+		// Small workaround to not exclude 0-values
+		prices[priceType] = typeof game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType] === 'number'
+			? game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType]
+			: missingPricePlaceholder;
+	}
+
+	return prices;
+}
+
+function getCategories(game, categoriesProperty) {
+	if (!categoriesProperty) { return undefined; }
+
+	let categories = [];
+	if (game.Properties.Categories) {
+		categories = game.Properties.Categories;
+	}
+	// Each game also has a "main" category, which may or may not be included in the list of categories
+	if (!(game.Properties.Category in categories)) {
+		categories.push(game.Properties.Category);
+	}
 }
