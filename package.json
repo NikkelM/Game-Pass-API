@@ -4,5 +4,7 @@
 	"version": "1.0.0",
 	"description": "",
 	"main": "index.js",
-	"dependencies": {}
+	"dependencies": {
+		"jsonschema": "^1.4.1"
+	}
 }

@@ -6,6 +6,7 @@
 process.removeAllListeners('warning');
 
 import fs from 'fs';
+import jsonschema from 'jsonschema';
 
 // Utility for getting the directory of the current file
 import { fileURLToPath } from 'url';
@@ -27,6 +28,16 @@ try {
 	process.exit(1);
 }
 
+// Validate the config file against the schema
+console.log("Validating configuration file...\n");
+try {
+	const validator = new jsonschema.Validator();
+	validator.validate(CONFIG, JSON.parse(fs.readFileSync(__dirname + '/config.schema.json')), { throwError: true });
+} catch (error) {
+	console.error("Error validating configuration file: " + error);
+	process.exit(1);
+}
+
 // ----- Output -----
 
 // Create the output directory if it doesn't exist
@@ -35,6 +46,7 @@ if (!fs.existsSync('./output')) {
 }
 
 // ---------- Main ----------
+
 main();
 async function main() {
 	// Fetch Game Pass game ID's and properties for each pass type
@@ -172,13 +184,21 @@ function getPropertyValue(game, property, propertyValue) {
 				value = game.MarketProperties[0].OriginalReleaseDate?.split("T")[0];
 			} else if (propertyValue.format === "date-time") {
 				value = game.MarketProperties[0].OriginalReleaseDate;
-			} else {
-				console.log("Invalid \"format\" property for property \"releaseDate\": " + propertyValue.format);
-				return null;
 			}
 			break;
 		case "userRating":
 			if (!propertyValue.enabled) { return undefined; }
+			const intervalMapping = {
+				"7Days": 0,
+				"30Days": 1,
+				"AllTime": 2
+			}
+			// Get the x-out-of-5 stars rating
+			value = game.MarketProperties[0].UsageData[intervalMapping[propertyValue.aggregationInterval]].AverageRating;
+			// Convert to a percentage if requested
+			if (propertyValue.format === "percentage") {
+				value = parseFloat((value / 5).toFixed(2));
+			}
 			break;
 		case "pricing":
 			if (!propertyValue.enabled) { return undefined; }
@@ -187,6 +207,7 @@ function getPropertyValue(game, property, propertyValue) {
 			if (!propertyValue) { return undefined; }
 			break;
 		default:
+			// Due to our config validation, this should never happen, but just in case...
 			console.log("Invalid property: " + property);
 			return undefined;
 	}

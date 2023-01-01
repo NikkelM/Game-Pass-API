@@ -479,12 +479,12 @@
 							]
 						},
 						"format": {
-							"description": "How to format the rating. Either as a decimal (0.0 - 5.0) or as a percentage (0% - 100%).",
+							"description": "How to format the rating. Either as the original x-out-of-5 stars value (0.0 - 5.0) or as a percentage (0.0 - 1.0).",
 							"type": "string",
 							"default": "percentage",
 							"enum": [
 								"percentage",
-								"decimal"
+								"stars"
 							]
 						}
 					},
