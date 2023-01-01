@@ -6,6 +6,8 @@
 	"fetchConsole": true,
 	"fetchPC": true,
 	"fetchEAPlay": true,
+	"outputIndexing": "productTitle",
+	"treatEmptyStringAsNull": true,
 	"includedProperties": {
 		"productTitle": true,
 		"productId": true,
@@ -47,6 +49,5 @@
 			]
 		},
 		"categories": true
-	},
-	"outputIndexing": "productTitle"
+	}
 }

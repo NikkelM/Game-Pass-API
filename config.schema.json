@@ -282,6 +282,30 @@
 			"type": "boolean",
 			"default": true
 		},
+		"outputIndexing": {
+			"description": "What kind of indexing the resulting JSON should use for the cleaned game properties.",
+			"type": "string",
+			"default": "productTitle",
+			"oneOf": [
+				{
+					"const": "productTitle",
+					"title": "The game's title is used as the index."
+				},
+				{
+					"const": "productId",
+					"title": "The game's product Id is used as the index."
+				},
+				{
+					"const": "0-indexed",
+					"title": "Standard integer indexing is used."
+				}
+			]
+		},
+		"treatEmptyStringAsNull": {
+			"description": "Whether or not to treat empty strings as null values.",
+			"type": "boolean",
+			"default": true
+		},
 		"includedProperties": {
 			"description": "The properties that should be contained in the cleaned version of the API response.",
 			"type": "object",
@@ -552,25 +576,6 @@
 			},
 			"additionalProperties": false,
 			"minProperties": 1
-		},
-		"outputIndexing": {
-			"description": "What kind of indexing the resulting JSON should use for the cleaned game properties.",
-			"type": "string",
-			"default": "productTitle",
-			"oneOf": [
-				{
-					"const": "productTitle",
-					"title": "The game's title is used as the index."
-				},
-				{
-					"const": "productId",
-					"title": "The game's product Id is used as the index."
-				},
-				{
-					"const": "0-indexed",
-					"title": "Standard integer indexing is used."
-				}
-			]
 		}
 	},
 	"anyOf": [
