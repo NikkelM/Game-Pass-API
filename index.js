@@ -120,10 +120,12 @@ function formatData(gameProperties, passType, market) {
 			// Get the value of the property
 			const result = getPropertyValue(game, property, propertyValue);
 
-			// Add the property to the object
-			formattedData[index][property] = result;
+			// Add the property to the object, only if it is not undefined. undefined indicates the property was present in the config, but disabled.
+			// Null values are valid, e.g. if a given name does not have a value for the requested property.
+			if (result !== undefined) {
+				formattedData[index][property] = result;
+			}
 		}
-		break;
 	}
 
 	// Write the data to a file
@@ -133,35 +135,52 @@ function formatData(gameProperties, passType, market) {
 }
 
 function getPropertyValue(game, property, propertyValue) {
-	console.log(property);
-	console.log(propertyValue);
 	// Get the value of the property for the given game according to the specification in propertyValue
 
 	let value;
 	switch (property) {
 		case "productTitle":
+			if (!propertyValue) { return undefined; }
+			value = game.LocalizedProperties[0].ProductTitle?.length > 0 ? game.LocalizedProperties[0].ProductTitle : null;
 			break;
 		case "productId":
+			if (!propertyValue) { return undefined; }
+			value = game.ProductId.length > 0 ? game.ProductId : null;
 			break;
 		case "developerName":
+			if (!propertyValue) { return undefined; }
+			value = game.LocalizedProperties[0].DeveloperName.length > 0 ? game.LocalizedProperties[0].DeveloperName : null;
 			break;
 		case "publisherName":
+			if (!propertyValue) { return undefined; }
+			value = game.LocalizedProperties[0].PublisherName.length > 0 ? game.LocalizedProperties[0].PublisherName : null;
 			break;
 		case "productDescription":
+			if (!propertyValue.enabled) { return undefined; }
+			if (propertyValue.preferShort && game.LocalizedProperties[0].ShortDescription?.length > 0) {
+				value = game.LocalizedProperties[0].ShortDescription;
+			} else {
+				value = game.LocalizedProperties[0].ProductDescription?.length > 0 ? game.LocalizedProperties[0].ProductDescription : null;
+			}
 			break;
 		case "images":
+			if (!propertyValue.enabled) { return undefined; }
 			break;
 		case "releaseDate":
+			if (!propertyValue.enabled) { return undefined; }
 			break;
 		case "userRating":
+			if (!propertyValue.enabled) { return undefined; }
 			break;
 		case "pricing":
+			if (!propertyValue.enabled) { return undefined; }
 			break;
 		case "categories":
+			if (!propertyValue) { return undefined; }
 			break;
 		default:
 			console.log("Invalid property: " + property);
-			return null;
+			return undefined;
 	}
 
 	return value;
