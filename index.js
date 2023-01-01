@@ -153,13 +153,12 @@ function formatData(gameProperties, passType, market) {
 
 function getPropertyValue(game, property, propertyValue) {
 	// Get the value of the property for the given game according to the specification in propertyValue
-
-	let value;
+	let result;
 	switch (property) {
 		case "productTitle":
 			if (!propertyValue) { return undefined; }
 
-			value = game.LocalizedProperties[0].ProductTitle?.length > 0
+			result = game.LocalizedProperties[0].ProductTitle?.length > 0
 				? game.LocalizedProperties[0].ProductTitle
 				: emptyValuePlaceholder;
 
@@ -167,7 +166,7 @@ function getPropertyValue(game, property, propertyValue) {
 		case "productId":
 			if (!propertyValue) { return undefined; }
 
-			value = game.ProductId.length > 0
+			result = game.ProductId.length > 0
 				? game.ProductId
 				: emptyValuePlaceholder;
 
@@ -175,7 +174,7 @@ function getPropertyValue(game, property, propertyValue) {
 		case "developerName":
 			if (!propertyValue) { return undefined; }
 
-			value = game.LocalizedProperties[0].DeveloperName.length > 0
+			result = game.LocalizedProperties[0].DeveloperName.length > 0
 				? game.LocalizedProperties[0].DeveloperName
 				: emptyValuePlaceholder;
 
@@ -183,7 +182,7 @@ function getPropertyValue(game, property, propertyValue) {
 		case "publisherName":
 			if (!propertyValue) { return undefined; }
 
-			value = game.LocalizedProperties[0].PublisherName.length > 0
+			result = game.LocalizedProperties[0].PublisherName.length > 0
 				? game.LocalizedProperties[0].PublisherName
 				: emptyValuePlaceholder;
 
@@ -192,9 +191,9 @@ function getPropertyValue(game, property, propertyValue) {
 			if (!propertyValue.enabled) { return undefined; }
 
 			if (propertyValue.preferShort && game.LocalizedProperties[0].ShortDescription?.length > 0) {
-				value = game.LocalizedProperties[0].ShortDescription;
+				result = game.LocalizedProperties[0].ShortDescription;
 			} else {
-				value = game.LocalizedProperties[0].ProductDescription?.length > 0
+				result = game.LocalizedProperties[0].ProductDescription?.length > 0
 					? game.LocalizedProperties[0].ProductDescription
 					: emptyValuePlaceholder;
 			}
@@ -203,7 +202,7 @@ function getPropertyValue(game, property, propertyValue) {
 		case "images":
 			if (!propertyValue.enabled) { return undefined; }
 
-			value = {};
+			result = {};
 			let numImagesByType = {
 				"TitledHeroArt": 0,
 				"SuperHeroArt": 0,
@@ -220,7 +219,7 @@ function getPropertyValue(game, property, propertyValue) {
 					if (!value[image.ImagePurpose]) {
 						value[image.ImagePurpose] = [];
 					}
-					value[image.ImagePurpose].push(image.Uri);
+					result[image.ImagePurpose].push(image.Uri.startsWith('https:') ? image.Uri : `https:${image.Uri}`);
 					numImagesByType[image.ImagePurpose] = numImagesByType[image.ImagePurpose] ? numImagesByType[image.ImagePurpose] + 1 : 1;
 				}
 			}
@@ -230,11 +229,11 @@ function getPropertyValue(game, property, propertyValue) {
 			if (!propertyValue.enabled) { return undefined; }
 
 			if (propertyValue.format === "date") {
-				value = game.MarketProperties[0].OriginalReleaseDate.length > 0
+				result = game.MarketProperties[0].OriginalReleaseDate.length > 0
 					? game.MarketProperties[0].OriginalReleaseDate?.split("T")[0]
 					: emptyValuePlaceholder;
 			} else if (propertyValue.format === "date-time") {
-				value = game.MarketProperties[0].OriginalReleaseDate.length > 0
+				result = game.MarketProperties[0].OriginalReleaseDate.length > 0
 					? game.MarketProperties[0].OriginalReleaseDate
 					: emptyValuePlaceholder;
 			}
@@ -250,11 +249,11 @@ function getPropertyValue(game, property, propertyValue) {
 			}
 
 			// Get the x-out-of-5 stars rating
-			value = game.MarketProperties[0].UsageData[intervalMapping[propertyValue.aggregationInterval]]?.AverageRating;
+			result = game.MarketProperties[0].UsageData[intervalMapping[propertyValue.aggregationInterval]]?.AverageRating;
 
 			// Convert to a percentage if requested
 			if (propertyValue.format === "percentage") {
-				value = parseFloat((value / 5).toFixed(2));
+				result = parseFloat((result / 5).toFixed(2));
 			}
 
 			break;
@@ -274,12 +273,12 @@ function getPropertyValue(game, property, propertyValue) {
 					break;
 			}
 
-			value = {};
-			value["currencyCode"] = game.DisplaySkuAvailabilities[0]?.Availabilities[0]?.OrderManagementData?.Price?.CurrencyCode;
+			result = {};
+			result["currencyCode"] = game.DisplaySkuAvailabilities[0]?.Availabilities[0]?.OrderManagementData?.Price?.CurrencyCode;
 
 			for (const priceType of propertyValue.priceTypes) {
 				// Small workaround to not exclude 0-values
-				value[priceType] = typeof game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType] === 'number'
+				result[priceType] = typeof game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType] === 'number'
 					? game.DisplaySkuAvailabilities[0].Availabilities[0].OrderManagementData.Price[priceType]
 					: missingPricePlaceholder;
 			}
@@ -288,13 +287,13 @@ function getPropertyValue(game, property, propertyValue) {
 		case "categories":
 			if (!propertyValue) { return undefined; }
 
-			value = [];
+			result = [];
 			if (game.Properties.Categories) {
-				value = game.Properties.Categories;
+				result = game.Properties.Categories;
 			}
 			// Each game also has a "main" category, which may or may not be included in the list of categories
-			if (!(game.Properties.Category in value)) {
-				value.push(game.Properties.Category);
+			if (!(game.Properties.Category in result)) {
+				result.push(game.Properties.Category);
 			}
 
 			break;
@@ -304,5 +303,5 @@ function getPropertyValue(game, property, propertyValue) {
 			return undefined;
 	}
 
-	return value;
+	return result;
 }
