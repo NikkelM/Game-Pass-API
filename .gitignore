@@ -1,6 +1,7 @@
 # Custom
 
 output
+/dev
 
 ## The user's custom configuration file
 config.json

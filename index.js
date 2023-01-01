@@ -57,6 +57,8 @@ async function runScriptForPassType(passType) {
 
 	// Fetch Game Pass game properties
 	await fetchGameProperties(gameIds, passType);
+
+	// Format the data
 }
 
 // ---------- Fetch Game Pass game ID's ----------
@@ -83,6 +85,6 @@ async function fetchGameProperties(gameIds, passType) {
 		.then((response) => response.json())
 		.then((data) => {
 			// Write the data to a file
-			fs.writeFileSync(`./output/gameProperties_${passType}_${CONFIG.market}.json`, JSON.stringify(data, null, 2));
+			fs.writeFileSync(`./output/completeGameProperties_${passType}_${CONFIG.market}.json`, JSON.stringify(data, null, 2));
 		});
 }
