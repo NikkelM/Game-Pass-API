@@ -54,30 +54,21 @@ main();
 
 async function main() {
 	// Fetch Game Pass game ID's and properties for each pass type and market specified in the configuration
-	let formattedProperties = {};
+	// We do this in parallel to speed up the process
 	for (const market of CONFIG.markets) {
 		if (CONFIG.fetchConsole) {
-			formattedProperties["console"] = new Promise((resolve) => runScriptForPassAndMarket(resolve, "console", market));
+			const consoleFormattedProperties = runScriptForPassAndMarket("console", market);
 		}
 		if (CONFIG.fetchPC) {
-			formattedProperties["pc"] = new Promise((resolve) => runScriptForPassAndMarket(resolve, "pc", market));
+			const pcFormattedProperties = runScriptForPassAndMarket("pc", market);
 		}
 		if (CONFIG.fetchEAPlay) {
-			formattedProperties["eaPlay"] = new Promise((resolve) => runScriptForPassAndMarket(resolve, "eaPlay", market));
+			const eaPlayFormattedProperties = runScriptForPassAndMarket("eaPlay", market);
 		}
-		
-		await Promise.all(Object.values(formattedProperties));
-
-		// Write the data to a file
-		for (const [passType, formattedData] in formattedProperties) {
-			fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
-		}
-
-		console.log(`Finished fetching and formatting data for market "${market}".\n`);
 	}
 }
 
-async function runScriptForPassAndMarket(resolve, passType, market) {
+async function runScriptForPassAndMarket(passType, market) {
 	// Fetch Game Pass game ID's
 	const gameIds = await fetchGameIDs(passType, market);
 
@@ -87,7 +78,9 @@ async function runScriptForPassAndMarket(resolve, passType, market) {
 	// Format the data according to the configuration
 	const formattedData = formatData(gameProperties, passType, market);
 
-	resolve(formattedData);
+	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
+
+	return formattedData;
 }
 
 // ---------- Fetch game ID's & properties ----------
@@ -114,8 +107,10 @@ async function fetchGameProperties(gameIds, passType, market) {
 	return await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us&MS-CV=DGU1mcuYo0WMMp`)
 		.then((response) => response.json())
 		.then((data) => {
-			// Write the data to a file
-			fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(data, null, 2));
+			if (CONFIG.keepCompleteProperties) {
+				// Write the data to a file
+				fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(data, null, 2));
+			}
 			return data;
 		});
 }

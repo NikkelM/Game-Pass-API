@@ -306,6 +306,11 @@
 			"type": "boolean",
 			"default": true
 		},
+		"keepCompleteProperties": {
+			"description": "Whether or not to keep the original, complete list of properties for the fetched games. Will be saved in a separate file per platform and market.",
+			"type": "boolean",
+			"default": false
+		},
 		"includedProperties": {
 			"description": "The properties that should be contained in the cleaned version of the API response.",
 			"type": "object",
@@ -424,7 +429,7 @@
 									"default": -1
 								},
 								"BrandedKeyArt": {
-									"description": "Banner featuring the game's name with a \"XBOX\" logo on top. 73:100 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6",
+									"description": "Banner featuring the game's name with an \"XBOX\" logo on top. 73:100 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6",
 									"type": "integer",
 									"default": -1
 								},
