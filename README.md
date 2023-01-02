@@ -6,7 +6,7 @@ This project provides a quick and easy way to get a list of all games currently 
 
 Using the configuration file, the types and format of a large number of properties can be customized, from simply getting the game's names all the way to fetching store prices at the moment of the request.
 
-Take a look at the section below to see how to use the configuration file, or take the `config.default.json` file as an example and work from there.
+Take a look at the section below to learn how to use the configuration file, or take a look at the [examples](examples) and work from there.
 
 ## Setup
 
@@ -23,6 +23,8 @@ node index.js
 ```
 
 You will find the resulting data in the created `output` folder.
+
+Unsure how it works? Take a look at the [examples](examples) for some inspiration.
 
 ## Configuration
 

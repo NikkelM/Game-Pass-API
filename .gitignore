@@ -1,11 +1,11 @@
 # Custom
 
-output
+/output
 /dev
 **.xcf
 
 ## The user's custom configuration file
-config.json
+/config.json
 
 # Logs
 logs

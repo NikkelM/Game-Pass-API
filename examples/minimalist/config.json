@@ -1,0 +1,14 @@
+{
+	"$schema": "config.schema.json",
+	"markets": [
+		"US"
+	],
+	"language": "en-us",
+	"platformsToFetch": [
+		"console"
+	],
+	"outputFormat": "array",
+	"includedProperties": {
+		"productTitle": true
+	}
+}
