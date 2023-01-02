@@ -47,8 +47,8 @@ try {
 // ----- Output -----
 
 // Create the output directory if it doesn't exist
-if (!fs.existsSync(__dirname + './output')) {
-	fs.mkdirSync(__dirname + './output');
+if (!fs.existsSync(__dirname + '/output')) {
+	fs.mkdirSync(__dirname + '/output');
 }
 
 // ---------- Main ----------
