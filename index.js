@@ -110,7 +110,7 @@ async function fetchGameIDs(passType, market) {
 
 async function fetchGameProperties(gameIds, passType, market) {
 	console.log(`Fetching game properties for ${gameIds.length} ${passType} games for market "${market}"...`);
-	return await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us&MS-CV=DGU1mcuYo0WMMp`)
+	return await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us`)
 		.then((response) => response.json())
 		.then((data) => {
 			if (CONFIG.keepCompleteProperties) {
