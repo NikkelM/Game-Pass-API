@@ -292,7 +292,7 @@ function getReleaseDate(game, releaseDateProperty) {
 		return game.MarketProperties[0].OriginalReleaseDate.length > 0
 			? game.MarketProperties[0].OriginalReleaseDate?.split("T")[0]
 			: emptyValuePlaceholder;
-	} else if (releaseDateProperty.format === "date-time") {
+	} else if (releaseDateProperty.format === "dateTime") {
 		return game.MarketProperties[0].OriginalReleaseDate.length > 0
 			? game.MarketProperties[0].OriginalReleaseDate
 			: emptyValuePlaceholder;
