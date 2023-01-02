@@ -325,7 +325,7 @@
 					"default": true
 				},
 				"productId": {
-					"description": "Whether or not to include the product Id of the game.",
+					"description": "Whether or not to include the product ID of the game.",
 					"type": "boolean",
 					"default": true
 				},
@@ -336,6 +336,11 @@
 				},
 				"publisherName": {
 					"description": "Whether or not to include the name of the publisher of the game.",
+					"type": "boolean",
+					"default": true
+				},
+				"categories": {
+					"description": "Whether or not to include the game's categories. This can be used as tags.",
 					"type": "boolean",
 					"default": true
 				},
@@ -388,7 +393,7 @@
 							"default": true
 						},
 						"imageTypes": {
-							"description": "What kinds of images should be considered, and a maximum of many of each type should be chosen. A value of -1 indicates no limit",
+							"description": "What kinds of images should be considered, and a maximum of many of each type should be chosen. A value of -1 indicates no limit.",
 							"type": "object",
 							"default": {
 								"TitledHeroArt": -1,
@@ -463,7 +468,7 @@
 					"type": "object",
 					"default": {
 						"enabled": true,
-						"format": "dateTime"
+						"format": "date"
 					},
 					"properties": {
 						"enabled": {
@@ -474,10 +479,10 @@
 						"format": {
 							"description": "How to format the date string. Either the full dateTime (YYYY-MM-DDTHH:mm:ss.sssssssZ) or just the date (YYYY-MM-DD).",
 							"type": "string",
-							"default": "dateTime",
+							"default": "date",
 							"enum": [
-								"dateTime",
-								"date"
+								"date",
+								"dateTime"
 							]
 						}
 					},
@@ -502,7 +507,7 @@
 							"default": true
 						},
 						"aggregationInterval": {
-							"description": "Which kind of interval to consider for rating aggregation.",
+							"description": "Which kind of interval to use for rating aggregation.",
 							"type": "string",
 							"default": "AllTime",
 							"enum": [
@@ -547,7 +552,7 @@
 							"default": true
 						},
 						"priceTypes": {
-							"description": "Which kinds of prices to include. Choose from ListPrice, MSRP and WholesalePrice (i.e. applied sales).",
+							"description": "Which kinds of prices to include. Choose from ListPrice, MSRP and WholesalePrice (i.e. applied discounts).",
 							"type": "array",
 							"default": [
 								"ListPrice",
@@ -578,7 +583,7 @@
 						"missingPricePolicy": {
 							"description": "What to do if a price is missing. Either \"useZero\", \"useNull\" or \"useEmptyString\".",
 							"type": "string",
-							"default": "useZero",
+							"default": "useNull",
 							"enum": [
 								"useZero",
 								"useNull",
@@ -592,11 +597,6 @@
 						"missingPricePolicy"
 					],
 					"additionalProperties": false
-				},
-				"categories": {
-					"description": "Whether or not to include the game's categories. This can be used as tags.",
-					"type": "boolean",
-					"default": true
 				}
 			},
 			"additionalProperties": false,
@@ -622,8 +622,8 @@
 	],
 	"required": [
 		"markets",
-		"includedProperties",
-		"outputFormat"
+		"outputFormat",
+		"includedProperties"
 	],
 	"additionalProperties": false
 }
