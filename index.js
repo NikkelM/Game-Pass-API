@@ -20,7 +20,7 @@ const __dirname = dirname(__filename);
 // ----- Config -----
 
 try {
-	let configFileName
+	let configFileName;
 	if (fs.existsSync(__dirname + '/config.json')) {
 		console.log("Loading configuration file \"config.json\"...");
 		configFileName = 'config.json';
@@ -33,9 +33,6 @@ try {
 	console.error("Error loading configuration file: " + error);
 	process.exit(1);
 }
-
-// If the user wants empty strings to be treated as null or not
-const emptyValuePlaceholder = CONFIG.treatEmptyStringsAsNull ? null : "";
 
 // Validate the config file against the schema
 console.log("Validating configuration file...\n");
@@ -55,6 +52,9 @@ if (!fs.existsSync('./output')) {
 }
 
 // ---------- Main ----------
+
+// If the user wants empty strings to be treated as null or not
+const emptyValuePlaceholder = CONFIG.treatEmptyStringsAsNull ? null : "";
 
 main();
 

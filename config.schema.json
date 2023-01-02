@@ -5,7 +5,7 @@
 	"type": "object",
 	"properties": {
 		"$schema": {
-			"description": "The JSON schema to use for the configuration file",
+			"description": "The JSON schema to use for the configuration file.",
 			"type": "string",
 			"default": "config.schema.json"
 		},
