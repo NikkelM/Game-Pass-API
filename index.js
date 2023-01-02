@@ -57,18 +57,18 @@ async function main() {
 	// We do this in parallel to speed up the process
 	for (const market of CONFIG.markets) {
 		if (CONFIG.fetchConsole) {
-			const consoleFormattedProperties = runScriptForPassAndMarket("console", market);
+			const consoleFormattedProperties = runScriptForPassTypeAndMarket("console", market);
 		}
 		if (CONFIG.fetchPC) {
-			const pcFormattedProperties = runScriptForPassAndMarket("pc", market);
+			const pcFormattedProperties = runScriptForPassTypeAndMarket("pc", market);
 		}
 		if (CONFIG.fetchEAPlay) {
-			const eaPlayFormattedProperties = runScriptForPassAndMarket("eaPlay", market);
+			const eaPlayFormattedProperties = runScriptForPassTypeAndMarket("eaPlay", market);
 		}
 	}
 }
 
-async function runScriptForPassAndMarket(passType, market) {
+async function runScriptForPassTypeAndMarket(passType, market) {
 	// Fetch Game Pass game ID's
 	const gameIds = await fetchGameIDs(passType, market);
 
@@ -120,13 +120,20 @@ function formatData(gameProperties, passType, market) {
 	console.log(`Formatting game properties for ${gameProperties.Products.length} ${passType} games...`);
 
 	// Create a new object to store the formatted data
-	const formattedData = {};
+	let formattedData = {};
+	// If the user wants the result to be an array
+	if (CONFIG.outputFormat === "array") {
+		formattedData = [];
+	}
 
 	// Loop through each game
 	for (const game of gameProperties.Products) {
-		let index;
 		// Create a new object for this game
-		switch (CONFIG.outputIndexing) {
+		let index;
+		switch (CONFIG.outputFormat) {
+			case "array":
+				index = formattedData.length;
+				break;
 			case "productId":
 				index = game.ProductId;
 				break;

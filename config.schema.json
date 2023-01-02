@@ -282,22 +282,26 @@
 			"type": "boolean",
 			"default": true
 		},
-		"outputIndexing": {
-			"description": "What kind of indexing the resulting JSON should use for the cleaned game properties.",
+		"outputFormat": {
+			"description": "What kind of format the resulting JSON should use for the cleaned game properties.",
 			"type": "string",
-			"default": "0-indexed",
+			"default": "array",
 			"oneOf": [
 				{
+					"const": "array",
+					"title": "The resulting data structure is an array with its entries being dictionaries holding separate game's proeprties."
+				},
+				{
 					"const": "productTitle",
-					"title": "The game's title is used as the index."
+					"title": "The resulting data structure is a dictionary that uses games' title as keys."
 				},
 				{
 					"const": "productId",
-					"title": "The game's product Id is used as the index."
+					"title": "The resulting data structure is a dictionary that uses games' product ID's as keys."
 				},
 				{
 					"const": "0-indexed",
-					"title": "Standard integer indexing is used."
+					"title": "The resulting data structure is a dictionary that uses rolling integers as keys."
 				}
 			]
 		},
@@ -619,7 +623,7 @@
 	"required": [
 		"markets",
 		"includedProperties",
-		"outputIndexing"
+		"outputFormat"
 	],
 	"additionalProperties": false
 }

@@ -6,7 +6,7 @@
 	"fetchConsole": true,
 	"fetchPC": true,
 	"fetchEAPlay": true,
-	"outputIndexing": "0-indexed",
+	"outputFormat": "array",
 	"treatEmptyStringsAsNull": true,
 	"keepCompleteProperties": false,
 	"includedProperties": {
