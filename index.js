@@ -62,13 +62,13 @@ async function main() {
 	// Fetch Game Pass game ID's and properties for each pass type and market specified in the configuration
 	// We do this in parallel to speed up the process
 	for (const market of CONFIG.markets) {
-		if (CONFIG.fetchConsole) {
+		if (CONFIG.platformsToFetch.includes("console")) {
 			const consoleFormattedProperties = runScriptForPassTypeAndMarket("console", market);
 		}
-		if (CONFIG.fetchPC) {
+		if (CONFIG.platformsToFetch.includes("pc")) {
 			const pcFormattedProperties = runScriptForPassTypeAndMarket("pc", market);
 		}
-		if (CONFIG.fetchEAPlay) {
+		if (CONFIG.platformsToFetch.includes("eaPlay")) {
 			const eaPlayFormattedProperties = runScriptForPassTypeAndMarket("eaPlay", market);
 		}
 	}

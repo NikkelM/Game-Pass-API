@@ -69,33 +69,13 @@ The language to use when fetching game properties. Properties such as the game d
 </details>
 
 <details>
-<summary><code>fetchConsole</code></summary>
+<summary><code>platformsToFetch</code></summary>
 
-Whether or not to fetch games available for console Game Pass.
-
-| Type | Default value | Possible values | Required |
-| --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No (but at least one of `fetchConsole`, `fetchPC` or `fetchEAPlay`). |
-</details>
-
-<details>
-<summary><code>fetchPC</code></summary>
-
-Whether or not to fetch games available for PC Game Pass.
+Which platforms to fetch games for, any of "console", "pc" and "eaPlay".
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No (but at least one of `fetchConsole`, `fetchPC` or `fetchEAPlay`). |
-</details>
-
-<details>
-<summary><code>fetchEAPlay</code></summary>
-
-Whether or not to fetch games available through EA Play.
-
-| Type | Default value | Possible values | Required |
-| --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No (but at least one of `fetchConsole`, `fetchPC` or `fetchEAPlay`). |
+| `array` | `["console", "pc", "eaPlay"]` | `"console"`, `"pc"`, `"eaPlay"` | Yes, at least one platform. |
 </details>
 
 <details>

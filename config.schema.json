@@ -325,20 +325,25 @@
 				"ar-sa"
 			]
 		},
-		"fetchConsole": {
-			"description": "Whether or not to fetch games available for console Game Pass.",
-			"type": "boolean",
-			"default": true
-		},
-		"fetchPC": {
-			"description": "Whether or not to fetch games available for PC Game Pass.",
-			"type": "boolean",
-			"default": true
-		},
-		"fetchEAPlay": {
-			"description": "Whether or not to fetch games available through EA Play.",
-			"type": "boolean",
-			"default": true
+		"platformsToFetch": {
+			"description": "Which platforms to fetch games for, any of \"console\", \"pc\" and \"eaPlay\".",
+			"type": "array",
+			"default": [
+				"console",
+				"pc",
+				"eaPlay"
+			],
+			"items": {
+				"type": "string",
+				"enum": [
+					"console",
+					"pc",
+					"eaPlay"
+				]
+			},
+			"minItems": 1,
+			"additionalItems": false,
+			"uniqueItems": true
 		},
 		"outputFormat": {
 			"description": "What kind of format the resulting JSON should use for the cleaned game properties.",
@@ -661,26 +666,10 @@
 			"minProperties": 1
 		}
 	},
-	"anyOf": [
-		{
-			"required": [
-				"fetchConsole"
-			]
-		},
-		{
-			"required": [
-				"fetchPC"
-			]
-		},
-		{
-			"required": [
-				"fetchEAPlay"
-			]
-		}
-	],
 	"required": [
 		"markets",
 		"language",
+		"platformsToFetch",
 		"outputFormat",
 		"includedProperties"
 	],

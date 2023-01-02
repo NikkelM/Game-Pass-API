@@ -4,9 +4,11 @@
 		"US"
 	],
 	"language": "en-us",
-	"fetchConsole": true,
-	"fetchPC": true,
-	"fetchEAPlay": true,
+	"platformsToFetch": [
+		"console",
+		"pc",
+		"eaPlay"
+	],
 	"outputFormat": "array",
 	"treatEmptyStringsAsNull": true,
 	"keepCompleteProperties": false,
