@@ -3,6 +3,7 @@
 	"markets": [
 		"US"
 	],
+	"language": "en-us",
 	"fetchConsole": true,
 	"fetchPC": true,
 	"fetchEAPlay": true,

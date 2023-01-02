@@ -59,6 +59,16 @@ The two letter market codes for which to fetch games. The script will run once f
 </details>
 
 <details>
+<summary><code>language</code></summary>
+
+The language to use when fetching game properties. Properties such as the game description will be in this language.
+
+| Type | Default value | Possible values | Required |
+| --- | --- | --- | --- |
+| `string` | `en-us` | `"es-ar"`, `"pt-br"`, `"en-ca"`, `"fr-ca"`, `"es-cl"`, `"es-co"`, `"es-mx"`, `"en-us"`, `"nl-be"`, `"fr-be"`, `"cs-cz"`, `"da-dk"`, `"de-de"`, `"es-es"`, `"fr-fr"`, `"en-ie"`, `"it-it"`, `"hu-hu"`, `"nl-nl"`, `"nb-no"`, `"de-at"`, `"pl-pl"`, `"pt-pt"`, `"de-ch"`, `"sk-sk"`, `"fr-ch"`, `"fi-fi"`, `"sv-se"`, `"en-gb"`, `"el-gr"`, `"ru-ru"`, `"en-au"`, `"en-hk"`, `"en-in"`, `"id-id"`, `"en-my"`, `"en-nz"`, `"en-ph"`, `"en-sg"`, `"vi-vn"`, `"th-th"`, `"ko-kr"`, `"zh-cn"`, `"zh-tw"`, `"ja-jp"`, `"zh-hk"`, `"en-za"`, `"tr-tr"`, `"he-il"`, `"ar-ae"`, `"ar-sa"`  | Yes |
+</details>
+
+<details>
 <summary><code>fetchConsole</code></summary>
 
 Whether or not to fetch games available for console Game Pass.

@@ -101,7 +101,7 @@ async function fetchGameIDs(passType, market) {
 	}
 
 	console.log(`Fetching ${passType} Game Pass game ID's for market "${market}"...`);
-	let gameIds = await fetch(`https://catalog.gamepass.com/sigls/v2?id=${APIIds[passType]}&language=en-us&market=${market}`)
+	let gameIds = await fetch(`https://catalog.gamepass.com/sigls/v2?id=${APIIds[passType]}&language=${CONFIG.language}&market=${market}`)
 		.then((response) => response.json())
 		.then((data) => data.filter((entry) => entry.id).map((entry) => entry.id));
 
@@ -110,7 +110,7 @@ async function fetchGameIDs(passType, market) {
 
 async function fetchGameProperties(gameIds, passType, market) {
 	console.log(`Fetching game properties for ${gameIds.length} ${passType} games for market "${market}"...`);
-	return await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=en-us`)
+	return await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=${CONFIG.language}`)
 		.then((response) => response.json())
 		.then((data) => {
 			if (CONFIG.keepCompleteProperties) {
