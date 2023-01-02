@@ -19,9 +19,15 @@ const __dirname = dirname(__filename);
 
 // ----- Config -----
 
-console.log("Loading configuration file...");
 try {
-	const configFileName = fs.existsSync(__dirname + '/config.json') ? 'config.json' : 'config.default.json';
+	let configFileName
+	if (fs.existsSync(__dirname + '/config.json')) {
+		console.log("Loading configuration file \"config.json\"...");
+		configFileName = 'config.json';
+	} else if (fs.existsSync(__dirname + '/config.default.json')) {
+		console.log("!!! No custom configuration file found! Loading default configuration file \"config.default.json\"...");
+		configFileName = 'config.default.json';
+	}
 	var CONFIG = JSON.parse(fs.readFileSync(__dirname + '/' + configFileName));
 } catch (error) {
 	console.error("Error loading configuration file: " + error);
