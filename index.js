@@ -364,7 +364,9 @@ function getCategories(game, categoriesProperty) {
 		categories = game.Properties.Categories;
 	}
 	// Each game also has a "main" category, which may or may not be included in the list of categories
-	if (!(game.Properties.Category in categories)) {
+	if (!categories.includes(game.Properties.Category)) {
 		categories.push(game.Properties.Category);
 	}
+
+	return categories;
 }
