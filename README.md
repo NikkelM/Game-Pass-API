@@ -8,6 +8,14 @@ Using the configuration file, the types and format of a large number of properti
 
 Take a look at the section below to learn how to use the configuration file, or take a look at the [examples](examples) and work from there.
 
+## Related projects
+
+If you would like to know the Steam App ID's to the games that are on Game Pass, you can use the [Steam App ID Finder](https://github.com/NikkelM/Steam-App-ID-Finder).
+
+You can then use the [Notion Steam API Integration](https://github.com/NikkelM/Notion-Steam-API-Integration) to automatically add information about those games to you Notion database.
+
+And coming soon: You can alternatively directly use the `JSON to Notion` tool to create a new page in your Notion database for each game extracted using the `Game Pass API`.
+
 ## Setup
 
 Run `npm install` to install the required dependencies first.
@@ -37,7 +45,7 @@ The project provides an extensive JSON validation schema for the required config
 The schema can be found in the `config.schema.json` file and used within your `config.json` by adding the following property:
 
 ```json
-"$schema": "./config.schema.json"
+"$schema": "config.schema.json"
 ```
 
 *NOTE: The script will test your provided `config.json` against this schema, so make sure your configuration is valid.*
