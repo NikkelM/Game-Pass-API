@@ -660,6 +660,11 @@
 						"missingPricePolicy"
 					],
 					"additionalProperties": false
+				},
+				"storePage": {
+					"description": "Whether or not to include the game's store page URL. NOTE: THIS IS NOT GUARANTEED TO ALWAYS RESULT IN A WORKING URL, AS IT NEEDS TO BE INFERRED AND IS NOT AVAILABLE THROUGH THE API.",
+					"type": "boolean",
+					"default": true
 				}
 			},
 			"additionalProperties": false,
