@@ -10,11 +10,11 @@ Take a look at the section below to learn how to use the configuration file, or 
 
 ## Related projects
 
-If you would like to know the Steam App ID's to the games that are on Game Pass, you can use the [Steam App ID Finder](https://github.com/NikkelM/Steam-App-ID-Finder).
+If you would like to know the Steam App ID's for the games that are on Game Pass, you can use the [Steam App ID Finder](https://github.com/NikkelM/Steam-App-ID-Finder) to do just that.
 
 You can then use the [Notion Steam API Integration](https://github.com/NikkelM/Notion-Steam-API-Integration) to automatically add information about those games to you Notion database.
 
-And coming soon: You can alternatively directly use the `JSON to Notion` tool to create a new page in your Notion database for each game extracted using the `Game Pass API`.
+Alternatively, you can use the [`JSON to Notion`](https://github.com/NikkelM/JSON-to-Notion) tool to directly create a new page in your Notion database for each game extracted using the `Game Pass API` - this works with any kind of JSON file!
 
 ## Setup
 
