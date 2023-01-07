@@ -53,6 +53,7 @@
 				"WholesalePrice"
 			],
 			"missingPricePolicy": "useNull"
-		}
+		},
+		"storePage": true
 	}
 }

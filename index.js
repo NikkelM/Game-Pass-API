@@ -202,6 +202,9 @@ function getPropertyValue(game, property, propertyValue) {
 		case "categories":
 			result = getCategories(game, propertyValue);
 			break;
+		case "storePage":
+			result = getStorePageUrl(game, propertyValue);
+			break;
 		default:
 			// Due to our config validation, this should never happen, but just in case...
 			console.log(`Invalid property: ${property}`);
@@ -369,4 +372,20 @@ function getCategories(game, categoriesProperty) {
 	}
 
 	return categories;
+}
+
+function getStorePageUrl(game, storePageUrlProperty) {
+	if (!storePageUrlProperty) { return undefined; }
+
+	if(!game.LocalizedProperties[0].ProductTitle || !game.ProductId) {
+		return undefined;
+	}
+
+	// 1. Convert to lowercase
+	// 2. Replace all non-alphanumeric characters with a dash
+	// 3. Replace multiple dashes with a single dash
+	// 4. Remove leading and trailing dashes
+	const formattedGameName = game.LocalizedProperties[0].ProductTitle.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+
+	return `https://www.xbox.com/${CONFIG.language}/games/store/${formattedGameName}/${game.ProductId}`;
 }

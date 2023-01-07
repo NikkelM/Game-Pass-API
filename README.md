@@ -394,3 +394,13 @@ What to do if a price is missing. Either "useZero", "useNull" or "useEmptyString
 | --- | --- | --- | --- |
 | `string` | `"useNull"` | `"useZero"`, `"useNull"` or `"useEmptyString"` | Yes |
 </details>
+
+<details>
+<summary><code>storePage</code></summary>
+
+Whether or not to include the game's store page URL. NOTE: THIS IS NOT GUARANTEED TO ALWAYS RESULT IN A WORKING URL, AS IT NEEDS TO BE INFERRED AND IS NOT AVAILABLE THROUGH THE API.
+
+| Type | Default value | Possible values | Required |
+| --- | --- | --- | --- |
+| `boolean` | `true` | `true` or `false` | No |
+</details>
