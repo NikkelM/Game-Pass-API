@@ -4,7 +4,7 @@
 
 This project provides a quick and easy way to get a list of all games currently available on Xbox Game Pass on a given platform (Console, PC or through EA Play) in a given region.
 
-Using the configuration file, the types and format of a large number of properties can be customized, from simply getting the game's names all the way to fetching store prices at the moment of the request.
+Using the configuration file, the type and format of many properties can be customized, from simply getting the game's names all the way to fetching store prices at the moment of the request.
 
 Take a look at the section below to learn how to use the configuration file, or take a look at the [examples](examples) and work from there.
 
@@ -87,13 +87,13 @@ What kind of format the resulting JSON should use for the cleaned game propertie
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
-| `string` | `"array"` | `"array"`: The resulting data structure is an array with its entries being dictionaries holding separate game's proeprties.<br/>`"productTitle"`: The resulting data structure is a dictionary that uses games' title as keys.<br/>`"productId"`: The resulting data structure is a dictionary that uses games' product ID's as keys.<br/>`"0-indexed"`: The resulting data structure is a dictionary that uses rolling integers as keys. | Yes |
+| `string` | `"array"` | `"array"`: The resulting data structure is an array with its entries being dictionaries holding separate game's properties.<br/>`"productTitle"`: The resulting data structure is a dictionary that uses games' title as keys.<br/>`"productId"`: The resulting data structure is a dictionary that uses games' product ID's as keys.<br/>`"0-indexed"`: The resulting data structure is a dictionary that uses rolling integers as keys. | Yes |
 </details>
 
 <details>
 <summary><code>treatEmptyStringsAsNull</code></summary>
 
-Whether or not to treat empty strings as null values.
+Whether to treat empty strings as null values.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -103,7 +103,7 @@ Whether or not to treat empty strings as null values.
 <details>
 <summary><code>keepCompleteProperties</code></summary>
 
-Whether or not to keep the original, complete list of properties for the fetched games. Will be saved in a separate file per platform and market.
+Whether to keep the original, complete list of properties for the fetched games. Will be saved in a separate file per platform and market.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -125,7 +125,7 @@ The properties that should be contained in the cleaned version of the API respon
 <details>
 <summary><code>productTitle</code></summary>
 
-Whether or not to include the title of the game.
+Whether to include the title of the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -135,7 +135,7 @@ Whether or not to include the title of the game.
 <details>
 <summary><code>productId</code></summary>
 
-Whether or not to include the product ID of the game.
+Whether to include the product ID of the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -145,7 +145,7 @@ Whether or not to include the product ID of the game.
 <details>
 <summary><code>developerName</code></summary>
 
-Whether or not to include the name of the developer of the game.
+Whether to include the name of the developer of the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -155,7 +155,7 @@ Whether or not to include the name of the developer of the game.
 <details>
 <summary><code>publisherName</code></summary>
 
-Whether or not to include the name of the publisher of the game.
+Whether to include the name of the publisher of the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -165,7 +165,7 @@ Whether or not to include the name of the publisher of the game.
 <details>
 <summary><code>categories</code></summary>
 
-Whether or not to include the game's categories. This can be used as tags.
+Whether to include the game's categories. This can be used as tags.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -175,7 +175,7 @@ Whether or not to include the game's categories. This can be used as tags.
 <details>
 <summary><code>productDescription</code></summary>
 
-Whether or not to include the description of the game.
+Whether to include the description of the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -192,7 +192,7 @@ Whether or not to include the description of the game.
 
 <h4><code>enabled</code></h4>
 
-Whether or not to include the description of the game.
+Whether to include the description of the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -200,7 +200,7 @@ Whether or not to include the description of the game.
 
 <h4><code>preferShort</code></h4>
 
-Whether or not to prefer the short description of the game over the long description.
+Whether to prefer the short description of the game over the long description.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -210,7 +210,7 @@ Whether or not to prefer the short description of the game over the long descrip
 <details>
 <summary><code>images</code></summary>
 
-Whether or not to include image URL's for the game.
+Whether to include image URL's for the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -220,7 +220,7 @@ Whether or not to include image URL's for the game.
 
 <h4><code>enabled</code></h4>
 
-Whether or not to include image URL's for the game.
+Whether to include image URL's for the game.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -266,7 +266,7 @@ Description of the various image types:
 <details>
 <summary><code>releaseDate</code></summary>
 
-Whether or not to include the game's release date.
+Whether to include the game's release date.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -283,7 +283,7 @@ Whether or not to include the game's release date.
 
 <h4><code>enabled</code></h4>
 
-Whether or not to include the game's release date.
+Whether to include the game's release date.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -301,7 +301,7 @@ How to format the date string. Either the full dateTime (YYYY-MM-DDTHH:mm:ss.sss
 <details>
 <summary><code>userRating</code></summary>
 
-Whether or not to include the game's user rating.
+Whether to include the game's user rating.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -319,7 +319,7 @@ Whether or not to include the game's user rating.
 
 <h4><code>enabled</code></h4>
 
-Whether or not to include the game's user rating.
+Whether to include the game's user rating.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -345,7 +345,7 @@ How to format the rating. Either as the original x-out-of-5 stars value (0.0 - 5
 <details>
 <summary><code>pricing</code></summary>
 
-Whether or not to include the game's price information. The currency that is used is dependent on the chosen \"market\".
+Whether to include the game's price information. The currency that is used is dependent on the chosen \"market\".
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -366,7 +366,7 @@ Whether or not to include the game's price information. The currency that is use
 <h3>Possible Values</h3>
 
 <h4><code>enabled</code></h4>
-Whether or not to include the game's price information. The currency that is used is dependent on the chosen \"market\".
+Whether to include the game's price information. The currency that is used is dependent on the chosen \"market\".
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -390,7 +390,7 @@ What to do if a price is missing. Either "useZero", "useNull" or "useEmptyString
 <details>
 <summary><code>storePage</code></summary>
 
-Whether or not to include the game's store page URL. NOTE: THIS IS NOT GUARANTEED TO ALWAYS RESULT IN A WORKING URL, AS IT NEEDS TO BE INFERRED AND IS NOT AVAILABLE THROUGH THE API.
+Whether to include the game's store page URL. Note that this is not guaranteed to always result in a working URL, as it needs to be inferred and is not available through the API.
 
 | Type | Default value | Possible values | Required |
 | --- | --- | --- | --- |
@@ -401,7 +401,7 @@ Whether or not to include the game's store page URL. NOTE: THIS IS NOT GUARANTEE
 
 If you would like to know the Steam App ID's for the games you own on Steam, Epic Games or GOG, you can use the [Steam App ID Finder](https://github.com/NikkelM/Steam-App-ID-Finder) to do just that.
 
-You can then use the [Notion Steam API Integration](https://github.com/NikkelM/Notion-Steam-API-Integration) to automatically add information about those games to you Notion database.
+You can then use the [Notion Steam API Integration](https://github.com/NikkelM/Notion-Steam-API-Integration) to automatically add information about those games to your Notion database.
 
 Alternatively, you can use the [JSON to Notion](https://github.com/NikkelM/JSON-to-Notion) tool to directly create a new page in your Notion database for each game extracted using the Game Pass API - this tool works with any kind of JSON file!
 
