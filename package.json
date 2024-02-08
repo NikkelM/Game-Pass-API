@@ -2,7 +2,7 @@
 	"name": "game-pass-api",
 	"type": "module",
 	"version": "1.1.1",
-	"description": "Utility for fetching all games currently available for Xbox Game Pass and formatting the resulting data according to user requirements.",
+	"description": "Get all games currently available for Xbox Game Pass on any platform, with their features and properties formatted just the way you need!",
 	"main": "index.js",
 	"dependencies": {
 		"jsonschema": "^1.4.1"
