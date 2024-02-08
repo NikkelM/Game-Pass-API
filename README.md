@@ -408,3 +408,7 @@ Alternatively, you can use the [JSON to Notion](https://github.com/NikkelM/JSON-
 ## Feedback
 
 If you have any question, feedback or feature requests, feel free to open an [issue](https://github.com/NikkelM/Game-Pass-API/issues/new).
+
+## Disclaimer
+
+*This unofficial project is not affiliated with Microsoft or Xbox in any way. The data provided when using this project is obtained from the public Xbox catalog API and is not guaranteed to be accurate or up-to-date.*
