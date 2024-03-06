@@ -46,14 +46,12 @@ try {
 
 // ----- Output -----
 
-// Create the output directory if it doesn't exist
 if (!fs.existsSync(__dirname + '/output')) {
 	fs.mkdirSync(__dirname + '/output');
 }
 
 // ---------- Main ----------
 
-// If the user wants empty strings to be treated as null or not
 const emptyValuePlaceholder = CONFIG.treatEmptyStringsAsNull ? null : "";
 
 main();
@@ -61,6 +59,7 @@ main();
 async function main() {
 	// Fetch Game Pass game ID's and properties for each pass type and market specified in the configuration
 	// We do this in parallel to speed up the process
+	// While the functions do return the formatted properties, we currently do not use them here, as writing the output files is handled by the functions themselves
 	for (const market of CONFIG.markets) {
 		if (CONFIG.platformsToFetch.includes("console")) {
 			const consoleFormattedProperties = runScriptForPassTypeAndMarket("console", market);
@@ -75,14 +74,9 @@ async function main() {
 }
 
 async function runScriptForPassTypeAndMarket(passType, market) {
-	// Fetch Game Pass game ID's
 	const gameIds = await fetchGameIDs(passType, market);
-
-	// Fetch Game Pass game properties
 	const gameProperties = await fetchGameProperties(gameIds, passType, market);
-
-	// Format the data according to the configuration
-	const formattedData = formatData(gameProperties, passType, market);
+	const formattedData = formatData(gameProperties, passType);
 
 	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
 
@@ -91,9 +85,8 @@ async function runScriptForPassTypeAndMarket(passType, market) {
 
 // ---------- Fetch game ID's & properties ----------
 
+// Get all Game Pass Game ID's for this market
 async function fetchGameIDs(passType, market) {
-	// Get all Game Pass Game ID's for this market
-
 	const APIIds = {
 		"console": "f6f1f99f-9b49-4ccd-b3bf-4d9767a77f5e",
 		"pc": "fdd9e2a7-0fee-49f6-ad69-4354098401ff",
@@ -114,7 +107,6 @@ async function fetchGameProperties(gameIds, passType, market) {
 		.then((response) => response.json())
 		.then((data) => {
 			if (CONFIG.keepCompleteProperties) {
-				// Write the data to a file
 				fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(data, null, 2));
 			}
 			return data;
@@ -122,19 +114,12 @@ async function fetchGameProperties(gameIds, passType, market) {
 }
 
 // Format the data according to the configuration
-function formatData(gameProperties, passType, market) {
+function formatData(gameProperties, passType) {
 	console.log(`Formatting game properties for ${gameProperties.Products.length} ${passType} games...`);
 
-	// Create a new object to store the formatted data
-	let formattedData = {};
-	// If the user wants the result to be an array
-	if (CONFIG.outputFormat === "array") {
-		formattedData = [];
-	}
+	let formattedData = CONFIG.outputFormat === "array" ? [] : {};
 
-	// Loop through each game
 	for (const game of gameProperties.Products) {
-		// Create a new object for this game
 		let index;
 		switch (CONFIG.outputFormat) {
 			case "array":
@@ -152,9 +137,7 @@ function formatData(gameProperties, passType, market) {
 		}
 		formattedData[index] = {};
 
-		// Loop through each property
 		for (const [property, propertyValue] of Object.entries(CONFIG.includedProperties)) {
-			// Get the value of the property
 			const result = getPropertyValue(game, property, propertyValue);
 
 			// Add the property to the object, only if it is not undefined. undefined indicates the property was present in the config, but disabled.
