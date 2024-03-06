@@ -369,59 +369,59 @@
 			]
 		},
 		"treatEmptyStringsAsNull": {
-			"description": "Whether or not to treat empty strings as null values.",
+			"description": "Whether to treat empty strings as null values.",
 			"type": "boolean",
 			"default": true
 		},
 		"keepCompleteProperties": {
-			"description": "Whether or not to keep the original, complete list of properties for the fetched games. Will be saved in a separate file per platform and market.",
+			"description": "Whether to keep the original, complete list of properties for the fetched games. Will be saved in a separate file per platform and market.",
 			"type": "boolean",
 			"default": false
 		},
 		"includedProperties": {
-			"description": "The properties that should be contained in the cleaned version of the API response.",
+			"description": "The properties that should be contained in the filtered version of the API response.",
 			"type": "object",
 			"properties": {
 				"productTitle": {
-					"description": "Whether or not to include the title of the game.",
+					"description": "Whether to include the title of the game.",
 					"type": "boolean",
 					"default": true
 				},
 				"productId": {
-					"description": "Whether or not to include the product ID of the game.",
+					"description": "Whether to include the product ID of the game.",
 					"type": "boolean",
-					"default": true
+					"default": false
 				},
 				"developerName": {
-					"description": "Whether or not to include the name of the developer of the game.",
+					"description": "Whether to include the name of the game's developer.",
 					"type": "boolean",
-					"default": true
+					"default": false
 				},
 				"publisherName": {
-					"description": "Whether or not to include the name of the publisher of the game.",
+					"description": "Whether to include the name of the game's publisher.",
 					"type": "boolean",
-					"default": true
+					"default": false
 				},
 				"categories": {
-					"description": "Whether or not to include the game's categories. This can be used as tags.",
+					"description": "Whether to include the game's categories.",
 					"type": "boolean",
-					"default": true
+					"default": false
 				},
 				"productDescription": {
-					"description": "The description of the game.",
+					"description": "Whether to include the description of the game.",
 					"type": "object",
 					"default": {
-						"enabled": true,
+						"enabled": false,
 						"preferShort": false
 					},
 					"properties": {
 						"enabled": {
-							"description": "Whether or not to include the description of the game.",
+							"description": "Whether to include the description of the game.",
 							"type": "boolean",
-							"default": true
+							"default": false
 						},
 						"preferShort": {
-							"description": "Whether or not to prefer the short description of the game, if one exists.",
+							"description": "Whether to prefer the short description of the game over the long description, if one exists.",
 							"type": "boolean",
 							"default": false
 						}
@@ -432,31 +432,30 @@
 					"additionalProperties": false
 				},
 				"images": {
-					"description": "Whether or not to include image URL's for the game.",
+					"description": "Whether to include image URL's for the game.",
 					"type": "object",
 					"default": {
-						"enabled": true,
-						"maxImages": 0,
-						"imageTypes": [
-							"TitledHeroArt",
-							"SuperHeroArt",
-							"Logo",
-							"Poster",
-							"Screenshot",
-							"BoxArt",
-							"Hero",
-							"BrandedKeyArt",
-							"FeaturePromotionalSquareArt"
-						]
+						"enabled": false,
+						"imageTypes": {
+							"TitledHeroArt": -1,
+							"SuperHeroArt": -1,
+							"Logo": -1,
+							"Poster": -1,
+							"Screenshot": -1,
+							"BoxArt": -1,
+							"Hero": -1,
+							"BrandedKeyArt": -1,
+							"FeaturePromotionalSquareArt": -1
+						}
 					},
 					"properties": {
 						"enabled": {
-							"description": "Whether or not to include any the images in the result.",
+							"description": "Whether to include image URL's for the game.",
 							"type": "boolean",
-							"default": true
+							"default": false
 						},
 						"imageTypes": {
-							"description": "What kinds of images should be considered, and a maximum of many of each type should be chosen. A value of -1 indicates no limit.",
+							"description": "What kinds of images should be included in the output, and a maximum of how many of each type should be chosen.",
 							"type": "object",
 							"default": {
 								"TitledHeroArt": -1,
@@ -527,17 +526,17 @@
 					"additionalProperties": false
 				},
 				"releaseDate": {
-					"description": "Whether or not to include the game's release date.",
+					"description": "Whether to include the game's release date.",
 					"type": "object",
 					"default": {
-						"enabled": true,
+						"enabled": false,
 						"format": "date"
 					},
 					"properties": {
 						"enabled": {
-							"description": "Whether or not to include the game's release date.",
+							"description": "Whether to include the game's release date.",
 							"type": "boolean",
-							"default": true
+							"default": false
 						},
 						"format": {
 							"description": "How to format the date string. Either the full dateTime (YYYY-MM-DDTHH:mm:ss.sssssssZ) or just the date (YYYY-MM-DD).",
@@ -556,18 +555,18 @@
 					"additionalProperties": false
 				},
 				"userRating": {
-					"description": "Whether or not to include the game's user rating.",
+					"description": "Whether to include the game's user rating.",
 					"type": "object",
 					"default": {
-						"enabled": true,
+						"enabled": false,
 						"aggregationInterval": "AllTime",
 						"format": "percentage"
 					},
 					"properties": {
 						"enabled": {
-							"description": "Whether or not to include the game's user rating.",
+							"description": "Whether to include the game's user rating.",
 							"type": "boolean",
-							"default": true
+							"default": false
 						},
 						"aggregationInterval": {
 							"description": "Which kind of interval to use for rating aggregation.",
@@ -597,10 +596,10 @@
 					"additionalProperties": false
 				},
 				"pricing": {
-					"description": "Whether or not to include the game's price information. The currency that is used is dependent on the chosen \"market\".",
+					"description": "Whether to include the game's price information. The currency that is used is dependent on the chosen \"market\".",
 					"type": "object",
 					"default": {
-						"enabled": true,
+						"enabled": false,
 						"priceTypes": [
 							"ListPrice",
 							"MSRP",
@@ -612,10 +611,10 @@
 						"enabled": {
 							"description": "Whether or not to include the game's price information. The currency that is used is dependent on the chosen \"market\".",
 							"type": "boolean",
-							"default": true
+							"default": false
 						},
 						"priceTypes": {
-							"description": "Which kinds of prices to include. Choose from ListPrice, MSRP and WholesalePrice (i.e. applied discounts).",
+							"description": "Which kinds of prices to include. Choose from \"ListPrice\", \"MSRP\" and \"WholesalePrice\" (i.e. with discounts applied).",
 							"type": "array",
 							"default": [
 								"ListPrice",
@@ -662,9 +661,9 @@
 					"additionalProperties": false
 				},
 				"storePage": {
-					"description": "Whether or not to include the game's store page URL. NOTE: THIS IS NOT GUARANTEED TO ALWAYS RESULT IN A WORKING URL, AS IT NEEDS TO BE INFERRED AND IS NOT AVAILABLE THROUGH THE API.",
+					"description": "Whether to include the game's store page URL. Note that this is not guaranteed to always result in a working URL, as it needs to be inferred and is not available through the API.",
 					"type": "boolean",
-					"default": true
+					"default": false
 				}
 			},
 			"additionalProperties": false,
