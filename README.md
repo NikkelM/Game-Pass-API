@@ -44,20 +44,22 @@ The schema can be found in the `config.schema.json` file and used within your `c
 
 ### Properties
 
-The following is a list of all configuration items, their defaults and the values they can take.
+The following is a list of all configuration items, their defaults in the `config.default.json` and the values you can assign to them.
 
-If a given property is not present in the configuration file, it will automatically be assumed to have a value of `false` (or equivalent, depending on the property type).
+If a given property is not present in the configuration file, it will automatically be assumed to have a value of `false` (or equivalent, depending on the property type), and not be included in the output.
 
 #### Top-level properties
+
+Required properties:
 
 <details>
 <summary><code>markets</code></summary>
 
 The two letter market codes for which to fetch games. The script will run once for each market code.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `array` | `["US"]` | `"US"`, `"DZ"`, `"AR"`, `"AU"`, `"AT"`, `"BH"`, `"BD"`, `"BE"`, `"BR"`, `"BG"`, `"CA"`, `"CL"`, `"CN"`, `"CO"`, `"CR"`, `"HR"`, `"CY"`, `"CZ"`, `"DK"`, `"EG"`, `"EE"`, `"FI"`, `"FR"`, `"DE"`, `"GR"`, `"GT"`, `"HK"`, `"HU"`, `"IS"`, `"IN"`, `"ID"`, `"IQ"`, `"IE"`, `"IL"`, `"IT"`, `"JP"`, `"JO"`, `"KZ"`, `"KE"`, `"KW"`, `"LV"`, `"LB"`, `"LI"`, `"LT"`, `"LU"`, `"MY"`, `"MT"`, `"MR"`, `"MX"`, `"MA"`, `"NL"`, `"NZ"`, `"NG"`, `"NO"`, `"OM"`, `"PK"`, `"PE"`, `"PH"`, `"PL"`, `"PT"`, `"QA"`, `"RO"`, `"RU"`, `"SA"`, `"RS"`, `"SG"`, `"SK"`, `"SI"`, `"ZA"`, `"KR"`, `"ES"`, `"SE"`, `"CH"`, `"TW"`, `"TH"`, `"TT"`, `"TN"`, `"TR"`, `"UA"`, `"AE"`, `"GB"`, `"VN"`, `"YE"`, `"LY"`, `"LK"`, `"UY"`, `"VE"`, `"AF"`, `"AX"`, `"AL"`, `"AS"`, `"AO"`, `"AI"`, `"AQ"`, `"AG"`, `"AM"`, `"AW"`, `"BO"`, `"BQ"`, `"BA"`, `"BW"`, `"BV"`, `"IO"`, `"BN"`, `"BF"`, `"BI"`, `"KH"`, `"CM"`, `"CV"`, `"KY"`, `"CF"`, `"TD"`, `"TL"`, `"DJ"`, `"DM"`, `"DO"`, `"EC"`, `"SV"`, `"GQ"`, `"ER"`, `"ET"`, `"FK"`, `"FO"`, `"FJ"`, `"GF"`, `"PF"`, `"TF"`, `"GA"`, `"GM"`, `"GE"`, `"GH"`, `"GI"`, `"GL"`, `"GD"`, `"GP"`, `"GU"`, `"GG"`, `"GN"`, `"GW"`, `"GY"`, `"HT"`, `"HM"`, `"HN"`, `"AZ"`, `"BS"`, `"BB"`, `"BY"`, `"BZ"`, `"BJ"`, `"BM"`, `"BT"`, `"KM"`, `"CG"`, `"CD"`, `"CK"`, `"CX"`, `"CC"`, `"CI"`, `"CW"`, `"JM"`, `"SJ"`, `"JE"`, `"KI"`, `"KG"`, `"LA"`, `"LS"`, `"LR"`, `"MO"`, `"MK"`, `"MG"`, `"MW"`, `"IM"`, `"MH"`, `"MQ"`, `"MU"`, `"YT"`, `"FM"`, `"MD"`, `"MN"`, `"MS"`, `"MZ"`, `"MM"`, `"NA"`, `"NR"`, `"NP"`, `"MV"`, `"ML"`, `"NC"`, `"NI"`, `"NE"`, `"NU"`, `"NF"`, `"PW"`, `"PS"`, `"PA"`, `"PG"`, `"PY"`, `"RE"`, `"RW"`, `"BL"`, `"MF"`, `"WS"`, `"ST"`, `"SN"`, `"MP"`, `"PN"`, `"SX"`, `"SB"`, `"SO"`, `"SC"`, `"SL"`, `"GS"`, `"SH"`, `"KN"`, `"LC"`, `"PM"`, `"VC"`, `"TJ"`, `"TZ"`, `"TG"`, `"TK"`, `"TO"`, `"TM"`, `"TC"`, `"TV"`, `"UM"`, `"UG"`, `"VI"`, `"VG"`, `"WF"`, `"EH"`, `"ZM"`, `"ZW"`, `"UZ"`, `"VU"`, `"SR"`, `"SZ"`, `"AD"`, `"MC"`, `"SM"`, `"ME"`, `"VA"`, `"NEUTRAL"` | Yes, at least one market code. |
+| `array` | `["US"]` | `US`, `DZ`, `AR`, `AU`, `AT`, `BH`, `BD`, `BE`, `BR`, `BG`, `CA`, `CL`, `CN`, `CO`, `CR`, `HR`, `CY`, `CZ`, `DK`, `EG`, `EE`, `FI`, `FR`, `DE`, `GR`, `GT`, `HK`, `HU`, `IS`, `IN`, `ID`, `IQ`, `IE`, `IL`, `IT`, `JP`, `JO`, `KZ`, `KE`, `KW`, `LV`, `LB`, `LI`, `LT`, `LU`, `MY`, `MT`, `MR`, `MX`, `MA`, `NL`, `NZ`, `NG`, `NO`, `OM`, `PK`, `PE`, `PH`, `PL`, `PT`, `QA`, `RO`, `RU`, `SA`, `RS`, `SG`, `SK`, `SI`, `ZA`, `KR`, `ES`, `SE`, `CH`, `TW`, `TH`, `TT`, `TN`, `TR`, `UA`, `AE`, `GB`, `VN`, `YE`, `LY`, `LK`, `UY`, `VE`, `AF`, `AX`, `AL`, `AS`, `AO`, `AI`, `AQ`, `AG`, `AM`, `AW`, `BO`, `BQ`, `BA`, `BW`, `BV`, `IO`, `BN`, `BF`, `BI`, `KH`, `CM`, `CV`, `KY`, `CF`, `TD`, `TL`, `DJ`, `DM`, `DO`, `EC`, `SV`, `GQ`, `ER`, `ET`, `FK`, `FO`, `FJ`, `GF`, `PF`, `TF`, `GA`, `GM`, `GE`, `GH`, `GI`, `GL`, `GD`, `GP`, `GU`, `GG`, `GN`, `GW`, `GY`, `HT`, `HM`, `HN`, `AZ`, `BS`, `BB`, `BY`, `BZ`, `BJ`, `BM`, `BT`, `KM`, `CG`, `CD`, `CK`, `CX`, `CC`, `CI`, `CW`, `JM`, `SJ`, `JE`, `KI`, `KG`, `LA`, `LS`, `LR`, `MO`, `MK`, `MG`, `MW`, `IM`, `MH`, `MQ`, `MU`, `YT`, `FM`, `MD`, `MN`, `MS`, `MZ`, `MM`, `NA`, `NR`, `NP`, `MV`, `ML`, `NC`, `NI`, `NE`, `NU`, `NF`, `PW`, `PS`, `PA`, `PG`, `PY`, `RE`, `RW`, `BL`, `MF`, `WS`, `ST`, `SN`, `MP`, `PN`, `SX`, `SB`, `SO`, `SC`, `SL`, `GS`, `SH`, `KN`, `LC`, `PM`, `VC`, `TJ`, `TZ`, `TG`, `TK`, `TO`, `TM`, `TC`, `TV`, `UM`, `UG`, `VI`, `VG`, `WF`, `EH`, `ZM`, `ZW`, `UZ`, `VU`, `SR`, `SZ`, `AD`, `MC`, `SM`, `ME`, `VA`, `NEUTRAL` | Yes, at least one market code. |
 </details>
 
 <details>
@@ -65,37 +67,51 @@ The two letter market codes for which to fetch games. The script will run once f
 
 The language to use when fetching game properties. Properties such as the game description will be in this language.
 
-| Type | Default value | Possible values | Required |
+*This does not impact the tool's language.*
+
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `string` | `en-us` | `"es-ar"`, `"pt-br"`, `"en-ca"`, `"fr-ca"`, `"es-cl"`, `"es-co"`, `"es-mx"`, `"en-us"`, `"nl-be"`, `"fr-be"`, `"cs-cz"`, `"da-dk"`, `"de-de"`, `"es-es"`, `"fr-fr"`, `"en-ie"`, `"it-it"`, `"hu-hu"`, `"nl-nl"`, `"nb-no"`, `"de-at"`, `"pl-pl"`, `"pt-pt"`, `"de-ch"`, `"sk-sk"`, `"fr-ch"`, `"fi-fi"`, `"sv-se"`, `"en-gb"`, `"el-gr"`, `"ru-ru"`, `"en-au"`, `"en-hk"`, `"en-in"`, `"id-id"`, `"en-my"`, `"en-nz"`, `"en-ph"`, `"en-sg"`, `"vi-vn"`, `"th-th"`, `"ko-kr"`, `"zh-cn"`, `"zh-tw"`, `"ja-jp"`, `"zh-hk"`, `"en-za"`, `"tr-tr"`, `"he-il"`, `"ar-ae"`, `"ar-sa"`  | Yes |
+| `string` | `"en-us"` | `es-ar`, `pt-br`, `en-ca`, `fr-ca`, `es-cl`, `es-co`, `es-mx`, `en-us`, `nl-be`, `fr-be`, `cs-cz`, `da-dk`, `de-de`, `es-es`, `fr-fr`, `en-ie`, `it-it`, `hu-hu`, `nl-nl`, `nb-no`, `de-at`, `pl-pl`, `pt-pt`, `de-ch`, `sk-sk`, `fr-ch`, `fi-fi`, `sv-se`, `en-gb`, `el-gr`, `ru-ru`, `en-au`, `en-hk`, `en-in`, `id-id`, `en-my`, `en-nz`, `en-ph`, `en-sg`, `vi-vn`, `th-th`, `ko-kr`, `zh-cn`, `zh-tw`, `ja-jp`, `zh-hk`, `en-za`, `tr-tr`, `he-il`, `ar-ae`, `ar-sa` | Yes |
 </details>
 
 <details>
 <summary><code>platformsToFetch</code></summary>
 
-Which platforms to fetch games for, any of "console", "pc" and "eaPlay".
+Which platforms to fetch games for, any of `console`, `pc` and `eaPlay`.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `array` | `["console", "pc", "eaPlay"]` | `"console"`, `"pc"`, `"eaPlay"` | Yes, at least one platform. |
+| `array` | `["console", "pc", "eaPlay"]` | `console`, `pc`, `eaPlay` | Yes, at least one platform. |
 </details>
 
 <details>
 <summary><code>outputFormat</code></summary>
 
-What kind of format the resulting JSON should use for the cleaned game properties.
+What kind of format the top-level JSON output should have.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `string` | `"array"` | `"array"`: The resulting data structure is an array with its entries being dictionaries holding separate game's properties.<br/>`"productTitle"`: The resulting data structure is a dictionary that uses games' title as keys.<br/>`"productId"`: The resulting data structure is a dictionary that uses games' product ID's as keys.<br/>`"0-indexed"`: The resulting data structure is a dictionary that uses rolling integers as keys. | Yes |
+| `string` | `"array"` | `array`: The resulting data structure is an array. Each entry is a dictionary holding the properties of a separate game.<br/>`productTitle`: The resulting data structure is a dictionary. The games' titles are used as keys.<br/>`productId`: The resulting data structure is a dictionary. The games' product IDs are used as keys.<br/>`0-indexed`: The resulting data structure is a dictionary. 0-indexed integers are used as keys. | Yes |
 </details>
+
+<details>
+<summary><code>includedProperties</code></summary>
+
+The properties that should be contained in the filtered version of the API response.
+
+| Type | Default | Possible values | Required |
+| --- | --- | --- | --- |
+| `object` | See subsection below | See subsection below | Yes, and at least one sub-property enabled |
+</details>
+
+Optional properties (defaults will be applied):
 
 <details>
 <summary><code>treatEmptyStringsAsNull</code></summary>
 
 Whether to treat empty strings as null values.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `boolean` | `true` | `true` or `false` | No |
 </details>
@@ -105,29 +121,21 @@ Whether to treat empty strings as null values.
 
 Whether to keep the original, complete list of properties for the fetched games. Will be saved in a separate file per platform and market.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `boolean` | `false` | `true` or `false` | No |
 </details>
 
-<details>
-<summary><code>includedProperties</code></summary>
-
-The properties that should be contained in the cleaned version of the API response.
-
-| Type | Default value | Possible values | Required |
-| --- | --- | --- | --- |
-| `object` | Not applicable | See sections below | Yes, and at least one sub-property |
-</details>
-
 #### includedProperties
+
+If any of these properties are omitted, they will not be included in the output. The `Default` column indicates the default applied when using the `config.default.json` file.
 
 <details>
 <summary><code>productTitle</code></summary>
 
 Whether to include the title of the game.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `boolean` | `true` | `true` or `false` | No |
 </details>
@@ -137,39 +145,39 @@ Whether to include the title of the game.
 
 Whether to include the product ID of the game.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No |
+| `boolean` | `false` | `true` or `false` | No |
 </details>
 
 <details>
 <summary><code>developerName</code></summary>
 
-Whether to include the name of the developer of the game.
+Whether to include the name of the game's developer.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No |
+| `boolean` | `false` | `true` or `false` | No |
 </details>
 
 <details>
 <summary><code>publisherName</code></summary>
 
-Whether to include the name of the publisher of the game.
+Whether to include the name of the game's publisher.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No |
+| `boolean` | `false` | `true` or `false` | No |
 </details>
 
 <details>
 <summary><code>categories</code></summary>
 
-Whether to include the game's categories. This can be used as tags.
+Whether to include the game's categories.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No |
+| `boolean` | `false` | `true` or `false` | No |
 </details>
 
 <details>
@@ -177,13 +185,13 @@ Whether to include the game's categories. This can be used as tags.
 
 Whether to include the description of the game.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `object` | See item below | See sections below | No |
 
 ```json
 "productDescription": {
-	"enabled": true,
+	"enabled": false,
 	"preferShort": false
 }
 ```
@@ -194,15 +202,15 @@ Whether to include the description of the game.
 
 Whether to include the description of the game.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | Yes |
+| `boolean` | `false` | `true` or `false` | Yes |
 
 <h4><code>preferShort</code></h4>
 
-Whether to prefer the short description of the game over the long description.
+Whether to prefer the short description of the game over the long description, if one exists.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `boolean` | `false` | `true` or `false` | No |
 </details>
@@ -212,9 +220,26 @@ Whether to prefer the short description of the game over the long description.
 
 Whether to include image URL's for the game.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `object` | See sections below | See sections below | No |
+| `object` | See item below | See sections below | No |
+
+```json
+"images": {
+	"enabled": false,
+	"imageTypes": {
+		"TitledHeroArt": -1,
+		"SuperHeroArt": -1,
+		"Logo": -1,
+		"Poster": -1,
+		"Screenshot": -1,
+		"BoxArt": -1,
+		"Hero": -1,
+		"BrandedKeyArt": -1,
+		"FeaturePromotionalSquareArt": -1
+	}
+}
+```
 
 <h3>Possible values</h3>
 
@@ -222,17 +247,17 @@ Whether to include image URL's for the game.
 
 Whether to include image URL's for the game.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | Yes |
+| `boolean` | `false` | `true` or `false` | Yes |
 
 <h4><code>imageTypes</code></h4>
 
-What kinds of images should be considered, and a maximum of many of each type should be chosen. A value of -1 indicates no limit.
+What kinds of images should be included in the output, and a maximum of how many of each type should be chosen.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `object` | See item below | Any number of image type combinations with values from -1 upwards. | Yes, at least one `imageType`. |
+| `object` | See item below | Any number of image type combinations with values from -1 upwards. A value of -1 indicates no limit. A value of 0 is equal to omitting the item. | Yes, at least one `imageType`. |
 
 ```json
 "imageTypes": {
@@ -268,13 +293,13 @@ Description of the various image types:
 
 Whether to include the game's release date.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `object` | See item below | See sections below | No |
 
 ```json
 "releaseDate": {
-	"enabled": true,
+	"enabled": false,
 	"format": "date"
 }
 ```
@@ -285,15 +310,15 @@ Whether to include the game's release date.
 
 Whether to include the game's release date.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | Yes |
+| `boolean` | `false` | `true` or `false` | Yes |
 
 <h4><code>format</code></h4>
 
-How to format the date string. Either the full dateTime (YYYY-MM-DDTHH:mm:ss.sssssssZ) or just the date (YYYY-MM-DD).
+How to format the date string. Either the full dateTime (`YYYY-MM-DDTHH:mm:ss.sssssssZ`) or just the date (`YYYY-MM-DD`).
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `string` | `"date"` | `"date"` or `"dateTime"` | Yes |
 </details>
@@ -303,13 +328,13 @@ How to format the date string. Either the full dateTime (YYYY-MM-DDTHH:mm:ss.sss
 
 Whether to include the game's user rating.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `object` | See item below | See sections below | No |
 
 ```json
 "userRating": {
-	"enabled": true,
+	"enabled": false,
 	"aggregationInterval": "AllTime",
 	"format": "percentage"
 }
@@ -321,39 +346,39 @@ Whether to include the game's user rating.
 
 Whether to include the game's user rating.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | Yes |
+| `boolean` | `false` | `true` or `false` | Yes |
 
 <h4><code>aggregationInterval</code></h4>
 
 Which kind of interval to use for rating aggregation.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `string` | `"AllTime"` | `"AllTime"`, `"30Days"`, `"7Days"` | Yes |
 
 <h4><code>format</code></h4>
 
-How to format the rating. Either as the original x-out-of-5 stars value (0.0 - 5.0) or as a percentage (0.0 - 1.0).
+How to format the rating. Either as the original x-out-of-5 stars value (`0.0 - 5.0`) or as a percentage (`0.0 - 1.0`).
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `string` | `"percentage"` | `"percentage"` or `"stars"` | Yes |
+| `string` | `"percentage"` | `"stars"` or `"percentage"` | Yes |
 </details>
 
 <details>
 <summary><code>pricing</code></summary>
 
-Whether to include the game's price information. The currency that is used is dependent on the chosen \"market\".
+Whether to include the game's price information. The currency that is used is dependent on the chosen `market`.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `object` | See item below | See sections below | No |
 
 ```json
 "pricing": {
-	"enabled": true,
+	"enabled": false,
 	"priceTypes": [
 		"ListPrice",
 		"MSRP",
@@ -366,23 +391,26 @@ Whether to include the game's price information. The currency that is used is de
 <h3>Possible Values</h3>
 
 <h4><code>enabled</code></h4>
-Whether to include the game's price information. The currency that is used is dependent on the chosen \"market\".
 
-| Type | Default value | Possible values | Required |
+Whether to include the game's price information. The currency that is used is dependent on the chosen `market`.
+
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | Yes |
+| `boolean` | `false` | `true` or `false` | Yes |
 
 <h4><code>priceTypes</code></h4>
-Which kinds of prices to include. Choose from ListPrice, MSRP and WholesalePrice (i.e. applied discounts).
 
-| Type | Default value | Possible values | Required |
+Which kinds of prices to include. Choose from `ListPrice`, `MSRP` and `WholesalePrice` (i.e. with discounts applied).
+
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `array` | `["ListPrice", "MSRP", "WholesalePrice"]` | Any combination of:<br/>`"ListPrice"`: The current listing price in the store. <br/>  `"MSRP"`: The manufacturer's suggested retail price.<br/>  `"WholesalePrice"`: The wholesale price, i.e. the ListPrice after sales have been applied. | Yes, at least one `priceType`. |
 
 <h4><code>missingPricePolicy</code></h4>
-What to do if a price is missing. Either "useZero", "useNull" or "useEmptyString".
 
-| Type | Default value | Possible values | Required |
+What to do if a price is missing. Either `useZero`, `useNull` or `useEmptyString`.
+
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
 | `string` | `"useNull"` | `"useZero"`, `"useNull"` or `"useEmptyString"` | Yes |
 </details>
@@ -392,9 +420,9 @@ What to do if a price is missing. Either "useZero", "useNull" or "useEmptyString
 
 Whether to include the game's store page URL. Note that this is not guaranteed to always result in a working URL, as it needs to be inferred and is not available through the API.
 
-| Type | Default value | Possible values | Required |
+| Type | Default | Possible values | Required |
 | --- | --- | --- | --- |
-| `boolean` | `true` | `true` or `false` | No |
+| `boolean` | `false` | `true` or `false` | No |
 </details>
 
 ## Related projects

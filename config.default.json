@@ -14,16 +14,16 @@
 	"keepCompleteProperties": false,
 	"includedProperties": {
 		"productTitle": true,
-		"productId": true,
-		"developerName": true,
-		"publisherName": true,
-		"categories": true,
+		"productId": false,
+		"developerName": false,
+		"publisherName": false,
+		"categories": false,
 		"productDescription": {
-			"enabled": true,
+			"enabled": false,
 			"preferShort": false
 		},
 		"images": {
-			"enabled": true,
+			"enabled": false,
 			"imageTypes": {
 				"TitledHeroArt": -1,
 				"SuperHeroArt": -1,
@@ -37,16 +37,16 @@
 			}
 		},
 		"releaseDate": {
-			"enabled": true,
+			"enabled": false,
 			"format": "date"
 		},
 		"userRating": {
-			"enabled": true,
+			"enabled": false,
 			"aggregationInterval": "AllTime",
 			"format": "percentage"
 		},
 		"pricing": {
-			"enabled": true,
+			"enabled": false,
 			"priceTypes": [
 				"ListPrice",
 				"MSRP",
@@ -54,6 +54,6 @@
 			],
 			"missingPricePolicy": "useNull"
 		},
-		"storePage": true
+		"storePage": false
 	}
 }
