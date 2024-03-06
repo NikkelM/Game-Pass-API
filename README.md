@@ -44,9 +44,9 @@ The schema can be found in the `config.schema.json` file and used within your `c
 
 ### Properties
 
-The following is a list of all configuration items, their defaults and the values they can take.
+The following is a list of all configuration items, their defaults in the `config.default.json` and the values you can assign to them.
 
-If a given property is not present in the configuration file, it will automatically be assumed to have a value of `false` (or equivalent, depending on the property type).
+If a given property is not present in the configuration file, it will automatically be assumed to have a value of `false` (or equivalent, depending on the property type), and not be included in the output.
 
 #### Top-level properties
 
@@ -128,7 +128,7 @@ Whether to keep the original, complete list of properties for the fetched games.
 
 #### includedProperties
 
-If any of these properties are omitted, the default will apply, which in all cases except `productTitle` is `false` and will result in the property not being included in the output.
+If any of these properties are omitted, they will not be included in the output. The `Default` column indicates the default applied when using the `config.default.json` file.
 
 <details>
 <summary><code>productTitle</code></summary>
