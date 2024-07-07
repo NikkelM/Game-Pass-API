@@ -283,7 +283,7 @@ Description of the various image types:
 | SuperHeroArt | Artwork without text. | 16:9 | [Link](https://store-images.s-microsoft.com/image/apps.62159.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.1405eb3a-6314-4e44-a822-7660d70a6ec5) |
 | Hero | Artwork without text. | 2:1 | [Link](https://store-images.s-microsoft.com/image/apps.28129.13672427983916579.274b1ffd-9cde-4bef-9a3e-6f37073d5ed0.5eb8b4f3-3575-4d13-b0a4-b60d6c64f392) |
 | BoxArt | Banner featuring the game's logo and name in a square \"box\" format. | 1:1 | [Link](https://store-images.s-microsoft.com/image/apps.4794.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.b156af1e-9796-48af-8d11-3461727280ea) |
-| BranedKeyArt | Banner featuring the game's name with an \"XBOX\" logo on top. | 73:100 | [Link](https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6) |
+| BrandedKeyArt | Banner featuring the game's name with an \"XBOX\" logo on top. | 73:100 | [Link](https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6) |
 | FeaturePromotionalSquareArt | Banner featuring the game's logo (without name) in a square \"box\" format. | 1:1 | [Link](https://store-images.s-microsoft.com/image/apps.29819.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.322d4aa6-0a23-4565-a64f-743f0620a96e) |
 | Logo | Small, square game logo, to be used e.g. as a game library icon. | 1:1 | [Link](https://store-images.s-microsoft.com/image/apps.65119.13664397958929388.0e87ac81-8aa3-41f0-82dc-61a295fc5fe3.44bf032a-b113-4179-aa1b-f557dbcd3b19) |
 </details>
@@ -424,14 +424,6 @@ Whether to include the game's store page URL. Note that this is not guaranteed t
 | --- | --- | --- | --- |
 | `boolean` | `false` | `true` or `false` | No |
 </details>
-
-## Related projects
-
-If you would like to know the Steam App ID's for the games you own on Steam, Epic Games or GOG, you can use the [Steam App ID Finder](https://github.com/NikkelM/Steam-App-ID-Finder) to do just that.
-
-You can then use the [Notion Steam API Integration](https://github.com/NikkelM/Notion-Steam-API-Integration) to automatically add information about those games to your Notion database.
-
-Alternatively, you can use the [JSON to Notion](https://github.com/NikkelM/JSON-to-Notion) tool to directly create a new page in your Notion database for each game extracted using the Game Pass API - this tool works with any kind of JSON file!
 
 ## Feedback
 
