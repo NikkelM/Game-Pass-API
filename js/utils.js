@@ -59,7 +59,7 @@ export function initConfig(config) {
 
 // Build an OS-native path inside the output directory (in the current working directory)
 export function outputPath(...segments) {
-	return path.join('output', ...segments);
+	return path.join(CONFIG.outputDirectory ?? 'output', ...segments);
 }
 
 function setupOutput() {

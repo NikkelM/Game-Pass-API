@@ -12,6 +12,7 @@
 	"outputFormat": "array",
 	"treatEmptyStringsAsNull": true,
 	"keepCompleteProperties": false,
+	"outputDirectory": "output",
 	"includedProperties": {
 		"productTitle": true,
 		"productId": false,

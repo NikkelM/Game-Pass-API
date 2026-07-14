@@ -24,9 +24,14 @@ program
 	.description('Fetch Game Pass data using a configuration file')
 	.option('-c, --config <path>', 'path to a config.json (defaults to ./config.json)')
 	.option('--from <dir>', 're-format previously-saved completeGameProperties_*.json files in <dir> instead of fetching (needs an earlier run with keepCompleteProperties)')
+	.option('-o, --out <dir>', 'directory to write output files to (overrides outputDirectory; default: output)')
 	.addHelpText('after', '\nThe configuration comes from a config.json in the current directory (or --config <path>).\nRun "game-pass-api init" to create one interactively, or see the README and config.schema.json for every option.')
 	.action(async (options) => {
-		await run(loadConfig(options.config), { fromDirectory: options.from });
+		const config = loadConfig(options.config);
+		if (options.out) {
+			config.outputDirectory = options.out;
+		}
+		await run(config, { fromDirectory: options.from });
 	});
 
 program

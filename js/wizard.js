@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { select, search, checkbox, confirm } from '@inquirer/prompts';
+import { input, select, search, checkbox, confirm } from '@inquirer/prompts';
 
 import { validateConfig } from './utils.js';
 import { run } from './gamePass.js';
@@ -124,6 +124,7 @@ export async function runWizard(outputPath = 'config.json') {
 
 	const treatEmptyStringsAsNull = await confirm({ message: 'Treat empty string values as null?', default: true });
 	const keepCompleteProperties = await confirm({ message: 'Also keep the complete, unfiltered API response per platform and market?', default: false });
+	const outputDirectory = await input({ message: 'Output directory:', default: 'output', validate: (value) => value.trim() ? true : 'An output directory is required.' });
 
 	const selected = await checkbox({
 		message: 'Which properties should be included in the output?',
@@ -202,6 +203,10 @@ export async function runWizard(outputPath = 'config.json') {
 		keepCompleteProperties,
 		includedProperties
 	};
+	// Only written when it differs from the default, to keep the config tidy
+	if (outputDirectory.trim() !== 'output') {
+		config.outputDirectory = outputDirectory.trim();
+	}
 
 	// Sanity-check the assembled configuration against the schema before writing it
 	validateConfig(config);

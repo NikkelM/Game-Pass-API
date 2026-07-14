@@ -378,6 +378,11 @@
 			"type": "boolean",
 			"default": false
 		},
+		"outputDirectory": {
+			"description": "The directory to write the output files to, relative to the current directory. Can also be set with the -o, --out command-line option.",
+			"type": "string",
+			"default": "output"
+		},
 		"includedProperties": {
 			"description": "The properties that should be contained in the filtered version of the API response.",
 			"type": "object",
