@@ -1,0 +1,56 @@
+name: Tests
+
+# These integration tests hit the public Xbox Game Pass APIs (no credentials needed) to catch
+# when Microsoft changes or retires an endpoint the tool depends on, even when the code is unchanged
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    # every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  test-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Test on the minimum supported version and the latest
+        node-version: [22, 24]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  # A single, stable status check for branch protection that is green only when every matrix job
+  # passed. The matrix jobs report as "test-matrix (22)" etc, whose names change with the matrix,
+  # so requiring this job instead keeps the required check name stable
+  test:
+    if: always()
+    needs: test-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify the test matrix succeeded
+        run: |
+          if [ "${{ needs.test-matrix.result }}" != "success" ]; then
+            echo "The test matrix did not succeed (result: ${{ needs.test-matrix.result }})."
+            exit 1
+          fi
+          echo "All test matrix jobs passed."
