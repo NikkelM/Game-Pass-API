@@ -2,7 +2,7 @@
 	"$schema": "../../config.schema.json",
 	"markets": [
 		"US",
-		"RU"
+		"DE"
 	],
 	"language": "en-us",
 	"platformsToFetch": [
