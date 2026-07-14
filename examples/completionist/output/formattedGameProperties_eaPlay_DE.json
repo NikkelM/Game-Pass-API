@@ -44,7 +44,7 @@
     "releaseDate": "9998-12-30T00:00:00.0000000Z",
     "userRating": 3,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 0,
       "MSRP": 0,
       "WholesalePrice": null
@@ -95,7 +95,7 @@
     "releaseDate": "9998-12-30T00:00:00.0000000Z",
     "userRating": 2.5,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 0,
       "MSRP": 0,
       "WholesalePrice": null
@@ -139,7 +139,7 @@
     "releaseDate": "9998-12-30T00:00:00.0000000Z",
     "userRating": 1.9,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 0,
       "MSRP": 0,
       "WholesalePrice": null

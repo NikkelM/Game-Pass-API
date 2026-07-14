@@ -1,74 +1,99 @@
 name: Create Github Release
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
     branches:
       - main
 
 jobs:
   CheckVersion:
+    if: github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     outputs:
       versionChanged: ${{ steps.check_version.outputs.changed }}
       newVersion: ${{ steps.check_version.outputs.version }}
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
-      
-      - name: Set up node 
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+          fetch-tags: true
 
-      - name: Check if version has been updated
+      # A release is due when the package.json version has no matching git tag yet
+      - name: Check whether this version still needs releasing
         id: check_version
-        uses: EndBug/version-check@v2
-        with:
-          diff-search: true
-
-      - name: Log version change
-        if: steps.check_version.outputs.changed == 'true'
-        run: 'echo "Version change found in commit ${{ steps.check_version.outputs.commit }}! New version: ${{ steps.check_version.outputs.version }}"'
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION is already tagged - nothing to release."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION has no tag yet - a release will be created."
+          fi
 
   CreateRelease:
     needs: CheckVersion
     if: needs.CheckVersion.outputs.versionChanged == 'true'
     runs-on: ubuntu-latest
-
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+          fetch-tags: true
 
       - name: Copy required files to release_files folder
         run: |
           mkdir release_files
           cp ./LICENSE ./release_files/LICENSE
           cp ./README.md ./release_files/README.md
+          cp -r ./bin ./release_files/bin
+          cp -r ./js ./release_files/js
           cp ./config.default.json ./release_files/config.default.json
           cp ./config.schema.json ./release_files/config.schema.json
           cp ./index.js ./release_files/index.js
           cp ./package-lock.json ./release_files/package-lock.json
           cp ./package.json ./release_files/package.json
 
-      - name: Create .zip of required files 
+      - name: Create .zip of required files
         run: |
           cd release_files
           zip -r ../Game.Pass.API.zip *
 
       - name: Create Release notes
         run: |
-          echo "## What's Changed
-          
-          " > CHANGELOG.md
-          LAST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
-          git log --pretty=format:'* %s' $LAST_TAG..HEAD >> CHANGELOG.md
+          cat > CHANGELOG.md <<'EOF'
+          > **Recommended:** install from npm with `npm install -g game-pass-api` (or run it directly with `npx game-pass-api`) to always get the latest version. See the [README](https://github.com/NikkelM/Game-Pass-API#readme) for all options.
+
+          ## What's Changed
+
+          EOF
+          LAST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)")
+          git log --pretty=format:'* %s' "$LAST_TAG"..HEAD >> CHANGELOG.md
+          cat >> CHANGELOG.md <<'EOF'
+
+          ## Using the release asset
+
+          To run this version offline, download the attached `Game.Pass.API.zip`, unzip it, and from inside the folder run:
+
+          ```bash
+          npm ci                # install dependencies from the bundled lockfile
+          node bin/cli.js init  # create a config.json interactively (or add one yourself)
+          node bin/cli.js       # fetch Game Pass data using ./config.json
+          ```
+
+          Requires [Node.js](https://nodejs.org) 22.13 or newer. Run `node bin/cli.js --help` for all commands.
+          EOF
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -76,3 +101,50 @@ jobs:
           name: v${{ needs.CheckVersion.outputs.newVersion }}
           files: Game.Pass.API.zip
           body_path: CHANGELOG.md
+
+  PublishNpm:
+    needs: CheckVersion
+    if: needs.CheckVersion.outputs.versionChanged == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # Required for npm Trusted Publishing (OIDC)
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set up node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+
+      # Trusted Publishing (token-free OIDC) needs a recent npm; the bundled one may be too old
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Publishing is idempotent: skip if this version is already on npm. This prevents a failed
+      # job on the first release (published manually to bootstrap Trusted Publishing) and on any
+      # re-run, since npm versions are immutable and cannot be published over
+      - name: Skip if this version is already on npm
+        id: published
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if [ -n "$(npm view "$NAME@$VERSION" version 2>/dev/null || true)" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Version $VERSION is already on npm - skipping publish."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # No NPM_TOKEN needed: authentication and provenance are handled automatically via
+      # OIDC Trusted Publishing, configured for this repo on npmjs.com
+      - name: Publish to npm
+        if: steps.published.outputs.exists == 'false'
+        run: npm publish

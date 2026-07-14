@@ -46,10 +46,10 @@
     "releaseDate": "2025-11-04T16:00:00.0000000Z",
     "userRating": 3.8,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 19.99,
       "MSRP": 19.99,
-      "WholesalePrice": 13.99
+      "WholesalePrice": 11.76
     }
   },
   "9P8LR42PTRGJ": {
@@ -99,10 +99,10 @@
     "releaseDate": "2026-06-11T15:00:00.0000000Z",
     "userRating": 3.9,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 19.99,
       "MSRP": 19.99,
-      "WholesalePrice": 13.99
+      "WholesalePrice": 11.76
     }
   },
   "9NGLST31DG26": {
@@ -150,10 +150,10 @@
     "releaseDate": "2025-12-09T14:00:00.0000000Z",
     "userRating": 3.9,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 4.99,
       "MSRP": 4.99,
-      "WholesalePrice": 3.49
+      "WholesalePrice": 2.94
     }
   }
 }

@@ -46,10 +46,10 @@
     "releaseDate": "2025-11-04T16:00:00.0000000Z",
     "userRating": 3.8,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 19.99,
       "MSRP": 19.99,
-      "WholesalePrice": 13.99
+      "WholesalePrice": 11.76
     }
   },
   "9P8LR42PTRGJ": {
@@ -99,61 +99,62 @@
     "releaseDate": "2026-06-11T15:00:00.0000000Z",
     "userRating": 3.9,
     "pricing": {
-      "currencyCode": "USD",
+      "currencyCode": "EUR",
       "ListPrice": 19.99,
       "MSRP": 19.99,
-      "WholesalePrice": 13.99
+      "WholesalePrice": 11.76
     }
   },
-  "9NGLST31DG26": {
-    "productTitle": "A Game About Digging A Hole™",
-    "productId": "9NGLST31DG26",
-    "developerName": "DoubleBee, Mi'pu'mi Games",
-    "publisherName": "rokaplay",
+  "9NNM7PKZN3JF": {
+    "productTitle": "9 Kings (Game Preview)",
+    "productId": "9NNM7PKZN3JF",
+    "developerName": "Sad Socket",
+    "publisherName": "Hooded Horse",
     "categories": [
-      "Simulation",
-      "Family & kids"
+      "Strategy",
+      "Role playing"
     ],
-    "productDescription": "Dig deep, sell what you find, update your equiptment to continue your journey further and further. With every spadeful you dig, you get closer to the truth. There's no rush, no rules - just you and the adventure underground.\n\nCosts as much as a ☕ coffee, but is fun for longer!",
+    "productDescription": "This game is a work in progress. It may or may not change over time or release as a final product. Purchase only if you are comfortable with the current state of the unfinished game.\n\nBuild your city into the most powerful of all kingdoms through endless combinations of buildings, units, spells, and positioning. Take advantage of chaotic combos and powerful perks to break the game and become overpowered. Grow your kingdom in strategic ways, prepare for dozens of unique events, and show the world your kingdom can outlast all others in both single and async multiplayer.\n\nBUILD YOUR CAPITAL\nFrom humble village to massive citadel, your capital recruits your units and grows their power. Expand your kingdom strategically over time and build it to survive decades of war and strife.\n\nPROTECT YOUR KINGDOM\nFrom sturdy knights and warlocks, to glass cannon wizards and bombers, to hordes of fiendish imps and sentient mushrooms, there are dozens of units to lead and fight. Stockpile gold to hire thousands of mercenaries to your cause, use dark magic to raise the dead, and harness nature itself to bring down your enemies!\n\nCRAFT YOUR DECK\nEach of the kings has a different starting deck of buildings, troops, and spells, but you can loot the rival kings who attack your lands to access cards from their unique decks. Make peace with those whose units don’t fit your playstyle, and declare war against kings with the powers and units you covet, deploying the tools acquired from your enemy to unlock countless combinations of stacking buffs and modifiers to build an invincible army.\n\nRULE YOUR OWN WAY\nAsync multiplayer mode pits you against eight rival kings to see whose kingdom survives the longest. Climb the ranks and prove yourself to truly be the king of kings, complete with cosmetic customization using rewards you’ve unlocked through daily challenges and medals earned along the way. \n \nQuest Mode introduces unique mechanics-bending challenges as you travel the known world and face off against its kings to collect their crowns for yourself.\n \nEndless Mode has you choose a king and face endless attacks from enemy kings and their most powerful warriors – how long can you survive the onslaught?\n \nCombine your cards in endless ways – try out insane builds and watch massive armies fight for your crown, survive as long as you can against increasingly powerful enemies, or break the game and watch all challengers crumble before you.\n\nFull details on the latest status of the game, how you can give feedback and report issues can be found at https://discord.gg/EXEBmsnEAv.",
     "images": {
       "Screenshot": [
-        "https://store-images.s-microsoft.com/image/apps.61650.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.bb967ac8-8106-445e-b6c6-36f148efcf70",
-        "https://store-images.s-microsoft.com/image/apps.19474.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.85ebe674-9d9d-4008-9ffc-e1ad3ed1b43a",
-        "https://store-images.s-microsoft.com/image/apps.6827.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.686227c9-1a6a-4d57-afe5-0247d45bcf1a",
-        "https://store-images.s-microsoft.com/image/apps.4746.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.6ce7bb8f-88a2-4836-a14f-8943c8483a4f",
-        "https://store-images.s-microsoft.com/image/apps.14914.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.7ec82cf4-1362-4996-ad81-69106256a184",
-        "https://store-images.s-microsoft.com/image/apps.10479.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.5ae43b0a-66cf-40e6-bc28-1d0611afb9a1",
-        "https://store-images.s-microsoft.com/image/apps.27825.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.db00d0ae-13e8-4197-97dd-6ee45a87bcce"
-      ],
-      "Poster": [
-        "https://store-images.s-microsoft.com/image/apps.24203.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.adc9d42b-63e9-4fae-822c-86eb5c5dae54"
-      ],
-      "BoxArt": [
-        "https://store-images.s-microsoft.com/image/apps.38859.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.ef59d7d3-cd57-4725-a405-60feda7ca393"
-      ],
-      "BrandedKeyArt": [
-        "https://store-images.s-microsoft.com/image/apps.1507.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.08ed4541-098a-4e76-9e84-642f95da3031"
-      ],
-      "SuperHeroArt": [
-        "https://store-images.s-microsoft.com/image/apps.53246.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.117e0b3f-3f9b-42c1-af93-941770647d68"
-      ],
-      "TitledHeroArt": [
-        "https://store-images.s-microsoft.com/image/apps.50991.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.0e3ce85b-7df5-490e-a504-cd539a79c855"
-      ],
-      "FeaturePromotionalSquareArt": [
-        "https://store-images.s-microsoft.com/image/apps.14894.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.299a4b58-e6f1-460d-9574-c0e932077169"
+        "https://store-images.s-microsoft.com/image/apps.46499.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.5f9003da-3d2d-4fb8-99fb-34d3ab3cd581",
+        "https://store-images.s-microsoft.com/image/apps.57804.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.00a5b184-45fa-41ea-85fa-e770641e469b",
+        "https://store-images.s-microsoft.com/image/apps.36263.13735777332261166.7837b516-85da-4b9f-adc2-28b4958b4d04.a176c208-906a-4f87-8bc7-641a5982daf3",
+        "https://store-images.s-microsoft.com/image/apps.21636.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.bb68010f-7f54-45a4-84eb-58567e8e0307",
+        "https://store-images.s-microsoft.com/image/apps.16986.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.b1f7b7a2-be53-4426-9ee3-10ea31d8274f",
+        "https://store-images.s-microsoft.com/image/apps.61130.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.0009f321-c2e8-4021-bf2d-d27df53c2d54",
+        "https://store-images.s-microsoft.com/image/apps.31450.13735777332261166.6a166aa1-af7b-4a6a-8f4f-b80d388b1aac.79a01273-7944-4e09-96ad-f4420379e8ea",
+        "https://store-images.s-microsoft.com/image/apps.45547.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.983abf6b-040f-43af-9694-f3530901c457"
       ],
       "Logo": [
-        "https://store-images.s-microsoft.com/image/apps.8829.13643221603035245.ddde7541-3c1c-43b1-8b36-964427f91e73.551ddcff-9f2d-41cd-8802-52cbaaef2fd8"
+        "https://store-images.s-microsoft.com/image/apps.62819.13735777332261166.1527be54-60c6-4466-b728-44fabdceed05.aef57a6c-e293-4861-bab9-03b68e76f724"
+      ],
+      "BoxArt": [
+        "https://store-images.s-microsoft.com/image/apps.17545.13735777332261166.fa12b139-0a12-43d8-b337-7c9e9d314404.483d67f0-6b9c-4617-b9dd-78ea04ee5301"
+      ],
+      "Poster": [
+        "https://store-images.s-microsoft.com/image/apps.37106.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.acc6db61-934b-417f-8c9f-189d5944d361"
+      ],
+      "SuperHeroArt": [
+        "https://store-images.s-microsoft.com/image/apps.62983.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.efb04c97-620f-4bde-967a-bd62fa86b702"
+      ],
+      "BrandedKeyArt": [
+        "https://store-images.s-microsoft.com/image/apps.5880.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.e7e417ae-6ef7-4793-b203-371b7da9d5c5"
+      ],
+      "TitledHeroArt": [
+        "https://store-images.s-microsoft.com/image/apps.15666.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.0548f186-8b25-4355-aee2-726c6894e230"
+      ],
+      "FeaturePromotionalSquareArt": [
+        "https://store-images.s-microsoft.com/image/apps.56253.13735777332261166.5394db02-c668-41cb-a4ca-b8088edda9f3.eedcaeb1-8d65-4d89-b790-ecaf33bf1a25"
       ]
     },
-    "releaseDate": "2025-12-09T14:00:00.0000000Z",
-    "userRating": 3.9,
+    "releaseDate": "2025-08-14T13:00:00.0000000Z",
+    "userRating": 4.4,
     "pricing": {
-      "currencyCode": "USD",
-      "ListPrice": 4.99,
-      "MSRP": 4.99,
-      "WholesalePrice": 3.49
+      "currencyCode": "EUR",
+      "ListPrice": 19.99,
+      "MSRP": 19.99,
+      "WholesalePrice": 11.76
     }
   }
 }
