@@ -2,7 +2,13 @@
 
 This example configuration fetches as many properties as possible for a number of different markets.
 
+Generate these results by running the following from this folder:
+
+```bash
+npx game-pass-api
+```
+
 The values were fetched on 2026-07-14.
 
 > The output files here are trimmed to the same few games across both markets, to show the format and how properties like pricing differ per region.
-> Running the tool with this configuration produces the full catalog for every market and platform.
+> The command above produces the full catalog for every market and platform.
