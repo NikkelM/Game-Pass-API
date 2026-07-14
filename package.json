@@ -2,10 +2,45 @@
 	"name": "game-pass-api",
 	"type": "module",
 	"version": "1.2.0",
-	"description": "Get all games currently available for Xbox Game Pass on any platform, with their features and properties formatted just the way you need!",
+	"description": "CLI to get all games on Xbox Game Pass (Console, PC and EA Play) with their properties formatted just the way you need.",
+	"keywords": [
+		"xbox",
+		"game-pass",
+		"xbox-game-pass",
+		"gamepass",
+		"ea-play",
+		"games"
+	],
+	"author": "NikkelM (https://github.com/NikkelM)",
+	"license": "GPL-3.0-or-later",
+	"homepage": "https://github.com/NikkelM/Game-Pass-API#readme",
 	"main": "index.js",
+	"bin": {
+		"game-pass-api": "bin/cli.js"
+	},
+	"files": [
+		"bin/",
+		"index.js",
+		"js/",
+		"config.schema.json",
+		"config.default.json"
+	],
+	"engines": {
+		"node": ">=22.13.0"
+	},
 	"scripts": {
 		"test": "node --test"
+	},
+	"funding": [
+		"https://github.com/sponsors/NikkelM",
+		"https://ko-fi.com/nikkelm"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/NikkelM/Game-Pass-API.git"
+	},
+	"bugs": {
+		"url": "https://github.com/NikkelM/Game-Pass-API/issues"
 	},
 	"dependencies": {
 		"@inquirer/prompts": "^8.5.2",
