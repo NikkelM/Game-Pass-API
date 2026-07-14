@@ -1,12 +1,16 @@
 name: Create Github Release
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Tests"]
+    types:
+      - completed
     branches:
       - main
 
 jobs:
   CheckVersion:
+    if: github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     outputs:
       versionChanged: ${{ steps.check_version.outputs.changed }}
@@ -15,22 +19,23 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+          fetch-tags: true
 
-      - name: Set up node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-
-      - name: Check if version has been updated
+      # A release is due when the package.json version has no matching git tag yet
+      - name: Check whether this version still needs releasing
         id: check_version
-        uses: EndBug/version-check@v3
-        with:
-          diff-search: true
-
-      - name: Log version change
-        if: steps.check_version.outputs.changed == 'true'
-        run: 'echo "Version change found in commit ${{ steps.check_version.outputs.commit }}! New version: ${{ steps.check_version.outputs.version }}"'
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION is already tagged - nothing to release."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "v$VERSION has no tag yet - a release will be created."
+          fi
 
   CreateRelease:
     needs: CheckVersion
@@ -40,7 +45,9 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v7
         with:
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
+          fetch-tags: true
 
       - name: Copy required files to release_files folder
         run: |
@@ -105,6 +112,8 @@ jobs:
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Set up node
         uses: actions/setup-node@v6

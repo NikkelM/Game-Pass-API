@@ -23,7 +23,7 @@ export function loadConfig(configPath) {
 			process.exit(1);
 		}
 		console.log(`Loading configuration file "${configFileName}"...`);
-		config = JSON.parse(fs.readFileSync(configFileName));
+		config = JSON.parse(fs.readFileSync(configFileName, 'utf8').replace(/^\uFEFF/, ''));
 	} catch (error) {
 		console.error("Error loading configuration file: " + (error.message ?? error));
 		process.exit(1);
