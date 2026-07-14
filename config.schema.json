@@ -605,7 +605,7 @@
 							"MSRP",
 							"WholesalePrice"
 						],
-						"missingPricePolicy": "useZero"
+						"missingPricePolicy": "useNull"
 					},
 					"properties": {
 						"enabled": {

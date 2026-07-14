@@ -10,7 +10,7 @@ import { run } from './gamePass.js';
 
 // Read the allowed market and language codes straight from the shipped schema
 const packageDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const schema = JSON.parse(fs.readFileSync(path.join(packageDir, 'config.schema.json')));
+const schema = JSON.parse(fs.readFileSync(path.join(packageDir, 'config.schema.json'), 'utf8').replace(/^\uFEFF/, ''));
 const MARKETS = schema.properties.markets.items.enum;
 const LANGUAGES = schema.properties.language.enum;
 

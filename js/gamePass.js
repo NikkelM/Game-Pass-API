@@ -11,7 +11,7 @@ let emptyValuePlaceholder;
 // Fetch, format and write Game Pass data for every configured market and platform
 export async function run(config) {
 	initConfig(config);
-	emptyValuePlaceholder = CONFIG.treatEmptyStringsAsNull ? null : "";
+	emptyValuePlaceholder = (CONFIG.treatEmptyStringsAsNull ?? true) ? null : "";
 
 	// The tasks run in parallel to speed up the process
 	// Each one writes its own output file
@@ -58,6 +58,11 @@ async function fetchGameIDs(passType, market) {
 
 	console.log(`Fetching ${passType} Game Pass game ID's for market "${market}"...`);
 	const response = await fetch(`https://catalog.gamepass.com/sigls/v2?id=${APIIds[passType]}&language=${CONFIG.language}&market=${market}`);
+	// A 404 means Game Pass has no catalog for this market/platform (not every market offers every platform), which is an empty result rather than an error
+	if (response.status === 404) {
+		console.log(`No ${passType} Game Pass catalog for market "${market}" - writing an empty result.`);
+		return [];
+	}
 	if (!response.ok) {
 		throw new Error(`The Game Pass catalog API responded with status ${response.status}${response.statusText ? ` ${response.statusText}` : ""}.`);
 	}
@@ -69,28 +74,43 @@ async function fetchGameIDs(passType, market) {
 		throw new Error(`Could not parse the Game Pass catalog API response as JSON: ${error.message ?? error}`);
 	}
 
+	if (!Array.isArray(data)) {
+		throw new Error(`The Game Pass catalog API returned an unexpected (non-array) response for ${passType} in market "${market}".`);
+	}
+
 	return data.filter((entry) => entry.id).map((entry) => entry.id);
 }
 
+// The display catalog is fetched in batches so the request URL stays under the ~8 KB limit that proxies and CDNs commonly enforce
+const PRODUCTS_BATCH_SIZE = 200;
+
 async function fetchGameProperties(gameIds, passType, market) {
 	console.log(`Fetching game properties for ${gameIds.length} ${passType} games for market "${market}"...`);
-	const response = await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${gameIds}&market=${market}&languages=${CONFIG.language}`);
-	if (!response.ok) {
-		throw new Error(`The Microsoft display catalog API responded with status ${response.status}${response.statusText ? ` ${response.statusText}` : ""}.`);
+
+	let products = [];
+	for (let start = 0; start < gameIds.length; start += PRODUCTS_BATCH_SIZE) {
+		const batch = gameIds.slice(start, start + PRODUCTS_BATCH_SIZE);
+		const response = await fetch(`https://displaycatalog.mp.microsoft.com/v7.0/products?bigIds=${batch}&market=${market}&languages=${CONFIG.language}`);
+		if (!response.ok) {
+			throw new Error(`The Microsoft display catalog API responded with status ${response.status}${response.statusText ? ` ${response.statusText}` : ""}.`);
+		}
+
+		let data;
+		try {
+			data = await response.json();
+		} catch (error) {
+			throw new Error(`Could not parse the Microsoft display catalog API response as JSON: ${error.message ?? error}`);
+		}
+
+		products.push(...(data.Products ?? []));
 	}
 
-	let data;
-	try {
-		data = await response.json();
-	} catch (error) {
-		throw new Error(`Could not parse the Microsoft display catalog API response as JSON: ${error.message ?? error}`);
-	}
-
+	const merged = { Products: products };
 	if (CONFIG.keepCompleteProperties) {
-		fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(data, null, 2));
+		fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(merged, null, 2));
 	}
 
-	return data;
+	return merged;
 }
 
 // Format the data according to the configuration
@@ -110,7 +130,13 @@ function formatData(gameProperties, passType) {
 				index = game.ProductId;
 				break;
 			case "productTitle":
-				index = game.LocalizedProperties[0].ProductTitle;
+				// Fall back to the ProductId when a game has no localized title, and disambiguate distinct games that share a title so none is silently overwritten in the dictionary
+				index = game.LocalizedProperties?.[0]?.ProductTitle ?? game.ProductId;
+				if (Object.prototype.hasOwnProperty.call(formattedData, index)) {
+					const disambiguated = `${index} (${game.ProductId})`;
+					console.warn(`Duplicate output key "${index}" - writing one entry as "${disambiguated}" to avoid dropping a game.`);
+					index = disambiguated;
+				}
 				break;
 			case "0-indexed":
 				index = Object.keys(formattedData).length;
@@ -281,14 +307,12 @@ function getReleaseDate(game, releaseDateProperty) {
 function getUserRating(game, userRatingProperty) {
 	if (!userRatingProperty.enabled) { return undefined; }
 
-	const intervalMapping = {
-		"7Days": 0,
-		"30Days": 1,
-		"AllTime": 2
-	}
+	// Select the requested interval by its label, not by array position, so a reordering or an inserted interval on Microsoft's side cannot silently return the wrong window's rating
+	const usageData = game.MarketProperties?.[0]?.UsageData ?? [];
+	const usageEntry = usageData.find((entry) => entry.AggregateTimeSpan === userRatingProperty.aggregationInterval);
 
 	// Get the x-out-of-5 stars rating
-	let userRating = game.MarketProperties?.[0]?.UsageData?.[intervalMapping[userRatingProperty.aggregationInterval]]?.AverageRating;
+	let userRating = usageEntry?.AverageRating;
 
 	// Games without any rating data for the requested interval
 	if (typeof userRating !== "number") {
@@ -325,7 +349,7 @@ function getPricing(game, pricingProperty) {
 
 	let prices = {};
 	const price = game.DisplaySkuAvailabilities?.[0]?.Availabilities?.[0]?.OrderManagementData?.Price;
-	prices["currencyCode"] = price?.CurrencyCode;
+	prices["currencyCode"] = price?.CurrencyCode ?? missingPricePlaceholder;
 
 	for (const priceType of pricingProperty.priceTypes) {
 		// Small workaround to not exclude 0-values
@@ -355,7 +379,7 @@ function getStorePageUrl(game, storePageUrlProperty) {
 	if (!storePageUrlProperty) { return undefined; }
 
 	if (!game.LocalizedProperties?.[0]?.ProductTitle || !game.ProductId) {
-		return undefined;
+		return emptyValuePlaceholder;
 	}
 
 	// 1. Convert to lowercase

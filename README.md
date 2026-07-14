@@ -81,7 +81,7 @@ The schema can be found in the `config.schema.json` file and used within your `c
 
 The following is a list of all configuration items, their defaults in the `config.default.json` and the values you can assign to them.
 
-If a given property is not present in the configuration file, it will automatically be assumed to have a value of `false` (or equivalent, depending on the property type), and not be included in the output.
+If a property under `includedProperties` is not present in the configuration file, it is left out of the output; any other optional property falls back to the default listed in its table below.
 
 #### Top-level properties
 
@@ -419,7 +419,7 @@ Whether to include the game's price information. The currency that is used is de
 		"MSRP",
 		"WholesalePrice"
 	],
-	"missingPricePolicy": "useZero"
+	"missingPricePolicy": "useNull"
 }
 ```
 

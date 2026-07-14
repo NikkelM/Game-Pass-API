@@ -36,7 +36,7 @@ export function loadConfig(configPath) {
 // Validate a config against the shipped schema, returning the raw jsonschema result
 export function validateConfigResult(config) {
 	const validator = new jsonschema.Validator();
-	return validator.validate(config, JSON.parse(fs.readFileSync(path.join(packageDir, 'config.schema.json'))));
+	return validator.validate(config, JSON.parse(fs.readFileSync(path.join(packageDir, 'config.schema.json'), 'utf8').replace(/^\uFEFF/, '')));
 }
 
 // Validate a config against the schema, exiting the process on failure

@@ -4,7 +4,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-// The sigls (catalog) list IDs per pass type, mirrored from index.js
+// The sigls (catalog) list IDs per pass type, mirrored from js/gamePass.js
 const SIGL_IDS = {
 	console: 'f6f1f99f-9b49-4ccd-b3bf-4d9767a77f5e',
 	pc: 'fdd9e2a7-0fee-49f6-ad69-4354098401ff',
