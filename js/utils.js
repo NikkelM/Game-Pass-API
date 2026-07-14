@@ -57,9 +57,14 @@ export function initConfig(config) {
 
 // ----- Output -----
 
+// Build an OS-native path inside the output directory (in the current working directory)
+export function outputPath(...segments) {
+	return path.join('output', ...segments);
+}
+
 function setupOutput() {
 	// Create the output directory in the current working directory if it doesn't exist
-	if (!fs.existsSync('output')) {
-		fs.mkdirSync('output', { recursive: true });
+	if (!fs.existsSync(outputPath())) {
+		fs.mkdirSync(outputPath(), { recursive: true });
 	}
 }

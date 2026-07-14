@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 
-import { CONFIG, initConfig } from './utils.js';
+import { CONFIG, initConfig, outputPath } from './utils.js';
 
 // Set once per run from CONFIG.treatEmptyStringsAsNull
 let emptyValuePlaceholder;
@@ -41,7 +41,10 @@ async function runScriptForPassTypeAndMarket(passType, market) {
 	const gameProperties = await fetchGameProperties(gameIds, passType, market);
 	const formattedData = formatData(gameProperties, passType);
 
-	fs.writeFileSync(`./output/formattedGameProperties_${passType}_${market}.json`, JSON.stringify(formattedData, null, 2));
+	const count = Array.isArray(formattedData) ? formattedData.length : Object.keys(formattedData).length;
+	const outputFile = outputPath(`formattedGameProperties_${passType}_${market}.json`);
+	fs.writeFileSync(outputFile, JSON.stringify(formattedData, null, 2));
+	console.log(`Wrote ${count} ${passType} games for market "${market}" to "${outputFile}".`);
 
 	return formattedData;
 }
@@ -107,7 +110,9 @@ async function fetchGameProperties(gameIds, passType, market) {
 
 	const merged = { Products: products };
 	if (CONFIG.keepCompleteProperties) {
-		fs.writeFileSync(`./output/completeGameProperties_${passType}_${market}.json`, JSON.stringify(merged, null, 2));
+		const completeFile = outputPath(`completeGameProperties_${passType}_${market}.json`);
+		fs.writeFileSync(completeFile, JSON.stringify(merged, null, 2));
+		console.log(`Wrote the complete ${passType} ${market} properties to "${completeFile}".`);
 	}
 
 	return merged;
