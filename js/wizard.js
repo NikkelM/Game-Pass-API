@@ -3,7 +3,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { input, select, checkbox, confirm } from '@inquirer/prompts';
+import { select, search, checkbox, confirm } from '@inquirer/prompts';
 
 import { validateConfig } from './utils.js';
 import { run } from './gamePass.js';
@@ -14,29 +14,91 @@ const schema = JSON.parse(fs.readFileSync(path.join(packageDir, 'config.schema.j
 const MARKETS = schema.properties.markets.items.enum;
 const LANGUAGES = schema.properties.language.enum;
 
+// Present each locale code with a human-readable name (e.g. "German (Germany) (de-de)"), sorted, so the language prompt can be searched by name or code instead of scrolled
+const languageDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' });
+const LANGUAGE_CHOICES = LANGUAGES
+	.map((code) => ({ name: `${languageDisplayNames.of(code) || code} (${code})`, value: code }))
+	.sort((a, b) => a.name.localeCompare(b.name));
+
 const IMAGE_TYPES = ['TitledHeroArt', 'SuperHeroArt', 'Logo', 'Poster', 'Screenshot', 'BoxArt', 'Hero', 'BrandedKeyArt', 'FeaturePromotionalSquareArt'];
 const BOOLEAN_PROPERTIES = ['productTitle', 'productId', 'developerName', 'publisherName', 'categories', 'storePage'];
 
-function parseMarkets(value) {
-	return [...new Set(value.split(',').map((code) => code.trim().toUpperCase()).filter(Boolean))];
+// Present each market code with its region name (e.g. "United States (US)"), sorted, so the market prompt can be searched by name or code instead of typed
+const regionDisplayNames = new Intl.DisplayNames(['en'], { type: 'region' });
+function marketName(code) {
+	try {
+		const name = regionDisplayNames.of(code);
+		return name && name !== code ? `${name} (${code})` : code;
+	} catch {
+		return code;
+	}
+}
+const MARKET_CHOICES = MARKETS
+	.map((code) => ({ name: marketName(code), value: code }))
+	.sort((a, b) => a.name.localeCompare(b.name));
+
+// Filter choices for a search term, ranking a code match ahead of a name-only match (so "IE" finds Ireland before "French Southern Territories"), then falling back to alphabetical order
+function searchChoices(choices, term) {
+	const needle = term.toLowerCase();
+	const rank = (choice) => {
+		const code = choice.value.toLowerCase();
+		const name = choice.name.toLowerCase();
+		if (code === needle) return 0;
+		if (code.startsWith(needle)) return 1;
+		if (code.includes(needle)) return 2;
+		if (name.startsWith(needle)) return 3;
+		if (name.includes(needle)) return 4;
+		return Infinity;
+	};
+	return choices
+		.map((choice) => ({ choice, score: rank(choice) }))
+		.filter((entry) => entry.score !== Infinity)
+		.sort((a, b) => a.score - b.score || a.choice.name.localeCompare(b.choice.name))
+		.map((entry) => entry.choice);
 }
 
 export async function runWizard(outputPath = 'config.json') {
-	const markets = parseMarkets(await input({
-		message: 'Market code(s), comma-separated (e.g. US, GB, DE):',
-		default: 'US',
-		validate: (value) => {
-			const codes = parseMarkets(value);
-			if (codes.length === 0) return 'Enter at least one market code';
-			const invalid = codes.filter((code) => !MARKETS.includes(code));
-			return invalid.length ? `Invalid market code(s): ${invalid.join(', ')}` : true;
+	// If a configuration file already exists, confirm overwriting up front so the user can abort before answering every question
+	if (fs.existsSync(outputPath)) {
+		const overwrite = await confirm({ message: `"${outputPath}" already exists. Overwrite it?`, default: false });
+		if (!overwrite) {
+			console.log('Aborted - the existing configuration file was not changed.');
+			return;
 		}
-	}));
+	}
 
-	const language = await select({
-		message: 'Language for the fetched properties:',
-		choices: LANGUAGES.map((code) => ({ name: code, value: code })),
-		default: 'en-us'
+	// Pick one or more markets from a searchable list (add-one-then-"add another?"), so only valid, non-duplicate codes can be chosen
+	const markets = [];
+	while (true) {
+		const pool = MARKET_CHOICES.filter((choice) => !markets.includes(choice.value));
+		const market = await search({
+			message: markets.length === 0 ? 'Market to fetch (type to filter):' : 'Add another market (type to filter):',
+			source: (term) => {
+				if (!term) {
+					// Offer the US default first, then everything else alphabetically
+					const us = pool.find((choice) => choice.value === 'US');
+					return us ? [us, ...pool.filter((choice) => choice.value !== 'US')] : pool;
+				}
+				return searchChoices(pool, term);
+			}
+		});
+		markets.push(market);
+		if (markets.length === MARKET_CHOICES.length) break;
+		if (!(await confirm({ message: 'Add another market?', default: false }))) break;
+	}
+
+	const language = await search({
+		message: 'Language for the fetched properties (type to filter):',
+		source: (term) => {
+			if (!term) {
+				// Offer the en-us default first, then everything else alphabetically
+				return [
+					LANGUAGE_CHOICES.find((choice) => choice.value === 'en-us'),
+					...LANGUAGE_CHOICES.filter((choice) => choice.value !== 'en-us')
+				];
+			}
+			return searchChoices(LANGUAGE_CHOICES, term);
+		}
 	});
 
 	const platformsToFetch = await checkbox({
@@ -143,14 +205,6 @@ export async function runWizard(outputPath = 'config.json') {
 
 	// Sanity-check the assembled configuration against the schema before writing it
 	validateConfig(config);
-
-	if (fs.existsSync(outputPath)) {
-		const overwrite = await confirm({ message: `"${outputPath}" already exists. Overwrite it?`, default: false });
-		if (!overwrite) {
-			console.log('Aborted - the existing configuration file was not changed.');
-			return;
-		}
-	}
 
 	fs.writeFileSync(outputPath, JSON.stringify(config, null, 2));
 	console.log(`\nWrote configuration to "${outputPath}".`);
