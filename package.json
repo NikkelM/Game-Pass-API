@@ -8,6 +8,8 @@
 		"test": "node --test"
 	},
 	"dependencies": {
+		"@inquirer/prompts": "^8.5.2",
+		"commander": "^15.0.0",
 		"jsonschema": "^1.4.1"
 	}
 }
