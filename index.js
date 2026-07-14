@@ -286,13 +286,20 @@ function getImages(game, imageProperty) {
 	};
 
 	for (const image of game.LocalizedProperties?.[0]?.Images ?? []) {
-		if (imageProperty.imageTypes[image.ImagePurpose] && (imageProperty.imageTypes[image.ImagePurpose] === -1 || numImagesByType[image.ImagePurpose] < imageProperty.imageTypes[image.ImagePurpose])) {
-			if (!images[image.ImagePurpose]) {
-				images[image.ImagePurpose] = [];
-			}
-			images[image.ImagePurpose].push(image.Uri.startsWith('https:') ? image.Uri : `https:${image.Uri}`);
-			numImagesByType[image.ImagePurpose] = numImagesByType[image.ImagePurpose] ? numImagesByType[image.ImagePurpose] + 1 : 1;
+		const limit = imageProperty.imageTypes[image.ImagePurpose];
+		if (!limit || (limit !== -1 && numImagesByType[image.ImagePurpose] >= limit)) {
+			continue;
 		}
+
+		const uri = image.Uri.startsWith('https:') ? image.Uri : `https:${image.Uri}`;
+
+		// Skip true duplicates - the same URL can appear more than once in the API response
+		if (images[image.ImagePurpose]?.includes(uri)) {
+			continue;
+		}
+
+		(images[image.ImagePurpose] ??= []).push(uri);
+		numImagesByType[image.ImagePurpose] = (numImagesByType[image.ImagePurpose] ?? 0) + 1;
 	}
 	return images;
 }
