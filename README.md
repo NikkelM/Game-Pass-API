@@ -59,7 +59,10 @@ Unsure where to start? Take a look at the [examples](https://github.com/NikkelM/
 ## Output
 
 The results are written to an `output/` folder in your current directory, with one file per platform and market (for example `output/formattedGameProperties_console_US.json`).
-When `keepCompleteProperties` is enabled, the full unfiltered API response is written alongside it.
+When `keepCompleteProperties` is enabled, the full unfiltered API response is written alongside it (for example `output/completeGameProperties_console_US.json`).
+
+Those complete files can be re-formatted without fetching again: `game-pass-api run --from <dir>` (for example `--from output`) reads the saved `completeGameProperties_*.json` files for your configured markets and platforms and re-applies the current `outputFormat` and `includedProperties`.
+Use it to re-slice a saved snapshot into a different shape offline, without hitting the API.
 
 ## Configuration
 

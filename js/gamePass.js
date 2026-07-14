@@ -2,16 +2,22 @@
 // API URLs taken from https://www.reddit.com/r/XboxGamePass/comments/jt214y/public_api_for_fetching_the_list_of_game_pass/
 
 import fs from 'fs';
+import path from 'path';
 
 import { CONFIG, initConfig, outputPath } from './utils.js';
 
 // Set once per run from CONFIG.treatEmptyStringsAsNull
 let emptyValuePlaceholder;
 
-// Fetch, format and write Game Pass data for every configured market and platform
-export async function run(config) {
+// Fetch (or read saved), format and write Game Pass data for every configured market and platform.
+// When fromDirectory is set, previously-saved completeGameProperties_*.json files are re-formatted instead of fetching
+export async function run(config, { fromDirectory } = {}) {
 	initConfig(config);
 	emptyValuePlaceholder = (CONFIG.treatEmptyStringsAsNull ?? true) ? null : "";
+
+	if (fromDirectory) {
+		console.log(`Re-formatting from saved responses in "${fromDirectory}" (no fetching)...\n`);
+	}
 
 	// The tasks run in parallel to speed up the process
 	// Each one writes its own output file
@@ -20,8 +26,8 @@ export async function run(config) {
 		for (const passType of ["console", "pc", "eaPlay"]) {
 			if (CONFIG.platformsToFetch.includes(passType)) {
 				tasks.push(
-					runScriptForPassTypeAndMarket(passType, market).catch((error) => {
-						console.error(`\nError fetching ${passType} games for market "${market}": ${error.message ?? error}`);
+					runScriptForPassTypeAndMarket(passType, market, fromDirectory).catch((error) => {
+						console.error(`\nError ${fromDirectory ? "formatting" : "fetching"} ${passType} games for market "${market}": ${error.message ?? error}`);
 						return { failed: true };
 					})
 				);
@@ -31,14 +37,16 @@ export async function run(config) {
 
 	const failures = (await Promise.all(tasks)).filter((result) => result && result.failed).length;
 	if (failures > 0) {
-		console.error(`\n${failures} of ${tasks.length} fetch task(s) failed. See the errors above.`);
+		console.error(`\n${failures} of ${tasks.length} task(s) failed. See the errors above.`);
 		process.exit(1);
 	}
 }
 
-async function runScriptForPassTypeAndMarket(passType, market) {
-	const gameIds = await fetchGameIDs(passType, market);
-	const gameProperties = await fetchGameProperties(gameIds, passType, market);
+async function runScriptForPassTypeAndMarket(passType, market, fromDirectory) {
+	const gameProperties = fromDirectory
+		? readCompleteProperties(passType, market, fromDirectory)
+		: await fetchGameProperties(await fetchGameIDs(passType, market), passType, market);
+
 	const formattedData = formatData(gameProperties, passType);
 
 	const count = Array.isArray(formattedData) ? formattedData.length : Object.keys(formattedData).length;
@@ -47,6 +55,20 @@ async function runScriptForPassTypeAndMarket(passType, market) {
 	console.log(`Wrote ${count} ${passType} games for market "${market}" to "${outputFile}".`);
 
 	return formattedData;
+}
+
+// Read a previously-saved complete API response so it can be re-formatted offline (run --from <dir>)
+function readCompleteProperties(passType, market, fromDirectory) {
+	const sourceFile = path.join(fromDirectory, `completeGameProperties_${passType}_${market}.json`);
+	if (!fs.existsSync(sourceFile)) {
+		throw new Error(`No saved response at "${sourceFile}". Run once with "keepCompleteProperties": true to create the complete files first.`);
+	}
+	console.log(`Reading saved ${passType} ${market} properties from "${sourceFile}"...`);
+	try {
+		return JSON.parse(fs.readFileSync(sourceFile, 'utf8').replace(/^\uFEFF/, ''));
+	} catch (error) {
+		throw new Error(`Could not parse the saved response "${sourceFile}" as JSON: ${error.message ?? error}`);
+	}
 }
 
 // ---------- Fetch game ID's & properties ----------
