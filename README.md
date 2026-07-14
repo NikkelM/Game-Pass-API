@@ -2,29 +2,64 @@
 
 ![Game Pass API banner](images/GamePassApiBanner.png)
 
-This project provides a quick and easy way to get a list of all games currently available on Xbox Game Pass on a given platform (Console, PC or through EA Play) in a given region.
+[![npm version](https://img.shields.io/npm/v/game-pass-api)](https://www.npmjs.com/package/game-pass-api)
+[![Tests](https://github.com/NikkelM/Game-Pass-API/actions/workflows/test.yml/badge.svg)](https://github.com/NikkelM/Game-Pass-API/actions/workflows/test.yml)
+<!-- [![npm downloads](https://img.shields.io/npm/dt/game-pass-api)](https://www.npmjs.com/package/game-pass-api) -->
 
-Using the configuration file, the type and format of many properties can be customized, from simply getting the game's names all the way to fetching store prices at the moment of the request.
+Get a list of all games currently available on Xbox Game Pass (Console, PC or EA Play) in any region, with their properties formatted just the way you need - from just the game names all the way to live store prices at the moment of the request.
 
-Take a look at the section below to learn how to use the configuration file, or take a look at the [examples](examples) and work from there.
+## Table of contents
 
-## Setup
+- [Installation](#installation)
+- [Usage](#usage)
+- [Output](#output)
+- [Configuration](#configuration)
+- [Examples](https://github.com/NikkelM/Game-Pass-API/tree/main/examples)
+- [Feedback](#feedback)
 
-Run `npm install` to install the required dependencies first.
+## Installation
 
-Following this, create a `config.json` file in the root directory of the project and fill it with your desired [configuration](#configuration).
+Run it on demand without installing anything (requires [Node.js](https://nodejs.org) 22.13 or newer):
+
+```bash
+npx game-pass-api
+```
+
+Or install it globally to get a persistent `game-pass-api` command:
+
+```bash
+npm install -g game-pass-api
+```
 
 ## Usage
 
-After providing the `config.json` [configuration](#configuration) file, you can run the script using
+The tool is driven by a `config.json` in your current directory.
+The quickest way to create one is the interactive wizard:
 
 ```bash
-node index.js
+game-pass-api init
 ```
 
-You will find the resulting data in the created `output` folder.
+It asks a few questions (markets, language, platforms, and which properties to include) and writes a `config.json`, then offers to run it right away.
 
-Unsure how it works? Take a look at the [examples](examples) for some inspiration.
+You can also write the `config.json` by hand - see [Configuration](#configuration) - and then run the tool:
+
+```bash
+game-pass-api
+```
+
+By default it reads `./config.json`; pass `--config <path>` to point at a different file.
+Run `game-pass-api --help` to see every command.
+
+> Configuration files are validated against a JSON schema (`config.schema.json`, shipped with the package).
+> Add `"$schema": "config.schema.json"` to your `config.json`, with a copy of the schema next to it, and your editor will flag mistakes as you type.
+
+Unsure where to start? Take a look at the [examples](https://github.com/NikkelM/Game-Pass-API/tree/main/examples) and work from there.
+
+## Output
+
+The results are written to an `output/` folder in your current directory, with one file per platform and market (for example `output/formattedGameProperties_console_US.json`).
+When `keepCompleteProperties` is enabled, the full unfiltered API response is written alongside it.
 
 ## Configuration
 
@@ -431,4 +466,4 @@ If you have any question, feedback or feature requests, feel free to open an [is
 
 ## Disclaimer
 
-*This unofficial project is not affiliated with Microsoft or Xbox in any way. The data provided when using this project is obtained from the public Xbox catalog API and is not guaranteed to be accurate or up-to-date.*
+*This unofficial project is not affiliated with Microsoft or XBOX in any way. The data provided when using this project is obtained from the public XBOX catalog API and is not guaranteed to be accurate or up-to-date.*
