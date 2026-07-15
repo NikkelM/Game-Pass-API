@@ -1,4 +1,4 @@
-name: Create Github Release
+name: Create GitHub Release and publish to npm
 
 on:
   workflow_run:
@@ -78,6 +78,7 @@ jobs:
           LAST_TAG=$(git describe --tags "$(git rev-list --tags --max-count=1)")
           git log --pretty=format:'* %s' "$LAST_TAG"..HEAD >> CHANGELOG.md
           cat >> CHANGELOG.md <<'EOF'
+
 
           ## Using the release asset
 
