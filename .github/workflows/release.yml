@@ -79,6 +79,7 @@ jobs:
           git log --pretty=format:'* %s' "$LAST_TAG"..HEAD >> CHANGELOG.md
           cat >> CHANGELOG.md <<'EOF'
 
+
           ## Using the release asset
 
           To run this version offline, download the attached `Game.Pass.API.zip`, unzip it, and from inside the folder run:
