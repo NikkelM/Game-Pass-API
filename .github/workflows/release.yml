@@ -129,9 +129,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Publishing is idempotent: skip if this version is already on npm. This prevents a failed
-      # job on the first release (published manually to bootstrap Trusted Publishing) and on any
-      # re-run, since npm versions are immutable and cannot be published over
+      # Publishing is idempotent: skip if this version is already on npm
       - name: Skip if this version is already on npm
         id: published
         run: |
@@ -144,8 +142,7 @@ jobs:
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # No NPM_TOKEN needed: authentication and provenance are handled automatically via
-      # OIDC Trusted Publishing, configured for this repo on npmjs.com
+      # Authentication and provenance are handled via OIDC Trusted Publishing
       - name: Publish to npm
         if: steps.published.outputs.exists == 'false'
         run: npm publish
