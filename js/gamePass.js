@@ -9,7 +9,7 @@ import { CONFIG, initConfig, outputPath } from './utils.js';
 // Set once per run from CONFIG.treatEmptyStringsAsNull
 let emptyValuePlaceholder;
 
-// Fetch (or read saved), format and write Game Pass data for every configured market and platform.
+// Fetch (or read saved), format and write Game Pass data for every configured market and platform
 // When fromDirectory is set, previously-saved completeGameProperties_*.json files are re-formatted instead of fetching
 export async function run(config, { fromDirectory } = {}) {
 	initConfig(config);

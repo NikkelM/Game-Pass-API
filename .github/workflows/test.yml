@@ -1,8 +1,5 @@
 name: Tests
 
-# These integration tests hit the public Xbox Game Pass APIs (no credentials needed) to catch
-# when Microsoft changes or retires an endpoint the tool depends on, even when the code is unchanged
-
 on:
   push:
     branches:
@@ -11,7 +8,6 @@ on:
     branches:
       - main
   schedule:
-    # every Monday at 06:00 UTC
     - cron: "0 6 * * 1"
   workflow_dispatch:
 
@@ -21,7 +17,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Test on the minimum supported version and the latest
         node-version: [22, 24]
     steps:
       - name: Check out repository
@@ -39,9 +34,6 @@ jobs:
       - name: Run tests
         run: npm test
 
-  # A single, stable status check for branch protection that is green only when every matrix job
-  # passed. The matrix jobs report as "test-matrix (22)" etc, whose names change with the matrix,
-  # so requiring this job instead keeps the required check name stable
   test:
     if: always()
     needs: test-matrix

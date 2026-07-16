@@ -11,7 +11,10 @@
 		"ea-play",
 		"games"
 	],
-	"author": "NikkelM (https://github.com/NikkelM)",
+	"author": {
+		"name": "Nikkel Mollenhauer",
+		"email": "contact@nikkelm.dev"
+	},
 	"license": "GPL-3.0-or-later",
 	"homepage": "https://github.com/NikkelM/Game-Pass-API#readme",
 	"main": "index.js",
