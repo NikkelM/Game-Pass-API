@@ -52,6 +52,15 @@ game-pass-api
 By default it reads `./config.json`; pass `--config <path>` to point at a different file.
 Run `game-pass-api --help` to see every command.
 
+You can also run without a `config.json` at all, building the configuration entirely from flags:
+
+```bash
+game-pass-api --markets US,DE --platforms console,pc --properties productTitle,productId --format productTitle
+```
+
+Any option you omit uses its default.
+Nested options such as images, pricing and user ratings are only available through a `config.json` or the wizard.
+
 > Configuration files are validated against a JSON schema (`config.schema.json`, shipped with the package).
 > Add `"$schema": "config.schema.json"` to your `config.json`, with a copy of the schema next to it, and your editor will flag mistakes as you type.
 

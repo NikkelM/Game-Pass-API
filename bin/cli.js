@@ -5,9 +5,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Command } from 'commander';
 
-import { loadConfig } from '../js/utils.js';
+import { loadConfig, validateConfig } from '../js/utils.js';
 import { run } from '../js/gamePass.js';
 import { runWizard } from '../js/wizard.js';
+import { buildConfig, usedBuildingFlags } from '../js/cliConfig.js';
 
 const packageRoot = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(packageRoot, 'package.json'), 'utf8'));
@@ -21,12 +22,26 @@ program
 
 program
 	.command('run', { isDefault: true })
-	.description('Fetch Game Pass data using a configuration file')
+	.description('Fetch Game Pass data using a config file, or entirely from flags')
 	.option('-c, --config <path>', 'path to a config.json (defaults to ./config.json)')
 	.option('--from <dir>', 're-format previously-saved completeGameProperties_*.json files in <dir> instead of fetching (needs an earlier run with keepCompleteProperties)')
 	.option('-o, --out <dir>', 'directory to write output files to (overrides outputDirectory; default: output)')
-	.addHelpText('after', '\nThe configuration comes from a config.json in the current directory (or --config <path>).\nRun "game-pass-api init" to create one interactively, or see the README and config.schema.json for every option.')
-	.action(async (options) => {
+	.option('--markets <codes>', 'comma-separated market codes to fetch, e.g. US,DE (flag-driven mode)')
+	.option('--platforms <list>', 'comma-separated platforms: console,pc,eaPlay (flag-driven mode)')
+	.option('--language <code>', 'language/locale for game properties, e.g. en-us (flag-driven mode)')
+	.option('--format <format>', 'output format: array, productTitle, productId or 0-indexed (flag-driven mode)')
+	.option('--properties <list>', 'comma-separated properties to include: productTitle,productId,developerName,publisherName,categories,storePage (flag-driven mode)')
+	.option('--keep-complete', 'also keep the complete, unfiltered API response per platform and market (flag-driven mode)')
+	.option('--no-treat-empty-as-null', 'keep empty strings instead of converting them to null (flag-driven mode)')
+	.addHelpText('after', '\nProvide a config.json (in the current directory or via --config), or build one from flags with --markets/--platforms/--properties etc. (unspecified options use their defaults).\nRun "game-pass-api init" to create a config interactively, or see the README and config.schema.json for every option.')
+	.action(async (options, command) => {
+		// Build the config entirely from flags when config-building flags are used (and no explicit --config file)
+		if (!options.config && usedBuildingFlags(command)) {
+			const config = buildConfig(options);
+			validateConfig(config);
+			await run(config, { fromDirectory: options.from });
+			return;
+		}
 		// Start the interactive wizard when invoked with no options and no config to load, but only in an interactive shell so scripts still get the friendly no-config error
 		if (!options.config && !options.from && !options.out && !fs.existsSync('config.json') && process.stdin.isTTY) {
 			await runWizard('config.json');
