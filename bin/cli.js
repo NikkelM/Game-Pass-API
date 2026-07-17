@@ -27,6 +27,11 @@ program
 	.option('-o, --out <dir>', 'directory to write output files to (overrides outputDirectory; default: output)')
 	.addHelpText('after', '\nThe configuration comes from a config.json in the current directory (or --config <path>).\nRun "game-pass-api init" to create one interactively, or see the README and config.schema.json for every option.')
 	.action(async (options) => {
+		// Start the interactive wizard when invoked with no options and no config to load, but only in an interactive shell so scripts still get the friendly no-config error
+		if (!options.config && !options.from && !options.out && !fs.existsSync('config.json') && process.stdin.isTTY) {
+			await runWizard('config.json');
+			return;
+		}
 		const config = loadConfig(options.config);
 		if (options.out) {
 			config.outputDirectory = options.out;

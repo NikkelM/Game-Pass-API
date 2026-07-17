@@ -41,6 +41,7 @@ game-pass-api init
 ```
 
 It asks a few questions (markets, language, platforms, and which properties to include) and writes a `config.json`, then offers to run it right away.
+Running `game-pass-api` with no arguments and no `config.json` present starts this wizard automatically.
 
 You can also write the `config.json` by hand - see [Configuration](#configuration) - and then run the tool:
 
