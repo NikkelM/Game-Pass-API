@@ -5,7 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { Command } from 'commander';
 
-import { loadConfig, validateConfig } from '../js/utils.js';
+import { loadConfig, validateConfig, saveConfigToFile } from '../js/utils.js';
 import { run } from '../js/gamePass.js';
 import { runWizard } from '../js/wizard.js';
 import { buildConfig, usedBuildingFlags } from '../js/cliConfig.js';
@@ -33,12 +33,16 @@ program
 	.option('--properties <list>', 'comma-separated properties to include: productTitle,productId,developerName,publisherName,categories,storePage (flag-driven mode)')
 	.option('--keep-complete', 'also keep the complete, unfiltered API response per platform and market (flag-driven mode)')
 	.option('--no-treat-empty-as-null', 'keep empty strings instead of converting them to null (flag-driven mode)')
+	.option('--save-config [path]', 'also write the assembled configuration to a file for reuse (default: config.json; flag-driven mode)')
 	.addHelpText('after', '\nProvide a config.json (in the current directory or via --config), or build one from flags with --markets/--platforms/--properties etc. (unspecified options use their defaults).\nRun "game-pass-api init" to create a config interactively, or see the README and config.schema.json for every option.')
 	.action(async (options, command) => {
 		// Build the config entirely from flags when config-building flags are used (and no explicit --config file)
 		if (!options.config && usedBuildingFlags(command)) {
 			const config = buildConfig(options);
 			validateConfig(config);
+			if (options.saveConfig) {
+				await saveConfigToFile(config, options.saveConfig === true ? 'config.json' : options.saveConfig);
+			}
 			await run(config, { fromDirectory: options.from });
 			return;
 		}

@@ -59,6 +59,7 @@ game-pass-api --markets US,DE --platforms console,pc --properties productTitle,p
 ```
 
 Any option you omit uses its default.
+Add `--save-config` to also write the assembled configuration to a `config.json` (or `--save-config <path>`) so you can reuse or edit it later.
 Nested options such as images, pricing and user ratings are only available through a `config.json` or the wizard.
 
 > Configuration files are validated against a JSON schema (`config.schema.json`, shipped with the package).
