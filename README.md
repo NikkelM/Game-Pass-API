@@ -16,6 +16,7 @@ Get a list of all games currently available on Xbox Game Pass (Console, PC or EA
 - [Configuration](#configuration)
 - [Examples](https://github.com/NikkelM/Game-Pass-API/tree/main/examples)
 - [Feedback](#feedback)
+- [Disclaimer](#disclaimer)
 
 ## Installation
 
@@ -50,7 +51,7 @@ game-pass-api
 ```
 
 By default it reads `./config.json`; pass `--config <path>` to point at a different file.
-Run `game-pass-api --help` to see every command.
+Run `game-pass-api --help` to see every command, or `game-pass-api run --help` for the full list of flags.
 
 You can also run without a `config.json` at all, building the configuration entirely from flags:
 
@@ -61,6 +62,25 @@ game-pass-api --markets US,DE --platforms console,pc --properties productTitle,p
 Any option you omit uses its default.
 Add `--save-config` to also write the assembled configuration to a `config.json` (or `--save-config <path>`) so you can reuse or edit it later.
 Nested options such as images, pricing and user ratings are only available through a `config.json` or the wizard.
+
+### Command-line flags
+
+| Flag | Config key | Description |
+| --- | --- | --- |
+| `-c, --config <path>` | - | Path to a `config.json`. Defaults to `./config.json`. |
+| `--from <dir>` | - | Re-format previously-saved `completeGameProperties_*.json` files in `<dir>` instead of fetching (needs an earlier run with `keepCompleteProperties`). |
+| `-o, --out <dir>` | `outputDirectory` | Directory to write output files to. Default `output`. |
+| `--markets <codes>` | `markets` | Comma-separated market codes to fetch, e.g. `US,DE`. Enables flag-driven mode. |
+| `--platforms <list>` | `platformsToFetch` | Comma-separated platforms: `console,pc,eaPlay`. |
+| `--language <code>` | `language` | Language/locale for game properties, e.g. `en-us`. |
+| `--format <format>` | `outputFormat` | Output format: `array`, `productTitle`, `productId` or `0-indexed`. |
+| `--properties <list>` | `includedProperties` | Comma-separated properties to include: `productTitle,productId,developerName,publisherName,categories,storePage`. |
+| `--keep-complete` | `keepCompleteProperties` | Also keep the complete, unfiltered API response per platform and market. |
+| `--no-treat-empty-as-null` | `treatEmptyStringsAsNull` | Keep empty strings instead of converting them to `null`. |
+| `--save-config [path]` | - | Also write the assembled configuration to a file for reuse. Default `config.json`. |
+
+Nested options (image types, pricing, user ratings, descriptions, release dates) are only available through a `config.json` or the wizard.
+The `init` command takes `-o, --output <path>` to choose where the wizard writes the configuration file (default `config.json`).
 
 > Configuration files are validated against a JSON schema (`config.schema.json`, shipped with the package).
 > Add `"$schema": "config.schema.json"` to your `config.json`, with a copy of the schema next to it, and your editor will flag mistakes as you type.
