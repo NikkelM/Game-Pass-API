@@ -32,7 +32,7 @@
 		"node": ">=22.13.0"
 	},
 	"scripts": {
-		"test": "node --test"
+		"test": "node --test --experimental-test-module-mocks"
 	},
 	"funding": [
 		"https://github.com/sponsors/NikkelM",

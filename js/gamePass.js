@@ -6,14 +6,15 @@ import path from 'path';
 
 import { CONFIG, initConfig, outputPath } from './utils.js';
 
-// Set once per run from CONFIG.treatEmptyStringsAsNull
-let emptyValuePlaceholder;
+// The placeholder written when a requested property has no value, derived at call time from CONFIG.treatEmptyStringsAsNull
+function emptyValue() {
+	return (CONFIG.treatEmptyStringsAsNull ?? true) ? null : "";
+}
 
 // Fetch (or read saved), format and write Game Pass data for every configured market and platform
 // When fromDirectory is set, previously-saved completeGameProperties_*.json files are re-formatted instead of fetching
 export async function run(config, { fromDirectory } = {}) {
 	initConfig(config);
-	emptyValuePlaceholder = (CONFIG.treatEmptyStringsAsNull ?? true) ? null : "";
 
 	if (fromDirectory) {
 		console.log(`Re-formatting from saved responses in "${fromDirectory}" (no fetching)...\n`);
@@ -141,7 +142,7 @@ async function fetchGameProperties(gameIds, passType, market) {
 }
 
 // Format the data according to the configuration
-function formatData(gameProperties, passType) {
+export function formatData(gameProperties, passType) {
 	const products = gameProperties.Products ?? [];
 	console.log(`Formatting game properties for ${products.length} ${passType} games...`);
 
@@ -238,7 +239,7 @@ function getProductTitle(game, productTitleProperty) {
 
 	return game.LocalizedProperties?.[0]?.ProductTitle?.length > 0
 		? game.LocalizedProperties[0].ProductTitle
-		: emptyValuePlaceholder;
+		: emptyValue();
 }
 
 function getProductId(game, productIdProperty) {
@@ -246,7 +247,7 @@ function getProductId(game, productIdProperty) {
 
 	return game.ProductId?.length > 0
 		? game.ProductId
-		: emptyValuePlaceholder;
+		: emptyValue();
 }
 
 function getDeveloperName(game, developerNameProperty) {
@@ -254,7 +255,7 @@ function getDeveloperName(game, developerNameProperty) {
 
 	return game.LocalizedProperties?.[0]?.DeveloperName?.length > 0
 		? game.LocalizedProperties[0].DeveloperName
-		: emptyValuePlaceholder;
+		: emptyValue();
 }
 
 function getPublisherName(game, publisherNameProperty) {
@@ -262,7 +263,7 @@ function getPublisherName(game, publisherNameProperty) {
 
 	return game.LocalizedProperties?.[0]?.PublisherName?.length > 0
 		? game.LocalizedProperties[0].PublisherName
-		: emptyValuePlaceholder;
+		: emptyValue();
 }
 
 function getProductDescription(game, productDescriptionProperty) {
@@ -273,7 +274,7 @@ function getProductDescription(game, productDescriptionProperty) {
 	} else {
 		return game.LocalizedProperties?.[0]?.ProductDescription?.length > 0
 			? game.LocalizedProperties[0].ProductDescription
-			: emptyValuePlaceholder;
+			: emptyValue();
 	}
 }
 
@@ -317,7 +318,7 @@ function getReleaseDate(game, releaseDateProperty) {
 
 	const releaseDate = game.MarketProperties?.[0]?.OriginalReleaseDate;
 	if (!releaseDate || releaseDate.length === 0) {
-		return emptyValuePlaceholder;
+		return emptyValue();
 	}
 
 	if (releaseDateProperty.format === "date") {
@@ -343,7 +344,7 @@ function getUserRating(game, userRatingProperty) {
 
 	// Games without any rating data for the requested interval
 	if (typeof userRating !== "number") {
-		return emptyValuePlaceholder;
+		return emptyValue();
 	}
 
 	// Convert to a percentage if requested
@@ -388,7 +389,7 @@ function getPricing(game, pricingProperty) {
 	return prices;
 }
 
-function getCategories(game, categoriesProperty) {
+export function getCategories(game, categoriesProperty) {
 	if (!categoriesProperty) { return undefined; }
 
 	const properties = game.Properties ?? {};
@@ -402,11 +403,11 @@ function getCategories(game, categoriesProperty) {
 	return categories;
 }
 
-function getStorePageUrl(game, storePageUrlProperty) {
+export function getStorePageUrl(game, storePageUrlProperty) {
 	if (!storePageUrlProperty) { return undefined; }
 
 	if (!game.LocalizedProperties?.[0]?.ProductTitle || !game.ProductId) {
-		return emptyValuePlaceholder;
+		return emptyValue();
 	}
 
 	// 1. Convert to lowercase
