@@ -3,11 +3,13 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { buildConfig, BOOLEAN_PROPERTIES } from '../js/cliConfig.js';
-import { validateConfigResult } from '../js/utils.js';
+import { validateConfigResult, saveConfigToFile } from '../js/utils.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const cli = path.join(here, '..', 'bin', 'cli.js');
@@ -64,5 +66,40 @@ describe('CLI flag-driven mode', () => {
 		const result = spawnSync(process.execPath, [cli, '--markets', 'XX'], { encoding: 'utf8' });
 		assert.notEqual(result.status, 0);
 		assert.match((result.stdout ?? '') + (result.stderr ?? ''), /invalid market code/);
+	});
+});
+
+describe('saveConfigToFile', () => {
+	it('writes a validated flag-built config and strips any secret fields', async () => {
+		const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gpa-save-'));
+		const out = path.join(dir, 'config.json');
+		try {
+			const config = { ...buildConfig({ markets: 'US,DE' }), someSecret: 'should_not_persist' };
+			await saveConfigToFile(config, out, ['someSecret']);
+			const written = JSON.parse(fs.readFileSync(out, 'utf8'));
+			assert.ok(!('someSecret' in written), 'a secret field must never be written to disk');
+			assert.deepEqual(written.markets, ['US', 'DE']);
+			assert.equal(validateConfigResult(written).errors.length, 0);
+		} finally {
+			fs.rmSync(dir, { recursive: true, force: true });
+		}
+	});
+
+	it('refuses to overwrite an existing file non-interactively', async () => {
+		const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gpa-save-'));
+		const out = path.join(dir, 'config.json');
+		try {
+			fs.writeFileSync(out, '{"existing":true}');
+			const originalIsTTY = process.stdin.isTTY;
+			process.stdin.isTTY = false;
+			try {
+				await assert.rejects(saveConfigToFile(buildConfig({}), out), /already exists/);
+			} finally {
+				process.stdin.isTTY = originalIsTTY;
+			}
+			assert.equal(fs.readFileSync(out, 'utf8'), '{"existing":true}', 'the existing file must be left untouched');
+		} finally {
+			fs.rmSync(dir, { recursive: true, force: true });
+		}
 	});
 });
