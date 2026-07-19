@@ -1,7 +1,7 @@
 {
 	"name": "game-pass-api",
 	"type": "module",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "CLI to get all games on Xbox Game Pass (Console, PC and EA Play) with their properties formatted just the way you need.",
 	"keywords": [
 		"xbox",
