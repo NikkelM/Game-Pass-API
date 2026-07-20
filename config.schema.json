@@ -352,7 +352,7 @@
 			"oneOf": [
 				{
 					"const": "array",
-					"title": "The resulting data structure is an array with its entries being dictionaries holding separate game's proeprties."
+					"title": "The resulting data structure is an array with its entries being dictionaries holding separate game's properties."
 				},
 				{
 					"const": "productTitle",
@@ -477,46 +477,55 @@
 								"Screenshot": {
 									"description": "In-game screenshots. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4677.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.4344f692-1744-4c18-8024-270fd320f63c",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"TitledHeroArt": {
 									"description": "Banner featuring the game's name. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.12688.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.ef4d4f2f-1865-4fa7-8ec7-8b914cd4dcc0",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"Poster": {
 									"description": "Banner featuring the game's name in portrait mode, such as for smartphones. 2:3 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.64810.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.fdefe49f-270c-44e5-b660-6d7764b37f0f",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"SuperHeroArt": {
 									"description": "Artwork without text. 16:9 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.62159.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.1405eb3a-6314-4e44-a822-7660d70a6ec5",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"Hero": {
 									"description": "Artwork without text. 2:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.28129.13672427983916579.274b1ffd-9cde-4bef-9a3e-6f37073d5ed0.5eb8b4f3-3575-4d13-b0a4-b60d6c64f392",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"BoxArt": {
 									"description": "Banner featuring the game's logo and name in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.4794.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.b156af1e-9796-48af-8d11-3461727280ea",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"BrandedKeyArt": {
 									"description": "Banner featuring the game's name with an \"XBOX\" logo on top. 73:100 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.27624.68326442227858632.21f49c7b-79d7-4647-b847-ecc7a34a7901.1aa31c66-2a52-45d6-8fed-badfb9f25ac6",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"FeaturePromotionalSquareArt": {
 									"description": "Banner featuring the game's logo (without name) in a square \"box\" format. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.29819.68326442227858632.03782b23-7f26-4a8e-ba87-177bdf2c3c90.322d4aa6-0a23-4565-a64f-743f0620a96e",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								},
 								"Logo": {
 									"description": "Small, square game logo, to be used e.g. as a game library icon. 1:1 aspect ratio. E.g. https://store-images.s-microsoft.com/image/apps.65119.13664397958929388.0e87ac81-8aa3-41f0-82dc-61a295fc5fe3.44bf032a-b113-4179-aa1b-f557dbcd3b19",
 									"type": "integer",
+									"minimum": -1,
 									"default": -1
 								}
 							},

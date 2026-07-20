@@ -1,2 +1,6 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Normalize all text files to LF in the repository and the working tree
+* text=auto eol=lf
+
+# Windows batch scripts must keep CRLF to run correctly
+*.bat text eol=crlf
+*.cmd text eol=crlf

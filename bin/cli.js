@@ -38,6 +38,10 @@ program
 	.action(async (options, command) => {
 		// Build the config entirely from flags when config-building flags are used (and no explicit --config file)
 		if (!options.config && usedBuildingFlags(command)) {
+			// Flags take precedence over a config.json; warn if one is present so its silent omission is never a surprise
+			if (fs.existsSync('config.json')) {
+				console.warn('Warning: building flags were provided, so the "config.json" in this directory is being ignored. Pass --config config.json to use that file instead, or drop the building flags.');
+			}
 			const config = buildConfig(options);
 			validateConfig(config);
 			if (options.saveConfig) {

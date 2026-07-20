@@ -36,7 +36,7 @@ export async function run(config, { fromDirectory } = {}) {
 		}
 	}
 
-	const failures = (await Promise.all(tasks)).filter((result) => result && result.failed).length;
+	const failures = (await Promise.all(tasks)).filter((result) => result?.failed === true).length;
 	if (failures > 0) {
 		console.error(`\n${failures} of ${tasks.length} task(s) failed. See the errors above.`);
 		process.exit(1);
@@ -128,6 +128,9 @@ async function fetchGameProperties(gameIds, passType, market) {
 			throw new Error(`Could not parse the Microsoft display catalog API response as JSON: ${error.message ?? error}`);
 		}
 
+		if (data.Products !== undefined && !Array.isArray(data.Products)) {
+			throw new Error(`The Microsoft display catalog API returned an unexpected (non-array) Products field for ${passType} in market "${market}".`);
+		}
 		products.push(...(data.Products ?? []));
 	}
 
@@ -155,7 +158,13 @@ export function formatData(gameProperties, passType) {
 				index = formattedData.length;
 				break;
 			case "productId":
-				index = game.ProductId;
+				// Fall back to a placeholder when a game has no ProductId, and disambiguate distinct games that share one so none is silently overwritten
+				index = game.ProductId ?? `unknown-${Object.keys(formattedData).length}`;
+				if (Object.prototype.hasOwnProperty.call(formattedData, index)) {
+					const disambiguated = `${index} (${game.LocalizedProperties?.[0]?.ProductTitle ?? Object.keys(formattedData).length})`;
+					console.warn(`Duplicate output key "${index}" - writing one entry as "${disambiguated}" to avoid dropping a game.`);
+					index = disambiguated;
+				}
 				break;
 			case "productTitle":
 				// Fall back to the ProductId when a game has no localized title, and disambiguate distinct games that share a title so none is silently overwritten in the dictionary
@@ -266,7 +275,7 @@ function getPublisherName(game, publisherNameProperty) {
 		: emptyValue();
 }
 
-function getProductDescription(game, productDescriptionProperty) {
+export function getProductDescription(game, productDescriptionProperty) {
 	if (!productDescriptionProperty.enabled) { return undefined; }
 
 	if (productDescriptionProperty.preferShort && game.LocalizedProperties?.[0]?.ShortDescription?.length > 0) {
@@ -278,7 +287,7 @@ function getProductDescription(game, productDescriptionProperty) {
 	}
 }
 
-function getImages(game, imageProperty) {
+export function getImages(game, imageProperty) {
 	if (!imageProperty.enabled) { return undefined; }
 
 	let images = {};
@@ -300,6 +309,10 @@ function getImages(game, imageProperty) {
 			continue;
 		}
 
+		// Skip an image entry with no URI rather than crashing the whole market's task
+		if (!image.Uri) {
+			continue;
+		}
 		const uri = image.Uri.startsWith('https:') ? image.Uri : `https:${image.Uri}`;
 
 		// Skip true duplicates - the same URL can appear more than once in the API response
@@ -313,7 +326,7 @@ function getImages(game, imageProperty) {
 	return images;
 }
 
-function getReleaseDate(game, releaseDateProperty) {
+export function getReleaseDate(game, releaseDateProperty) {
 	if (!releaseDateProperty.enabled) { return undefined; }
 
 	const releaseDate = game.MarketProperties?.[0]?.OriginalReleaseDate;
@@ -332,7 +345,7 @@ function getReleaseDate(game, releaseDateProperty) {
 	}
 }
 
-function getUserRating(game, userRatingProperty) {
+export function getUserRating(game, userRatingProperty) {
 	if (!userRatingProperty.enabled) { return undefined; }
 
 	// Select the requested interval by its label, not by array position, so a reordering or an inserted interval on Microsoft's side cannot silently return the wrong window's rating
@@ -355,7 +368,7 @@ function getUserRating(game, userRatingProperty) {
 	return userRating;
 }
 
-function getPricing(game, pricingProperty) {
+export function getPricing(game, pricingProperty) {
 	if (!pricingProperty.enabled) { return undefined; }
 
 	let missingPricePlaceholder;
